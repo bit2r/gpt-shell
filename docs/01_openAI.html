@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>gpt-shell - 2&nbsp; GPT</title>
+<title>gpt-shell - 2&nbsp; OpenAI 들어가며</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -152,7 +152,7 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">GPT</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">OpenAI 들어가며</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -187,7 +187,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01_openAI.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">GPT</span></a>
+  <a href="./01_openAI.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">OpenAI 들어가며</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -216,7 +216,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">GPT</span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">OpenAI 들어가며</span></h1>
 </div>
 
 
@@ -353,6 +353,7 @@ div.csl-indent {
 </section>
 <section id="여론조사-할일-생성" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="여론조사-할일-생성"><span class="header-section-number">2.4</span> 여론조사 할일 생성</h2>
+<p>TO-DO 리스트를 제작하는 것은 해당 작업을 절차적으로 구분지어 수행할 수 있게 되어 해당 작업의 성공가능성을 높이고 생산성도 높일 수 있다. 여론조사를 한사람이 수행하는 경우는 거의 없지만 일반적으로 여론조사에서 수행할 일에 대해서 지시명령어를 작성하여 결과를 살펴보자.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>todo_list <span class="op">=</span> openai.Completion.create(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"text-davinci-003"</span>,</span>
@@ -365,9 +366,22 @@ div.csl-indent {
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  stop<span class="op">=</span>[<span class="st">"6."</span>]</span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>todo_list[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'text'</span>]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>todo_text <span class="op">=</span> todo_list[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'text'</span>]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <pre><code>' 여론조사 대상자를 선정하고, 여론조사 대상자의 수를 결정합니다.\n\n2. 여론조사 대상자들에게 여론조사 질문지를 배포합니다.\n\n3. 여론조사 대상자들에게 여론조사 응답을 요청합니다.\n\n4. 여론조사 응답을 수집하고, 분석합니다.\n\n5. 여론조사 결과를 보고서로 작성합니다.'</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"1. {py$todo_text}"</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>작업수행결과를 가독성 좋게 정리하면 다음과 같다.</p>
+<ol type="1">
+<li>여론조사 대상자를 선정하고, 여론조사 대상자의 수를 결정합니다.</li>
+<li>여론조사 대상자들에게 여론조사 질문지를 배포합니다.</li>
+<li>여론조사 대상자들에게 여론조사 응답을 요청합니다.</li>
+<li>여론조사 응답을 수집하고, 분석합니다.</li>
+<li>여론조사 결과를 보고서로 작성합니다.</li>
+</ol>
+<p>지금까지 OpenAI API를 사용하여 텍스트 자동생성기능을 활용하여 키워드 추출, 문서요약, 작업목록 생성과 같은 업무를 통해 가능성을 살펴봤다. 이제 데이터 과학업무 생산성의 주요한 도구인 유닉스 쉘(Unix Shell)을 챗GPT로 또 다른 데이터 과학의 세계로 나아가자.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
