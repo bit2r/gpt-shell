@@ -1,9 +1,5 @@
----
-title: "환경설정"
-format: html
-editor_options: 
-  chunk_output_type: console
----
+# 환경설정
+
 
 ```{r}
 #| echo: false
@@ -12,8 +8,6 @@ library(reticulate)
 use_condaenv(condaenv = 'gpt-shell')
 ```
 
-
-# 환경설정
 
 OpenAI GPT 제품은 파이썬이 주 개발언어로 되어 있어 
 파이썬을 기준으로 챗GPT 개발을 진행한다.
@@ -99,7 +93,8 @@ import openai
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # API 호출 및 모델 목록 출력
-openai.Model.list()
+models = openai.Model.list()
+print(models['data'][0])
 ```
 
 다른 방식은 로컬 파일에 API KEY와 ORG ID 를 저장하고 이를 불러와서 개발에 사용하는 방식이다.
@@ -120,6 +115,42 @@ openai.api_key = os.environ.get("API_KEY")
 openai.organization = os.environ.get("ORG_ID")
 
 # API 호출 및 모델 목록 출력
-openai.Model.list()
+gpt_models = openai.Model.list()
+
+print(gpt_models['data'][0])
 ```
+
+# OpenAI 모형
+
+OpenAI에서 제공하는 다양한 모델을 확인할 수 있다.
+`system`이 소유한 GPT 모형을 살펴보자.
+
+```{r}
+library(reticulate)
+library(tidyverse)
+
+py_gpt_models <- py$gpt_models$data
+
+gpt_models_tbl <- tibble(created = map_chr(py_gpt_models, "created"),
+                         id = map_chr(py_gpt_models, "id"),
+                         object = map_chr(py_gpt_models, "object"),
+                         owned_by = map_chr(py_gpt_models, "owned_by")) %>% 
+  mutate(created = anytime::anydate(as.integer(created))) %>% 
+  arrange(desc(created)) 
+
+gpt_models_tbl %>% 
+  filter(owned_by == "system") %>% 
+  gt::gt() %>% 
+  gtExtras::gt_theme_nytimes()
+```
+
+프로그램 코드(`code`) 관련된 GPT 모형도 확인할 수 있다.
+
+```{r}
+gpt_models_tbl %>% 
+  filter(str_detect(id, "code")) %>% 
+  gt::gt() %>% 
+  gtExtras::gt_theme_nytimes()
+```
+
 

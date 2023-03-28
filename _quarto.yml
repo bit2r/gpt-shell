@@ -2,13 +2,19 @@ project:
   type: book
   output-dir: docs
 
+lang: kr
+
 book:
   title: "gpt-shell"
-  author: "이광춘, 신종화"
-  date: "2023. 3. 28."
+  author:
+    - name: "이광춘"
+      affiliations: "사단법인 한국 R 사용자회"
+    - name: "신종화"
+      affiliations: "사단법인 한국 R 사용자회"
+  date: last-modified
+  date-format: "YYYY년 MM월 DD일"
   chapters:
     - index.qmd
-    - intro.qmd
     - 00_setup.qmd
     - references.qmd
 
