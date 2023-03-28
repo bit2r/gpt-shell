@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="kr" xml:lang="kr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>gpt-shell - 2&nbsp; GPT</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./references.html" rel="next">
+<link href="./00_setup.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">GPT</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">gpt-shell</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00_setup.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">환경설정</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_openAI.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">GPT</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#텍스트-완성" id="toc-텍스트-완성" class="nav-link active" data-scroll-target="#텍스트-완성"><span class="toc-section-number">2.1</span>  텍스트 완성</a></li>
+  <li><a href="#키워드-추출" id="toc-키워드-추출" class="nav-link" data-scroll-target="#키워드-추출"><span class="toc-section-number">2.2</span>  키워드 추출</a></li>
+  <li><a href="#텍스트-요약" id="toc-텍스트-요약" class="nav-link" data-scroll-target="#텍스트-요약"><span class="toc-section-number">2.3</span>  텍스트 요약</a></li>
+  <li><a href="#여론조사-할일-생성" id="toc-여론조사-할일-생성" class="nav-link" data-scroll-target="#여론조사-할일-생성"><span class="toc-section-number">2.4</span>  여론조사 할일 생성</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">GPT</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<section id="텍스트-완성" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="텍스트-완성"><span class="header-section-number">2.1</span> 텍스트 완성</h2>
+<p>GPT를 사용하여 다양한 작업을 수행할 수 있지만 가장 기본적인 작업은 글쓰기다. GPT가 생성형 AI로 해당 텍스트를 주어지면 나머지 텍스트를 해당 최대 토큰 크기(<code>max_tokens</code>) 길이만큼 텍스트를 생성해준다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> openai</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>openai.api_key <span class="op">=</span> os.getenv(<span class="st">"OPENAI_API_KEY"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>complete_next <span class="op">=</span> openai.Completion.create(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"text-davinci-003"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  prompt<span class="op">=</span><span class="st">"나의 살던 고향은"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  max_tokens<span class="op">=</span><span class="dv">7</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  temperature<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>complete_next[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'text'</span>]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'\n\n나의'</code></pre>
+</div>
+</div>
+<p>토큰 크기를 100으로 지정하면 제법 긴 텍스트를 출력한다. 영어 토큰에 최적화되어 있는 관계로 한글의 경우 토큰 낭비(?)가 심한 것으로 보인다. 고로 비용이 제법 나가는 점은 한국어로 작업을 할 때 고려해야만 된다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>complete_next_100 <span class="op">=</span> openai.Completion.create(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"text-davinci-003"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  prompt<span class="op">=</span><span class="st">"나의 살던 고향은"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  max_tokens<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  temperature<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>complete_next_100[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'text'</span>]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'\n\n나의 고향은 전라도 익산입니다. 익산은 전라도의 중부에 위치한 도시로, 전라도의 중'</code></pre>
+</div>
+</div>
+</section>
+<section id="키워드-추출" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="키워드-추출"><span class="header-section-number">2.2</span> 키워드 추출</h2>
+<p>조금더 흥미로운 주제로 해당 문서를 제시하고 관련 텍스트의 주요 키워드를 추출해보자. <code>Attention Is All You Need</code> 논문<span class="citation" data-cites="vaswani2017attention">(<a href="references.html#ref-vaswani2017attention" role="doc-biblioref">Vaswani et al. 2017</a>)</span>은 AI 분야에서 획기적인 논문으로 평가받있지만 별도 키워드는 제시되고 있지 않아 논문 초록을 앞에 제시하고 <code>Keywords:</code>를 뒤에 두고 논문의 주요 키워드를 추출하게 한다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>prompt_keywords <span class="op">=</span> <span class="st">"The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 Englishto-German translation task, improving over the existing best results, including ensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.</span><span class="ch">\n\n</span><span class="st"> keywords:"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>keywords <span class="op">=</span> openai.Completion.create(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"text-davinci-003"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  prompt<span class="op">=</span>prompt_keywords,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  temperature <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  max_tokens  <span class="op">=</span> <span class="dv">50</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>keywords[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'text'</span>]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>max_tokens</code>을 50으로 제한하여 <code>temperature = 0.5</code>로 너무 창의적이지 않게 키워드 추출 작업을 지시한 경우 다음과 같은 결과를 어덱 된다.</p>
+<pre><code>'\nSequence transduction, neural networks, attention mechanisms, machine translation, parsing'</code></pre>
+<p>이번에는 한글 논문초록에서 키워드를 추출해보자. 2020년 출간된 논문<span class="citation" data-cites="lee2020">(<a href="references.html#ref-lee2020" role="doc-biblioref"><strong>lee2020?</strong></a>)</span>의 한글 초록에서 제시된 키워드와 OpenAI GPT가 제시하고 있는 키워드와 비교해보자.</p>
+<ul>
+<li>논문 소스코드: <a href="https://statkclee.github.io/comp_document/automation-kasdba.html">바로가기</a></li>
+<li>PDF 출판 논문: <a href="https://statkclee.github.io/comp_document/data/00006_002_39.pdf">다운로드</a></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>prompt_keywords <span class="op">=</span> <span class="st">"알파고가 2016년 바둑 인간 챔피언 이세돌 9단을 현격한 기량차이로 격파하면서 인공지능에 대한 관심이 급격히 증가하였다. 그와 동시에 기계가 인간의 일자리 잠식을 가속화하면서 막연한 불안감이 삽시간에 전파되었다. 기계와의 일자리 경쟁은 컴퓨터의 출현이전부터 시작되었지만 인간만의 고유한 영역으로 알고 있던 인지, 창작 등 다양한 분야에서 오히려 인간보다 더 우수한 성능과 저렴한 가격 경쟁력을 보여주면서 기존 인간의 일자리가 기계에 대체되는 것이 가시권에 들었다. 이번 문헌조사와 실증 데이터 분석을 통해서 기계가 인간의 일자리를 대체하는 자동화의 본질에 대해서 살펴보고, 인간과 기계의 업무 분장을 통해 더 생산성을 높일 수 있는 방안을 제시하고자 한다.</span><span class="ch">\n\n</span><span class="st"> 키워드:"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>keywords <span class="op">=</span> openai.Completion.create(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"text-davinci-003"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  prompt<span class="op">=</span>prompt_keywords,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  temperature <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  max_tokens  <span class="op">=</span> <span class="dv">100</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>keywords[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'text'</span>]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>' 인공지능, 자동화, 인간과 기계의 업무 분장, 생산성 \n\n이 문헌조사는 인공지능이 인'</code></pre>
+<p>GPT가 생성한 키워드를 논문저자가 추출한 키워드와 비교하면 다소 차이가 있지만 그래도 상위 3개 키워드는 높은 일치도를 보이고 있다.</p>
+<div class="columns">
+<div class="column">
+<section id="openai-gpt-키워드" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="openai-gpt-키워드">OpenAI GPT 키워드</h3>
+<ul>
+<li>인공지능</li>
+<li>자동화</li>
+<li>인간과 기계의 업무 분장</li>
+<li>생산성 문헌조사는 인공지능이 인’</li>
+</ul>
+</section>
+</div><div class="column">
+<section id="논문저자-추출" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="논문저자-추출">논문저자 추출</h3>
+<ul>
+<li>자동화</li>
+<li>데이터 과학</li>
+<li>인공지능</li>
+<li>일자리</li>
+<li>기계와 사람의 업무분장</li>
+</ul>
+</section>
+</div>
+</div>
+<p>GPT-4는 더 높은 성능을 보여주고 있다. <a href="https://chat.openai.com/chat?model=gpt-4" class="uri">https://chat.openai.com/chat?model=gpt-4</a>에 해당 텍스트를 던져주면 다음과 같이 키워드를 추출하고 요약을 해준다.</p>
+<p><img src="images/completion_keywords.jpg" class="img-fluid" width="500"></p>
+</section>
+<section id="텍스트-요약" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="텍스트-요약"><span class="header-section-number">2.3</span> 텍스트 요약</h2>
+<p><code>Attention Is All You Need</code> 논문<span class="citation" data-cites="vaswani2017attention">(<a href="references.html#ref-vaswani2017attention" role="doc-biblioref">Vaswani et al. 2017</a>)</span> 초록은 <a href="https://platform.openai.com/tokenizer" class="uri">https://platform.openai.com/tokenizer</a> 계산기를 통해 230개 토큰 1,138 문자로 작성된 것이 확인된다. 영어 기준 다음과 같은 맥락을 이해하고 이를 대략 20% 수준 50 토큰으로 줄여보자.</p>
+<ul>
+<li>100 토큰은 대략 75 단어</li>
+<li>평균 단어는 대략 5 문자로 구성</li>
+<li>100 토큰은 375개 문자</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>prompt_keywords <span class="op">=</span> <span class="st">"The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 Englishto-German translation task, improving over the existing best results, including ensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.</span><span class="ch">\n\n</span><span class="st"> summary:"</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>keywords <span class="op">=</span> openai.Completion.create(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"text-davinci-003"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  prompt<span class="op">=</span>prompt_keywords,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  temperature <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  max_tokens  <span class="op">=</span> <span class="dv">50</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>keywords[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'text'</span>]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>상기 논문 초록을 50개 토큰으로 요약하면 다음과 같이 48개 토큰, 277 문자수로 요약해준다.</p>
+<pre><code>'\n\nThe Transformer is a new neural network architecture based solely on attention mechanisms, which is shown to outperform existing models on two machine translation tasks. It is more parallelizable and requires significantly less time to train than existing models, achieving a B'</code></pre>
+</section>
+<section id="여론조사-할일-생성" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="여론조사-할일-생성"><span class="header-section-number">2.4</span> 여론조사 할일 생성</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>todo_list <span class="op">=</span> openai.Completion.create(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"text-davinci-003"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  prompt<span class="op">=</span><span class="st">"여론조사를 위해서 해야될 일을 작성하세요</span><span class="ch">\n\n</span><span class="st">1."</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  temperature<span class="op">=</span><span class="fl">0.3</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  max_tokens <span class="op">=</span> <span class="dv">1000</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  top_p <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  frequency_penalty<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  presence_penalty<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  stop<span class="op">=</span>[<span class="st">"6."</span>]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>todo_list[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'text'</span>]</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>' 여론조사 대상자를 선정하고, 여론조사 대상자의 수를 결정합니다.\n\n2. 여론조사 대상자들에게 여론조사 질문지를 배포합니다.\n\n3. 여론조사 대상자들에게 여론조사 응답을 요청합니다.\n\n4. 여론조사 응답을 수집하고, 분석합니다.\n\n5. 여론조사 결과를 보고서로 작성합니다.'</code></pre>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-vaswani2017attention" class="csl-entry" role="doc-biblioentry">
+Vaswani, Ashish, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, and Illia Polosukhin. 2017. <span>“Attention Is All You Need.”</span> <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./00_setup.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">환경설정</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./references.html" class="pagination-link">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

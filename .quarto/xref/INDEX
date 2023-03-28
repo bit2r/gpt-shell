@@ -13,5 +13,8 @@
   },
   "00_setup.qmd": {
     "00_setup.html": "a5040c86"
+  },
+  "01_openAI.qmd": {
+    "01_openAI.html": "7d8e5f97"
   }
 }

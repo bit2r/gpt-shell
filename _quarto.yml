@@ -16,6 +16,7 @@ book:
   chapters:
     - index.qmd
     - 00_setup.qmd
+    - 01_openAI.qmd
     - references.qmd
 
 bibliography: references.bib
