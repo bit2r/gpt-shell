@@ -2,7 +2,7 @@ project:
   type: book
   output-dir: docs
   preview:
-    port: 7777
+    port: 7779
     browser: false
 
 lang: kr
@@ -32,6 +32,8 @@ book:
         - 06-shell-script.qmd
         - 07-shell-find.qmd
     - part: "GPT 데이터 과학"
+      chapters:
+        - 11_cli_ds.qmd
     - references.qmd
 
 format:

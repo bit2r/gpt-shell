@@ -1,0 +1,296 @@
+---
+format:
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    toc-title: 목차
+    number-sections: true
+    highlight-style: github    
+    self-contained: false
+filters:
+   - include-code-files  
+   - lightbox
+lightbox: auto
+link-citations: yes
+knitr:
+  opts_chunk: 
+    echo: true
+    message: false
+    warning: false
+    collapse: true
+    comment: "#>" 
+    R.options:
+      knitr.graphics.auto_pdf: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# CLI 데이터 과학 {#cli-ds}
+
+`dir.create()` 함수로 `data` 디렉토리를 생성하고 `download.file()` 함수로 `penguins.csv` 파일을 웹사이트에서 가져와서 "data/penguins.csv" 위치에 저장시킨다.
+
+데이터가 준비되면 펭귄 데이터 `.csv` 정형데이터에서 범주형 펭귄 종(`species`) 칼럼을 추출하여 빈도수를 계산해보자.
+
+```{r}
+dir.create("data")
+
+download.file("https://gist.githubusercontent.com/slopp/ce3b90b9168f2f921784de84fa445651/raw/4ecf3041f0ed4913e7c230758733948bc561f434/penguins.csv", destfile = "data/penguins.csv")
+```
+
+## R/파이썬
+
+전통적으로 데이터 사이언스에서 R 혹은 파이썬을 사용해서 빈도수를 구할 수 있다.
+`tidyverse` 문법에 익숙하면 직관적으로 파이프를 연결하여 의식의 흐름에 맞춰 직관적인 코드를 작성한다.
+코드가 길지 않아 파이썬 `pandas`를 사용해서 동일한 결과를 얻을 수 있다.
+즉, R 혹은 파이썬으로 동작하는 코드를 작성하게 되면 이를 챗GPT에 코드 변환 지시명령어로 해당 코드를
+생성할 수 있게 된다.
+
+:::::::{.column-page}
+::::: {.columns}
+::: {.column width="47.5%"}
+### R 코드 {.unnumbered}
+
+```{r}
+library(tidyverse)
+
+penguins <- read_csv("data/penguins.csv")
+
+penguins %>%
+  count(species) %>% 
+  arrange(desc(n))
+```
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="47.5%"}
+### 파이썬 코드 {.unnumbered}
+
+```{python}
+import pandas as pd
+
+penguins = pd.read_csv("data/penguins.csv")
+
+species_count = penguins["species"].value_counts().reset_index()
+species_count.columns = ["species", "n"]
+species_count = species_count.sort_values(by="n", ascending=False)
+
+print(species_count)
+```
+
+:::
+:::::
+
+:::::::
+
+
+## 쉘 스크립트
+
+R 혹은 파이썬 언어를 설치하고 연관된 패키지를 설치하고 통합개발환경(VS코드, RStudio, 파이참 등)도 준비한 다음 R/파이썬 코드를 작성하여 펭귄 종별 개체수를 구하는 것도 가능하지만 기본적으로 운영체제에서 제공되는 기능을 사용하여 동일한 결과를 얻을 수 있다는 점에서 명령라인 데이터 과학은 큰 장점이 있다.
+
+이를 위해 [`csvkit`](https://pypi.org/project/csvkit/)을 설치한다.
+
+```
+pip install csvkit
+```
+
+다음 챗GPT에 상기 코드를 쉘 스크립트(unix code)로 작성요청을 하게 되면 난이도가 높지 않고 직관적인 쉘 스크립트를 작성해준다. `data/penguins.csv` 파일에서 `species`에 해당되는 칼럼을 찾아낸 다음 정렬하고 앞서 학습한 `uniq` 명령어를 사용하여 빈도수를 계산하고 보기 좋은 형태로 정렬하게 만들면 된다. 작성한 `code/count_species.sh` 쉘 스크립트는 다음과 같다.
+
+```{.bash include="code/count_species.sh"}
+```
+
+수행결과 다음과 같은 결과를 얻게 된다.
+
+```
+bash code/count_species.sh
+Adelie,152
+Gentoo,124
+Chinstrap,68
+```
+
+
+## 윈도우 파일 변환
+
+윈도우 환경에서 저장한 텍스트 파일을 우분투와 같은 환경에서 배쉬(`.sh`) 확장자로 실행할 경우 다음과 같은 오류가 발생된다.
+
+```
+line 2: $'\r': command not found
+```
+
+이런 오류를 해결하기 위해서 `dos2unix` 유틸리티를 설치한 후 유닉스 환경에 실행가능한 파일 형태로 변환 시킨 후 작업을 수행한다.
+
+```
+pip install dos2unix
+```
+
+`dos2unix` 유틸리티을 설치한 후 작성한 쉘 스크립트 파일이 윈도우에서 작성되었다면 리눅스에서 실행할 수 있도록 `dos2unix` 명령어를 사용해서 변환작업을 수행한다.
+
+```
+$ dos2unix code/count_species.sh
+dos2unix: converting file code/count_species.sh to Unix format...
+$ bash code/count_species.sh
+```
+
+## 파일 살펴보기
+
+CLI 데이터 분석을 위해서 분석 대상이 되는 파일을 살펴볼 필요가 있다.
+이를 위해서 `cat` 명령어를 통해 분석 대상 파일 `data` 디렉토리 아래 `penguins.csv` 파일을 열어본다.
+하지만 너무 길어 한정된 화면에서 파이프 `|` 로 연결하여 첫 5줄만 `head` 명령어로 확인한다.
+
+```
+$ cat data/penguins.csv | head -n 5
+"rowid","species","island","bill_length_mm","bill_depth_mm","flipper_length_mm","body_mass_g","sex","year"
+"1","Adelie","Torgersen",39.1,18.7,181,3750,"male",2007
+"2","Adelie","Torgersen",39.5,17.4,186,3800,"female",2007
+"3","Adelie","Torgersen",40.3,18,195,3250,"female",2007
+"4","Adelie","Torgersen",NA,NA,NA,NA,NA,2007
+```
+
+`csvkit` 패키지를 설치해서 `csvlook` 명령어로 좀더 가시성을 높혀 확인도 가능하다.
+파일 마지막부분을 확인하고자 한다면 `tail -n 5`와 같이 살펴보면 된다.
+
+```
+$ csvlook data/penguins.csv  | head -n 5
+| rowid | species   | island    | bill_length_mm | bill_depth_mm | flipper_length_mm | body_mass_g | sex    |  year |
+| ----- | --------- | --------- | -------------- | ------------- | ----------------- | ----------- | ------ | ----- |
+|     1 | Adelie    | Torgersen |           39.1 |          18.7 |               181 |       3,750 | male   | 2,007 |
+|     2 | Adelie    | Torgersen |           39.5 |          17.4 |               186 |       3,800 | female | 2,007 |
+|     3 | Adelie    | Torgersen |           40.3 |          18.0 |               195 |       3,250 | female | 2,007 |
+```
+
+
+## 파일 구조
+
+`.csv` 파일을 확인했다면 다음 단계로 자료형을 파악한다.
+이를 위해서 `csvkit`에 내장된 `csvsql` 명령어를 통해서 변수가 범주형인지 숫자형인지 파악한다.
+
+```
+$ csvsql data/penguins.csv
+CREATE TABLE penguins (
+        rowid DECIMAL NOT NULL,
+        species VARCHAR NOT NULL,
+        island VARCHAR NOT NULL,
+        bill_length_mm DECIMAL,
+        bill_depth_mm DECIMAL,
+        flipper_length_mm DECIMAL,
+        body_mass_g DECIMAL,
+        sex VARCHAR,
+        year DECIMAL NOT NULL
+);
+```
+
+`penguins.csv` 파일에서 변수의 숫자와 관측점의 숫자를 파악하는 것은 탐색적 데이터 분석을 시작하기 전에 필수적으로 수행해야하는 작업이다. 다양한 방법이 있지만 다음 명령어로 행수와 칼럼수를 계산할 수 있다.
+
+- `csvcut -n` 명령어는 `penguins.csv` 파일 변수명만 추출한다. 그다음 `wc -l` 명령어는 변수명의 행수를 세어 변수갯수를 파악한다.
+- `csvstat --count` 명령어를 통해 행의 갯수도 산출할 수 있다.
+
+즉, `penguins.csv` 데이터셋은 $344 \times 9$ 크기를 갖는 정형데이터다.
+
+```
+$ csvcut -n data/penguins.csv | wc -l
+9
+$ csvstat --count data/penguins.csv
+344
+```
+
+다음 단계로 각 변수별로 유일무이한 값(unique)의 갯수를 파악하는 것도 데이터셋을 이해하고 후속 분석 방향을 잡는데 큰 도움이 된다. 예를 들어, 펭귄 종수(`species`)가 3개로 나타나는데 이는 파머 관측소에서 관측한 펭귄 종수와 일치하고 `island` 섬도 마찬가지다. 하지만 `sex` 암수 범주는 3으로 뭔가 잘못된 것을 직관적으로 파악할 수 있다.
+
+```
+$ csvstat data/penguins.csv --unique
+  1. rowid: 344
+  2. species: 3
+  3. island: 3
+  4. bill_length_mm: 165
+  5. bill_depth_mm: 81
+  6. flipper_length_mm: 56
+  7. body_mass_g: 95
+  8. sex: 3
+  9. year: 3
+```
+
+결측값(missing value)은 간단한 기술통계를 비롯하여 기계학습 알고리즘이나 시각화 등 후속 업무에 큰 장애가 되기 때문에 조기에 이를 파악하여 제거하든가 아니면 적절한 값으로 추정하여 치환하여 온전한 데이터셋(complete dataset)으로 만들어야 된다. `csvstat --nulls`를 통해 변수에 결측값 유무를 파악할 수 있다.
+
+```
+$ csvstat data/penguins.csv --nulls
+  1. rowid: False
+  2. species: False
+  3. island: False
+  4. bill_length_mm: True
+  5. bill_depth_mm: True
+  6. flipper_length_mm: True
+  7. body_mass_g: True
+  8. sex: True
+  9. year: False
+```
+
+## 기술통계량
+
+`csvstat` 명령어를 통해서 각 칼럼별로 요약통계량을 상세히 뽑아주고 있다. 
+
+```
+$ csvstat data/penguins.csv | head -n 27
+  1. "rowid"
+
+        Type of data:          Number
+        Contains null values:  False
+        Unique values:         344
+        Smallest value:        1
+        Largest value:         344
+        Sum:                   59340
+        Mean:                  172.5
+        Median:                172.5
+        StDev:                 99.448
+        Most common values:    1 (1x)
+                               2 (1x)
+                               3 (1x)
+                               4 (1x)
+                               5 (1x)
+
+  2. "species"
+
+        Type of data:          Text
+        Contains null values:  False
+        Unique values:         3
+        Longest value:         9 characters
+        Most common values:    Adelie (152x)
+                               Gentoo (124x)
+                               Chinstrap (68x)
+```
+
+만약, 특정 변수를 선택하여 기술통계량을 뽑아보고자 한다면,
+`csvstat` 명령어에 `-c 5,sex`와 같이 칼럼 번호와 칼럼명을 지정하면 된다.
+
+```
+$ csvstat data/penguins.csv -c 5,sex
+  5. "bill_depth_mm"
+
+        Type of data:          Number
+        Contains null values:  True (excluded from calculations)
+        Unique values:         81
+        Smallest value:        13.1
+        Largest value:         21.5
+        Sum:                   5865.7
+        Mean:                  17.151
+        Median:                17.3
+        StDev:                 1.975
+        Most common values:    17 (12x)
+                               18.6 (10x)
+                               17.9 (10x)
+                               18.5 (10x)
+                               15 (10x)
+
+  8. "sex"
+
+        Type of data:          Text
+        Contains null values:  True (excluded from calculations)
+        Unique values:         3
+        Longest value:         6 characters
+        Most common values:    male (168x)
+                               female (165x)
+                               None (11x)
+
+Row count: 344
+```
+
