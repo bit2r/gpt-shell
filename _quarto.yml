@@ -17,15 +17,24 @@ book:
     - index.qmd
     - 00_setup.qmd
     - 01_openAI.qmd
+    - shell-intro.qmd
     - references.qmd
-
-bibliography: references.bib
 
 format:
   html:
     theme: cosmo
+    cover-image: images/koRea_logo.png
+    number-depth: 3
+    number-sections: true
+    colorlinks: true
+    cite-method: biblatex
   pdf:
     documentclass: scrreprt
 
 
 
+bibliography: bibliography.bib
+link-citations: yes
+mainfont: "NanumMyeongjo"
+sansfont: "NanumGothic"
+monofont: "D2Coding"
