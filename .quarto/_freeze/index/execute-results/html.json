@@ -1,11 +1,14 @@
 {
-  "hash": "2d0e5eb46dbb5fe20e27ebf9c9c67486",
+  "hash": "bd8f5ca8c1b3b935be30ad6ee646125b",
   "result": {
-    "markdown": "# Preface {.unnumbered}\n\nThis is a Quarto book.\n\nTo learn more about Quarto books visit <https://quarto.org/docs/books>.\n\n\n```{bash, engine.path = \"C:\\\\WINDOWS\\\\SYSTEM32\\\\bash.exe\", engine.opts='-l'}\necho $PATH\n```\n\n",
-    "supporting": [
-      "index_files"
+    "markdown": "---\nengine: knitr\n---\n\n\n# Preface {.unnumbered}\n\nThis is a Quarto book.\n\nTo learn more about Quarto books visit <https://quarto.org/docs/books>.\n\n\n::: {.cell}\n\n```{.bash .cell-code}\nls -F\n```\n\n\n::: {.cell-output .cell-output-stdout}\n```\n00_setup.qmd*\n01_openAI.qmd*\nLICENSE*\n_quarto.yml*\ncode/\ncover.png*\ndocs/\ngpt-shell.Rproj*\nimages/\nindex.qmd*\nindex.rmarkdown*\nreferences.bib*\nreferences.qmd*\nshell-create.Rmd*\nshell-filedir.qmd*\nshell-find.Rmd*\nshell-intro.qmd*\nshell-loop.Rmd*\nshell-novice/\nshell-pipefilter.Rmd*\nshell-script.Rmd*\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
     ],
-    "filters": [],
-    "includes": {}
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
   }
 }

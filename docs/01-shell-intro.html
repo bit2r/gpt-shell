@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>gpt-shell - 1&nbsp; 쉘(Shell) 소개</title>
+<title>gpt-shell - 3&nbsp; 쉘(Shell) 소개</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -93,8 +93,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
-<link href="./index.html" rel="prev">
+<link href="./02-shell-filedir.html" rel="next">
+<link href="./01_openAI.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">쉘(Shell) 소개</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">쉘(Shell) 소개</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -162,11 +162,74 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">환경설정</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./shell-intro.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">쉘(Shell) 소개</span></a>
+  <a href="./00_setup.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">환경설정</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_openAI.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">OpenAI 들어가며</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">쉘 프로그래밍</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-shell-intro.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">쉘(Shell) 소개</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-shell-filedir.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">파일과 폴더 넘나들기</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-shell-create.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">파일과 디렉토리 작업</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-shell-pipefilter.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">파이프와 필터</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-shell-loop.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">루프(Loops)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-shell-script.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">쉘 스크립트</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-shell-find.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">파일, 문자, 디렉토리 등 찾기</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">GPT 데이터 과학</span>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">참고문헌</a>
@@ -181,14 +244,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">목차</h2>
    
   <ul>
-  <li><a href="#shell-background" id="toc-shell-background" class="nav-link active" data-scroll-target="#shell-background"><span class="toc-section-number">1.1</span>  배경</a></li>
-  <li><a href="#shell-shell" id="toc-shell-shell" class="nav-link" data-scroll-target="#shell-shell"><span class="toc-section-number">1.2</span>  쉘(Shell)</a></li>
-  <li><a href="#shell-looks-like" id="toc-shell-looks-like" class="nav-link" data-scroll-target="#shell-looks-like"><span class="toc-section-number">1.3</span>  어떻게 생겼을까?</a></li>
-  <li><a href="#shell-ls" id="toc-shell-ls" class="nav-link" data-scroll-target="#shell-ls"><span class="toc-section-number">1.4</span>  <code>ls</code> 와 플래그 의미 파악</a></li>
-  <li><a href="#shell-difficulty" id="toc-shell-difficulty" class="nav-link" data-scroll-target="#shell-difficulty"><span class="toc-section-number">1.5</span>  어려운가요?</a></li>
-  <li><a href="#shell-flexibility" id="toc-shell-flexibility" class="nav-link" data-scroll-target="#shell-flexibility"><span class="toc-section-number">1.6</span>  유연성과 자동화</a></li>
-  <li><a href="#shell-nelle" id="toc-shell-nelle" class="nav-link" data-scroll-target="#shell-nelle"><span class="toc-section-number">1.7</span>  사례: 문제정의</a></li>
-  <li><a href="#쉘-gpt" id="toc-쉘-gpt" class="nav-link" data-scroll-target="#쉘-gpt"><span class="toc-section-number">1.8</span>  쉘 GPT</a></li>
+  <li><a href="#shell-background" id="toc-shell-background" class="nav-link active" data-scroll-target="#shell-background"><span class="toc-section-number">3.1</span>  배경</a></li>
+  <li><a href="#shell-shell" id="toc-shell-shell" class="nav-link" data-scroll-target="#shell-shell"><span class="toc-section-number">3.2</span>  쉘(Shell)</a></li>
+  <li><a href="#shell-looks-like" id="toc-shell-looks-like" class="nav-link" data-scroll-target="#shell-looks-like"><span class="toc-section-number">3.3</span>  어떻게 생겼을까?</a></li>
+  <li><a href="#shell-ls" id="toc-shell-ls" class="nav-link" data-scroll-target="#shell-ls"><span class="toc-section-number">3.4</span>  <code>ls</code> 와 플래그 의미 파악</a></li>
+  <li><a href="#shell-difficulty" id="toc-shell-difficulty" class="nav-link" data-scroll-target="#shell-difficulty"><span class="toc-section-number">3.5</span>  어려운가요?</a></li>
+  <li><a href="#shell-flexibility" id="toc-shell-flexibility" class="nav-link" data-scroll-target="#shell-flexibility"><span class="toc-section-number">3.6</span>  유연성과 자동화</a></li>
+  <li><a href="#shell-nelle" id="toc-shell-nelle" class="nav-link" data-scroll-target="#shell-nelle"><span class="toc-section-number">3.7</span>  사례: 문제정의</a></li>
+  <li><a href="#쉘-gpt" id="toc-쉘-gpt" class="nav-link" data-scroll-target="#쉘-gpt"><span class="toc-section-number">3.8</span>  쉘 GPT</a></li>
   </ul>
 </nav>
     </div>
@@ -197,7 +260,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="shell-intro" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">쉘(Shell) 소개</span></span></h1>
+<h1 class="title"><span id="shell-intro" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">쉘(Shell) 소개</span></span></h1>
 </div>
 
 
@@ -213,8 +276,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <p><strong>유닉스 쉘(Unix Shell)</strong>은 대부분의 컴퓨터 사용자가 살아온 것보다 오래 동안 존재했다. 오래동안 생존한 이유는 사용자로 하여금 단지 키보드 몇번 쳐서 복잡한 작업을 수행할 수 있게 하는 강력한 도구이기 때문이다. 좀더 중요하게는 기존의 프로그램을 새로운 방식으로 조합해서 반복적인 작업을 자동화함으로써, 동일한 작업을 반복적으로 하지 않게 만든다. 쉘 사용은 폭넓게 다양하고 강력한 도구와 컴퓨팅 자원(슈퍼컴퓨터와 “고성능 컴퓨팅(High Performance Computing, HPC)”이 포함)을 사용하는 근본이 된다.</p>
-<section id="shell-background" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="shell-background"><span class="header-section-number">1.1</span> 배경</h2>
+<section id="shell-background" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="shell-background"><span class="header-section-number">3.1</span> 배경</h2>
 <p>상위 수준에서 컴퓨터는 네가지 일을 수행한다:</p>
 <ul>
 <li>프로그램 실행</li>
@@ -231,13 +294,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>쉘이 이런 기능을 제공한다 - 단순한 언어로 이를 사용하는데 <strong>명령-라인 인터페이스</strong>가 필요하다. 명령라인 인터페이스의 심장은 <strong>읽기-평가-출력(REPL,read-evaluate-print loop)</strong>이다. REPL로 불리는 이유는 쉘에 명령어를 타이핑하고 <kbd>Return</kbd>를 치게되면 컴퓨터가 명령어를 읽어들이고 나서, 평가(혹은 실행)하고 출력결과를 화면에 뿌린다. 또 다른 명령어를 입력할 때까지 대기하는 루푸를 반복하게 되서 그렇다.</p>
 <p>상기 묘사가 마치 사용자가 직접 명령어를 컴퓨터에 보내고, 컴퓨터는 사용자에게 직접적으로 출력을 보내는 것처럼 들린다. 사실 중간에 <strong>명령 쉘(command shell)</strong>로 불리는 프로그램이 있다. 사용자가 타이핑하는 것은 쉘로 간다. 쉘은 무슨 명령어를 수행할지 파악해서 컴퓨터에게 수행하도록 지시한다. 쉘을 <em>조개 껍데기(shell)</em>로 불리는데 이유는 운영체제를 감싸서, 복잡성 일부를 숨겨서 운영체제와 더 단순하게 상호작용하게 만든다.</p>
 </section>
-<section id="shell-shell" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="shell-shell"><span class="header-section-number">1.2</span> 쉘(Shell)</h2>
+<section id="shell-shell" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="shell-shell"><span class="header-section-number">3.2</span> 쉘(Shell)</h2>
 <p><strong>쉘(Shell)</strong>은 다른 것과 마찬가지로 프로그램이다. 조금 특별한 것은 자신이 연산을 수행하기 보다 다른 프로그램을 실행한다는 것이다. 가장 보편적인 유닉스 쉘(Unix Shell)은 Bash(Bourne Again SHell)다. Stephen Bourne이 작성한 쉘에서 나와서 그렇게 불리우고 — 프로그래머 사이에 재치로 통한다. Bash는 대부분의 유닉스 컴퓨터에 기본으로 장착되는 쉘이고, 윈도우용으로 유닉스스런 도구로 제공되는 패키지 대부분에도 적용된다.</p>
 <p>Bash나 다른 쉘을 사용하는 것이 마우스를 사용하는 것보다 프로그래밍 작성하는 느낌이 난다. 명령어는 간략해서 (흔히 단지 2~3자리 문자다), 명령어는 자주 암호스럽고, 출력은 그래프같이 시각적인 것보다 텍스트줄로 쭉 뿌려진다. 다른 한편으로, 쉘을 사용하여 좀더 강력한 방식으로 현존하는 도구를 단지 키보드 입력값 몇개를 조합해서 대용량의 데이터를 자동적으로 처리할 수 있는 파이프라인을 구축할 수 있게 한다. 추가로, 명령 라인은 종종 멀리 떨어진 컴퓨터 혹은 슈퍼컴퓨터와 상호작용하는 가장 쉬운 방법이다. 고성능 컴퓨팅 시스템에 포함된 다양한 특화된 도구와 자원을 실행하는데 쉘과 친숙성이 거의 필연적이다. 클러스트 컴퓨팅과 클라우드 컴퓨팅이 과학 데이터 클런칭(scientific data cruching)이 점점 대중화됨에 따라 원격 컴퓨터를 구동하는 것이 필수적인 기술이 되어가고 있다. 여기서 다뤄지는 명령-라인 기술에 기반해서 광범위한 과학적 질문과 컴퓨터적 도전과제를 처리할 수 있다.</p>
 </section>
-<section id="shell-looks-like" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="shell-looks-like"><span class="header-section-number">1.3</span> 어떻게 생겼을까?</h2>
+<section id="shell-looks-like" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="shell-looks-like"><span class="header-section-number">3.3</span> 어떻게 생겼을까?</h2>
 <p>전형적인 쉘 윈도우는 다음과 같다:</p>
 <pre><code>bash-3.2$ 
 bash-3.2$ ls -F / 
@@ -254,8 +317,8 @@ bash-3.2$ </code></pre>
 <p>이번 학습예제에서 프롬프트가 <code>$</code>이 된다. 명령어를 <code>PS1='$ '</code> 타이핑하게 되면 동일하게 프롬프트를 맞출 수 있다. 하지만, 본인 취향에 맞추어 프롬프트를 둘 수도 있다 - 흔히 프롬프트에 사용자명과 디렉토리 현재 위치정보를 포함하기도 하다.</p>
 <p>쉘 윈도우를 열고, <code>ls -F /</code> 명령어를 직접 타이핑한다. (공백과 대문자가 중요함으로 잊지 말자.) 원하는 경우 프롬프트도 변경해도 좋다.</p>
 </section>
-<section id="shell-ls" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="shell-ls"><span class="header-section-number">1.4</span> <code>ls</code> 와 플래그 의미 파악</h2>
+<section id="shell-ls" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="shell-ls"><span class="header-section-number">3.4</span> <code>ls</code> 와 플래그 의미 파악</h2>
 <p>모든 쉘 명령어는 컴퓨터 어딘가에 저장된 프로그램으로, 쉘은 명령어를 검색해서 찾을 장소를 목록으로 이미 가지고 있다. (명령목록은 <code>PATH</code>로 불리는 <strong>변수(variable)</strong>에 기록되어 있지만, 이 개념을 나중에 다룰 것이라 현재로서는 그다지 중요하지는 않다.) 명령어, 플래그, 인자가 공백으로 구분된다는 점을 다시 상기하자.</p>
 <p>REPL(읽기-평가-출력(read-evaluate-print) 루프)를 좀더 살펴보자. “평가(evaluate)” 단계는 두가지 부분으로 구성됨에 주목한다:</p>
 <ol type="1">
@@ -286,17 +349,17 @@ Command not found 오류
 </div>
 </div>
 </section>
-<section id="shell-difficulty" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="shell-difficulty"><span class="header-section-number">1.5</span> 어려운가요?</h2>
+<section id="shell-difficulty" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="shell-difficulty"><span class="header-section-number">3.5</span> 어려운가요?</h2>
 <p>GUI와 비교하여 컴퓨터와 상호작용하는데 있어 어려운 모형이고 학습하는데 노력과 시간이 다소 소요된다. GUI는 선택지를 보여주고, 사용자가 선택지중에서 선택하는 하는 것이다. <strong>명령라인 인터페이스(CLI)</strong>로 선택지가 명령어와 패러미터의 조합으로 표현된다. 사용자에게 제시되는 것이 아니라서 새로운 언어의 어휘를 학습하듯이 일부 학습이 필요하다. 명령어의 일부만 배우게 되면 정말 도움이 많이 되고, 핵심적인 명령어를 다뤄보자.</p>
 </section>
-<section id="shell-flexibility" class="level2" data-number="1.6">
-<h2 data-number="1.6" class="anchored" data-anchor-id="shell-flexibility"><span class="header-section-number">1.6</span> 유연성과 자동화</h2>
+<section id="shell-flexibility" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="shell-flexibility"><span class="header-section-number">3.6</span> 유연성과 자동화</h2>
 <p>쉘문법(Grammar of Shell)은 기존 도구를 조합해서 강력한 파이프라인을 구축하도록 해서 방대한 데이터를 자동화하여 다룰 수 있다. 명령 순서는 <em>스크립트(script)</em>로 작성하여 작업흐름의 재현가능성을 향상시켜서 쉽게 반복이 가능하도록 한다.</p>
 <p>추가로, 명령 라인은 종종 멀리 떨어진 컴퓨터 혹은 슈퍼컴퓨터와 상호작용하는 가장 쉬운 방법이다. 고성능 컴퓨팅 시스템에 포함된 다양한 특화된 도구와 자원을 실행하는데 쉘과 친숙성이 거의 필연적이다. 클러스트 컴퓨팅과 클라우드 컴퓨팅이 과학 데이터 클런칭(scientific data cruching)이 점점 대중화됨에 따라 원격 컴퓨터를 구동하는 것이 필수적인 기술이 되어가고 있다. 여기서 다뤄지는 명령-라인 기술에 기반해서 광범위한 과학적 질문과 컴퓨터적 도전과제를 처리할 수 있다.</p>
 </section>
-<section id="shell-nelle" class="level2" data-number="1.7">
-<h2 data-number="1.7" class="anchored" data-anchor-id="shell-nelle"><span class="header-section-number">1.7</span> 사례: 문제정의</h2>
+<section id="shell-nelle" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="shell-nelle"><span class="header-section-number">3.7</span> 사례: 문제정의</h2>
 <p>해양 생물학자 넬 니모(Nell Nemo) 박사가 방금전 6개월간 <a href="http://en.wikipedia.org/wiki/North_Pacific_Gyre">북태평양 소용돌이꼴</a> 조사를 마치고 방금 귀환했다. <a href="http://en.wikipedia.org/wiki/Great_Pacific_Garbage_Patch">태평양 거대 쓰레기 지대</a>에서 젤리같은 해양생물을 표본주출했다. 총 합쳐서 1,520개 시료가 있고 다음 작업이 필요하다:</p>
 <ol type="1">
 <li>서로 다른 300개 단백질의 상대적인 함유량을 측정하는 분석기계로 시료를 시험한다. 한 시료에 대한 컴퓨터 출력결과는 각 단백질에 대해 한 줄 파일형식으로 표현된다.</li>
@@ -308,8 +371,8 @@ Command not found 오류
 <p>나쁜 소식은 <code>goostat</code>, <code>goodiff</code>를 수작업으로 실행한다면, 파일이름 입력하고 “OK” 버튼을 45,150번 눌려야 된다는 사실이다 (<code>goostat</code> 300회 더하기 <code>goodiff</code> <span class="math inline">\(\frac{300 \times 299}{2}\)</span>). 매번 30초씩 가정하면 2주 이상 소요될 것이다. 논문 마감일을 놓칠 수도 있지만, 이 모든 명령어를 올바르게 입력할 가능성은 거의 0 에 가깝다.</p>
 <p>다음 수업 몇개는 대신에 그녀가 무엇을 해야되는지 탐색한다. 좀더 구체적으로, 처리하는 파이프라인 중간에 반복되는 작업을 자동화하는데 쉘 명령어(command shell)를 어떻게 사용하는지 설명해서, 논문을 쓰는 동안에 컴퓨터가 하루에 24시간 작업한다. 덤으로 중간 처리작업 파이프라인을 완성하면, 더 많은 데이터를 얻을 때마다 다시 재사용할 수 있게 된다.</p>
 </section>
-<section id="쉘-gpt" class="level2" data-number="1.8">
-<h2 data-number="1.8" class="anchored" data-anchor-id="쉘-gpt"><span class="header-section-number">1.8</span> 쉘 GPT</h2>
+<section id="쉘-gpt" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="쉘-gpt"><span class="header-section-number">3.8</span> 쉘 GPT</h2>
 <p>OpenAI의 ChatGPT(GPT-3.5)는 콘텐츠 생성에 주된 방점이 있지만 다양한 프로그래밍 코드도 작성함은 물론 유닉스 쉘 프로그램도 작성하여 CLI 생산성을 높이는데 사용될 수 있다. ChatGPT 기능을 활용하여 쉘 명령, 코드 스니펫, 주석, 문서 등을 생성할 수 있다. 즉, 데이터 과학자를 비롯한 개발자가 기존에 업무를 수행하던 방식이 전혀 다르게 된다. 즉, 책, 매뉴얼, 비밀노트(Cheat Sheet), 인터넷 북마크, 구글링 같은 검색없이 바로 터미널에서 바로 정확한 답변을 얻어 귀중한 시간과 노력을 절약할 수 있다.</p>
 <p>예를 들어 앞서 프로젝트를 할 때 해당 유닉스 쉘 명령어가 기억나지 않는다고 하면 <code>shell gpt</code>를 사용하여 해당 작업을 신속하게 수행할 수 있다. <a href="https://github.com/TheR1D/shell_gpt">shell_gpt</a>는 파이썬 패키지라 다음 파이썬 명령어로 패키지 설치를 할 수 있다.</p>
 <pre><code>pip install shell-gpt</code></pre>
@@ -317,33 +380,7 @@ Command not found 오류
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sgpt <span class="at">--shell</span> <span class="st">'List the contents of the current directory and display a special character at the end of each filename to indicate its file type.'</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-F</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>00_setup.qmd*
-01_openAI.qmd*
-LICENSE*
-_quarto.yml*
-code/
-cover.png*
-docs/
-gpt-shell.Rproj*
-images/
-index.qmd*
-references.bib*
-references.qmd*
-shell-create.Rmd*
-shell-filedir.qmd*
-shell-find.Rmd*
-shell-intro.qmd*
-shell-intro.rmarkdown*
-shell-intro_files/
-shell-loop.Rmd*
-shell-novice/
-shell-pipefilter.Rmd*
-shell-script.Rmd*</code></pre>
-</div>
-</div>
+<p><img src="images/gpt-shell-hello-world.jpg" class="img-fluid"></p>
 
 
 </section>
@@ -484,13 +521,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="./01_openAI.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">OpenAI 들어가며</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text">참고문헌</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./02-shell-filedir.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">파일과 폴더 넘나들기</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

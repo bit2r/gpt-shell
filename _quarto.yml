@@ -1,6 +1,9 @@
 project:
   type: book
   output-dir: docs
+  preview:
+    port: 7777
+    browser: false
 
 lang: kr
 
@@ -15,10 +18,20 @@ book:
   date-format: "YYYY년 MM월 DD일"
   chapters:
     - index.qmd
-    # - 00_setup.qmd
-    # - 01_openAI.qmd
-    # - shell-intro.qmd
-    # - shell-filedir.qmd
+    - part: "환경설정"
+      chapters:
+        - 00_setup.qmd
+        - 01_openAI.qmd
+    - part: "쉘 프로그래밍"
+      chapters:
+        - 01-shell-intro.qmd
+        - 02-shell-filedir.qmd
+        - 03-shell-create.qmd
+        - 04-shell-pipefilter.qmd
+        - 05-shell-loop.qmd
+        - 06-shell-script.qmd
+        - 07-shell-find.qmd
+    - part: "GPT 데이터 과학"
     - references.qmd
 
 format:
@@ -39,3 +52,6 @@ link-citations: yes
 mainfont: "NanumMyeongjo"
 sansfont: "NanumGothic"
 monofont: "D2Coding"
+
+
+engine: knitr

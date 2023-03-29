@@ -1,7 +1,6 @@
-```{bash}
-knitr::opts_chunk$set(engine.opts = list(bash = "-l"))
-```
-
+---
+engine: knitr
+---
 
 # 쉘(Shell) 소개 {#shell-intro}
 
@@ -224,14 +223,10 @@ pip install shell-gpt
 사용방법은 Git Bash를 설치한 후 터미널을 열구 `sgpt --shell` 다음에 자연어를 넣게 되면 해당되는 쉘 명령어를 알려준다. 이를 실행하게 되면 유닉스 쉘을 이용하여 해당 자동화 작업에 생산성을 높일 수 있다. 현재는 한국어는 지원하지 않아 한글로 작성한 다음 번역기를 사용하여 영어로 입력해야 하고 결과를 얻게 되면 이를 실행하는 방식으로 활용한다.
 
 
-```
+```{bash}
+#| eval: false
 $ sgpt --shell 'List the contents of the current directory and display a special character at the end of each filename to indicate its file type.'
-ls -F
-
-$ ls -F
-_quarto.yml    cover.png        index.qmd       shell-create.Rmd   shell-loop.Rmd
-00_setup.qmd   docs/            LICENSE         shell-filedir.Rmd  shell-pipefilter.Rmd
-01_openAI.qmd  gpt-shell.Rproj  references.bib  shell-find.Rmd     shell-script.Rmd
-code/          images/          references.qmd  shell-intro.qmd
 ```
+
+![](images/gpt-shell-hello-world.jpg)
 

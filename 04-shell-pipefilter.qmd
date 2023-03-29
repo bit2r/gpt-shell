@@ -1,5 +1,5 @@
 
-# 파이프와 필터{#pipe-filter}
+# 파이프와 필터 {#pipe-filter}
 
 몇가지 기초 유닉스 명령어를 배웠기 때문에, 
 마침내 쉘의 가장 강령한 기능을 살펴볼 수 있게 되었다: 
@@ -351,7 +351,7 @@ $ wc -l *.pdb | sort -n | head -n 1
 파일에서 `wc`에서 `sort`로, `sort`에서 `head`을 통해 화면으로 나가게 되는 데이터 흐름을 가진 프로세스 3개가 있게 된다.
 
 
-![방향변경과 파이프](assets/images/redirects-and-pipes.png)
+![방향변경과 파이프](images/redirects-and-pipes.png)
 
 이 간단한 아이디어가 왜 유닉스가 그토록 성공적이었는지를 보여준다. 
 다른 많은 작업을 수행하는 거대한 프로그램을 생성하는 대신에, 

@@ -22,5 +22,29 @@
   },
   "shell-filedir.qmd": {
     "shell-filedir.html": "1a6b02f9"
+  },
+  "shell-create.qmd": {
+    "shell-create.html": "8a47f663"
+  },
+  "04-shell-pipefilter.qmd": {
+    "04-shell-pipefilter.html": "d98fd183"
+  },
+  "05-shell-loop.qmd": {
+    "05-shell-loop.html": "05c823d9"
+  },
+  "01-shell-intro.qmd": {
+    "01-shell-intro.html": "8a12f404"
+  },
+  "02-shell-filedir.qmd": {
+    "02-shell-filedir.html": "530d563f"
+  },
+  "03-shell-create.qmd": {
+    "03-shell-create.html": "35a3c063"
+  },
+  "06-shell-script.qmd": {
+    "06-shell-script.html": "1fb7cb8b"
+  },
+  "07-shell-find.qmd": {
+    "07-shell-find.html": "96a5a2ee"
   }
 }

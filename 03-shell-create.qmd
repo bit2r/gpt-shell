@@ -113,7 +113,7 @@ $ nano draft.txt
 (저장하고자 하는 파일명을 입력하도록 독촉받게 되면 `draft.txt` 기본디폴트로 설정된 것을 받아들이고 엔터키를 친다.)
 
 
-![Nano in Action](assets/images/nano-screenshot.png)
+![Nano in Action](images/nano-screenshot.png)
 
 
 파일이 저장되면, 컨트롤+X (`Ctrl-X`, Control-X)를 사용하여 편집기를 끝내고 쉘로 돌아간다. 
