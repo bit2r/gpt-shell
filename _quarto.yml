@@ -15,9 +15,10 @@ book:
   date-format: "YYYY년 MM월 DD일"
   chapters:
     - index.qmd
-    - 00_setup.qmd
-    - 01_openAI.qmd
-    - shell-intro.qmd
+    # - 00_setup.qmd
+    # - 01_openAI.qmd
+    # - shell-intro.qmd
+    # - shell-filedir.qmd
     - references.qmd
 
 format:
@@ -28,9 +29,9 @@ format:
     number-sections: true
     colorlinks: true
     cite-method: biblatex
+    code-overflow: wrap
   pdf:
     documentclass: scrreprt
-
 
 
 bibliography: bibliography.bib

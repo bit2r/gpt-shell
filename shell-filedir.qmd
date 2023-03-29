@@ -1,4 +1,8 @@
 
+```{bash}
+knitr::opts_chunk$set(engine.opts = list(bash = "-l"))
+```
+
 # 파일과 폴더 넘나들기 {#shell-filedir}
 
 
@@ -46,7 +50,7 @@ Nelle 과학자 컴퓨터의 파일시스템을 사례로 살펴보자.
 
 넬 과학자 컴퓨터의 파일 시스템은 다음과 같다:
 
-![파일 시스템](assets/images/filesystem.svg)
+![파일 시스템](images/filesystem.svg)
 
 최상단에 다른 모든 것을 담고 있는 **루트 디렉토리(root directory)**가 있다. 
 슬래쉬 `/` 문자로 나타내고, `/users/nelle`에서 맨 앞에 슬래쉬이기도 하다.
@@ -75,7 +79,7 @@ Nelle 과학자 컴퓨터의 파일시스템을 사례로 살펴보자.
 
 `/Users` 하단에서 Nelle 과학자 컴퓨터 계정과, 랩실 동료 미이라(Mummy)와 늑대인간(Wolfman) 디렉토리를 볼 수 있다.
 
-![홈 디렉토리](assets/images/home-directories.svg)
+![홈 디렉토리](images/home-directories.svg)
 
 미이라(Mummy) 파일은 `/Users/imhotep` 디렉토리에 저장되어 있고, 
 늑대인가(Wolfman)의 파일은 `/Users/larry` 디렉토리에 저장되어 있고 
@@ -542,7 +546,7 @@ Amanda가 홈디렉토리인 `/home/amanda`로 돌아가도록 사용할 수 있
 3. `2012-12-01/ 2013-01-08/ 2013-01-27/`
 4. `original/ pnas_final/ pnas_sub/`
 
-![도전과제 질문 파일 시스템](assets/images/filesystem-challenge.svg)
+![도전과제 질문 파일 시스템](images/filesystem-challenge.svg)
 
 > **해답 풀이**
 > 
@@ -581,7 +585,7 @@ pnas_sub/ pnas_final/ original/
 
 :::
 
-## Nelle 파이프라인: 파일 구성 {#nelle-filedir}
+## 사례: 파일 구성 {#nelle-filedir}
 
 파일과 디렉토리에 대해서 알았으니, Nelle은 단백질 분석기가 생성하는 파일을 구성할 준비를 마쳤다. 
 우선 `north-pacific-gyre` 디렉토리를 생성해서 데이터가 어디에서 왔는지를 상기하도록 한다. 
@@ -634,3 +638,18 @@ $ ls north-pacific-gyre/
 탭을 두번 누르면 모든 파일 목록을 가져온다. 
 이것을 **탭 자동완성(tab completion)**이라고 부르고, 
 앞으로도 다른 많은 툴에서도 많이 볼 것이다.
+
+
+## 쉘 명령 일반구문
+
+지금까지 명령어, 선택옵션 및 명령인자를 살펴보았지만 몇 가지 용어를 공식화하는 것이 필요하다.
+아래 쉘 명령어를 쉘 명령어 사용의 일반적인 사례로 간주하고 구성요소로 분해하자:
+
+```{bash}
+ls -F /
+```
+
+
+![](images/prompt-grammar.jpg)
+
+

@@ -46,3 +46,6 @@ vignettes/*.pdf
 # GPT click
 code/
 
+# Software Carpentry contents
+shell-novice
+

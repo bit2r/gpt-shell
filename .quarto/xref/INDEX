@@ -19,5 +19,8 @@
   },
   "shell-intro.qmd": {
     "shell-intro.html": "048ddc2c"
+  },
+  "shell-filedir.qmd": {
+    "shell-filedir.html": "1a6b02f9"
   }
 }

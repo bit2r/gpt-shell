@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
+<link href="./shell-filedir.html" rel="next">
 <link href="./01_openAI.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -116,6 +116,11 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./shell-filedir.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">파일과 폴더 넘나들기</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">참고문헌</a>
   </div>
 </li>
@@ -134,7 +139,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#shell-ls" id="toc-shell-ls" class="nav-link" data-scroll-target="#shell-ls"><span class="toc-section-number">3.4</span>  <code>ls</code> 와 플래그 의미 파악</a></li>
   <li><a href="#shell-difficulty" id="toc-shell-difficulty" class="nav-link" data-scroll-target="#shell-difficulty"><span class="toc-section-number">3.5</span>  어려운가요?</a></li>
   <li><a href="#shell-flexibility" id="toc-shell-flexibility" class="nav-link" data-scroll-target="#shell-flexibility"><span class="toc-section-number">3.6</span>  유연성과 자동화</a></li>
-  <li><a href="#shell-nelle" id="toc-shell-nelle" class="nav-link" data-scroll-target="#shell-nelle"><span class="toc-section-number">3.7</span>  실무 사례: 넬 박사 파이프라인</a></li>
+  <li><a href="#shell-nelle" id="toc-shell-nelle" class="nav-link" data-scroll-target="#shell-nelle"><span class="toc-section-number">3.7</span>  사례: 문제정의</a></li>
   <li><a href="#쉘-gpt" id="toc-쉘-gpt" class="nav-link" data-scroll-target="#쉘-gpt"><span class="toc-section-number">3.8</span>  쉘 GPT</a></li>
   </ul>
 </nav>
@@ -244,7 +249,7 @@ Command not found 오류
 <p>추가로, 명령 라인은 종종 멀리 떨어진 컴퓨터 혹은 슈퍼컴퓨터와 상호작용하는 가장 쉬운 방법이다. 고성능 컴퓨팅 시스템에 포함된 다양한 특화된 도구와 자원을 실행하는데 쉘과 친숙성이 거의 필연적이다. 클러스트 컴퓨팅과 클라우드 컴퓨팅이 과학 데이터 클런칭(scientific data cruching)이 점점 대중화됨에 따라 원격 컴퓨터를 구동하는 것이 필수적인 기술이 되어가고 있다. 여기서 다뤄지는 명령-라인 기술에 기반해서 광범위한 과학적 질문과 컴퓨터적 도전과제를 처리할 수 있다.</p>
 </section>
 <section id="shell-nelle" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="shell-nelle"><span class="header-section-number">3.7</span> 실무 사례: 넬 박사 파이프라인</h2>
+<h2 data-number="3.7" class="anchored" data-anchor-id="shell-nelle"><span class="header-section-number">3.7</span> 사례: 문제정의</h2>
 <p>해양 생물학자 넬 니모(Nell Nemo) 박사가 방금전 6개월간 <a href="http://en.wikipedia.org/wiki/North_Pacific_Gyre">북태평양 소용돌이꼴</a> 조사를 마치고 방금 귀환했다. <a href="http://en.wikipedia.org/wiki/Great_Pacific_Garbage_Patch">태평양 거대 쓰레기 지대</a>에서 젤리같은 해양생물을 표본주출했다. 총 합쳐서 1,520개 시료가 있고 다음 작업이 필요하다:</p>
 <ol type="1">
 <li>서로 다른 300개 단백질의 상대적인 함유량을 측정하는 분석기계로 시료를 시험한다. 한 시료에 대한 컴퓨터 출력결과는 각 단백질에 대해 한 줄 파일형식으로 표현된다.</li>
@@ -262,7 +267,7 @@ Command not found 오류
 <p>예를 들어 앞서 프로젝트를 할 때 해당 유닉스 쉘 명령어가 기억나지 않는다고 하면 <code>shell gpt</code>를 사용하여 해당 작업을 신속하게 수행할 수 있다. <a href="https://github.com/TheR1D/shell_gpt">shell_gpt</a>는 파이썬 패키지라 다음 파이썬 명령어로 패키지 설치를 할 수 있다.</p>
 <pre><code>pip install shell-gpt</code></pre>
 <p>사용방법은 Git Bash를 설치한 후 터미널을 열구 <code>sgpt --shell</code> 다음에 자연어를 넣게 되면 해당되는 쉘 명령어를 알려준다. 이를 실행하게 되면 유닉스 쉘을 이용하여 해당 자동화 작업에 생산성을 높일 수 있다. 현재는 한국어는 지원하지 않아 한글로 작성한 다음 번역기를 사용하여 영어로 입력해야 하고 결과를 얻게 되면 이를 실행하는 방식으로 활용한다.</p>
-<pre class="{bash}"><code>$ sgpt --shell 'List the contents of the current directory and display a special character at the end of each filename to indicate its file type.'
+<pre><code>$ sgpt --shell 'List the contents of the current directory and display a special character at the end of each filename to indicate its file type.'
 ls -F
 
 $ ls -F
@@ -415,8 +420,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text">참고문헌</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./shell-filedir.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">파일과 폴더 넘나들기</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
