@@ -12,7 +12,6 @@ filters:
    - include-code-files  
    - lightbox
 lightbox: auto
-link-citations: yes
 knitr:
   opts_chunk: 
     echo: true

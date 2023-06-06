@@ -1,7 +1,7 @@
 {
   "hash": "bd8f5ca8c1b3b935be30ad6ee646125b",
   "result": {
-    "markdown": "---\nengine: knitr\n---\n\n\n# Preface {.unnumbered}\n\nThis is a Quarto book.\n\nTo learn more about Quarto books visit <https://quarto.org/docs/books>.\n\n\n::: {.cell}\n\n```{.bash .cell-code}\nls -F\n```\n\n\n::: {.cell-output .cell-output-stdout}\n```\n00_setup.qmd*\n01_openAI.qmd*\nLICENSE*\n_quarto.yml*\ncode/\ncover.png*\ndocs/\ngpt-shell.Rproj*\nimages/\nindex.qmd*\nindex.rmarkdown*\nreferences.bib*\nreferences.qmd*\nshell-create.Rmd*\nshell-filedir.qmd*\nshell-find.Rmd*\nshell-intro.qmd*\nshell-loop.Rmd*\nshell-novice/\nshell-pipefilter.Rmd*\nshell-script.Rmd*\n```\n:::\n:::\n",
+    "markdown": "---\nengine: knitr\n---\n\n\n# Preface {.unnumbered}\n\nThis is a Quarto book.\n\nTo learn more about Quarto books visit <https://quarto.org/docs/books>.\n\n\n::: {.cell}\n\n```{.bash .cell-code}\nls -F\n```\n\n\n::: {.cell-output .cell-output-stdout}\n```\n00_setup.qmd*\n01-shell-intro.qmd*\n01_openAI.qmd*\n02-shell-filedir.qmd*\n03-shell-create.qmd*\n04-shell-pipefilter.html*\n04-shell-pipefilter.qmd*\n04-shell-pipefilter_files/\n05-shell-loop.qmd*\n06-shell-script.qmd*\n07-shell-find.qmd*\n11_cli_ds.qmd*\nLICENSE*\n_extensions/\n_quarto.yml*\ncode/\ncover.png*\ndata/\ndocs/\ngpt-shell.Rproj*\nimages/\nindex.qmd*\nindex.rmarkdown*\nreferences.bib*\nreferences.qmd*\nshell-lesson-data/\nshell-novice/\n챗GPT-유닉스-쉘.pdf*\n```\n:::\n:::\n",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"

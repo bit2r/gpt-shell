@@ -49,3 +49,5 @@ code/
 # Software Carpentry contents
 shell-novice
 
+
+/.luarc.json

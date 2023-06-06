@@ -5,10 +5,10 @@ project:
     port: 7779
     browser: false
 
-lang: kr
+lang: ko-KR
 
 book:
-  title: "gpt-shell"
+  title: "챗GPT 유닉스 쉘"
   author:
     - name: "이광춘"
       affiliations: "사단법인 한국 R 사용자회"
@@ -18,10 +18,10 @@ book:
   date-format: "YYYY년 MM월 DD일"
   chapters:
     - index.qmd
-    - part: "환경설정"
-      chapters:
-        - 00_setup.qmd
-        - 01_openAI.qmd
+    # - part: "환경설정"
+    #   chapters:
+    #     # - 00_setup.qmd
+    #     - 01_openAI.qmd
     - part: "쉘 프로그래밍"
       chapters:
         - 01-shell-intro.qmd
@@ -31,9 +31,9 @@ book:
         - 05-shell-loop.qmd
         - 06-shell-script.qmd
         - 07-shell-find.qmd
-    - part: "GPT 데이터 과학"
-      chapters:
-        - 11_cli_ds.qmd
+    # - part: "GPT 데이터 과학"
+    #   chapters:
+    #     - 11_cli_ds.qmd
     - references.qmd
 
 format:
@@ -49,8 +49,8 @@ format:
     documentclass: scrreprt
 
 
-bibliography: bibliography.bib
-link-citations: yes
+bibliography: references.bib
+link-citations: false
 mainfont: "NanumMyeongjo"
 sansfont: "NanumGothic"
 monofont: "D2Coding"
