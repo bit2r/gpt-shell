@@ -2,11 +2,23 @@
 engine: knitr
 ---
 
+```{r init, include=FALSE}
+source(here::here("_extensions", "bit2r", "bitPublish", "init_environments.R"))
+```
+
+
 # Preface {.unnumbered}
 
 This is a Quarto book.
 
 To learn more about Quarto books visit <https://quarto.org/docs/books>.
+
+```{r}
+#| echo: false
+#| results: asis
+titlebox_block("bitPublish가 제공하는 기능을 이해하고, bitPublish을 이용해서 원하는 
+책을 저작할 수 있다.", title = "학습목표", theme = "bluejeans")
+```
 
 ```{bash}
 ls -F

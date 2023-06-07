@@ -51,3 +51,6 @@ shell-novice
 
 
 /.luarc.json
+
+# PDF 파일
+docs/
