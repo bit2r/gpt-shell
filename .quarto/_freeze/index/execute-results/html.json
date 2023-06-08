@@ -1,7 +1,7 @@
 {
-  "hash": "fe36a7652e8d0370b784fb36572d88c5",
+  "hash": "57c28aec364664b477315965a2e2fca2",
   "result": {
-    "markdown": "---\nengine: knitr\n---\n\n\n\n\n\n# Preface {.unnumbered}\n\nThis is a Quarto book.\n\nTo learn more about Quarto books visit <https://quarto.org/docs/books>.\n\n\n::: {.cell layout-align=\"center\"}\n<titlebox class=\"bluejeans\">\n<h4><span class=\"Cbluejeans\">학습목표</span></h4>\n<p>bitPublish가 제공하는 기능을 이해하고, bitPublish을 이용해서 원하는 \n책을 저작할 수 있다.</p>\n</titlebox>\n:::\n\n::: {.cell layout-align=\"center\"}\n\n```{.bash .cell-code}\nls -F\n```\n\n\n::: {.cell-output .cell-output-stdout}\n```\n00_setup.qmd*\n01-shell-intro.qmd*\n01_openAI.qmd*\n02-shell-filedir.qmd*\n03-shell-create.qmd*\n04-shell-pipefilter.html*\n04-shell-pipefilter.qmd*\n04-shell-pipefilter_files/\n05-shell-loop.qmd*\n06-shell-script.qmd*\n07-shell-find.qmd*\n11_cli_ds.qmd*\nLICENSE*\n_extensions/\n_quarto.yml*\ncode/\ncover.png*\ndata/\ndocs/\ngpt-shell.Rproj*\nimages/\nindex.qmd*\nindex.rmarkdown*\nreferences.bib*\nreferences.qmd*\nshell-lesson-data/\nshell-novice/\n```\n:::\n:::\n",
+    "markdown": "---\nengine: knitr\n---\n\n\n\n\n\n# 서문 {.unnumbered}\n\n한국 R 사용자회는 기존 수년동안 블로그 형태로 저작된 데이터 과학 관련 저작물을 2022년 쿼토(Quarto) 전자책 기능에 도입하여  디지털 글쓰기의 한 사례로 다양한 전자책을 공개했다.\\footnote[quarto-book]{https://r2bit.com/book.html} 데이터 과학 글쓰기를 확장한 디지털 글쓰기와 출판은 전혀 다른 개념이라 특히 한국어 특징을 반영한 출판 도구가 전무한 상황에서 한국 R 사용자회가 주도되어 [`bitPublish`](https://github.com/bit2r/bitPublish) 패키지를 개발하게 되었다. 이를 바탕으로 한국 R 사용자회 출판사를 통해 첫번째 챗GPT 시대 데이터 과학 자동화 필수도구인 유닉스 쉘(Unix Shell)을 소개하는 \"챗GPT 유닉스 쉘\" 출판을 하게 되었다.\n\n\n\n\n\n::: {.cell layout-align=\"center\"}\n<titlebox class=\"bluejeans\">\n<h4><span class=\"Cbluejeans\">학습목표</span></h4>\n<p>bitPublish가 제공하는 기능을 이해하고, bitPublish을 이용해서 원하는 \n책을 저작할 수 있다.</p>\n</titlebox>\n:::\n",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"

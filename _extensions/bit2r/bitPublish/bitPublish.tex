@@ -12,7 +12,7 @@
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage[unicode]{hyperref}
 \usepackage{multirow}
-\usepackage[many]{tcolorbox}                
+\usepackage[many]{tcolorbox}
 \usepackage{makecell}
 \usepackage{environ}
 \usepackage[tikz]{bclogo}
@@ -48,9 +48,9 @@
   Ligatures=TeX,
   BoldFont=KoPubWorld Batang_Pro Bold.otf,
   ItalicFont=KoPubWorld Batang_Pro Light.otf,
-  ItalicFeatures = {FakeSlant = 0.167},  
+  ItalicFeatures = {FakeSlant = 0.167},
   BoldItalicFont=KoPubWorld Batang_Pro Bold.otf,
-  ItalicFeatures = {FakeSlant = 0.167}  
+  ItalicFeatures = {FakeSlant = 0.167}
 ]
 
 %% 한국어 산셰리프
@@ -58,9 +58,9 @@
   Ligatures=TeX,
   BoldFont=KoPubWorld Dotum_Pro Bold.otf,
   ItalicFont=KoPubWorld Dotum_Pro Light.otf,
-  ItalicFeatures = {FakeSlant = 0.167},  
+  ItalicFeatures = {FakeSlant = 0.167},
   BoldItalicFont=KoPubWorld Dotum_Pro Bold.otf,
-  ItalicFeatures = {FakeSlant = 0.167}  
+  ItalicFeatures = {FakeSlant = 0.167}
 ]
 
 %% 한자
@@ -77,7 +77,7 @@
   Ligatures=TeX,
   BoldFont=D2CodingBold-Ver1.3.2-20180524.ttf,
   ItalicFont=D2Coding-Ver1.3.2-20180524.ttf,
-  ItalicFeatures = {FakeSlant = 0.167},  
+  ItalicFeatures = {FakeSlant = 0.167},
   BoldItalicFont=D2CodingBold-Ver1.3.2-20180524.ttf,
   BoldItalicFeatures = {FakeSlant = 0.167}
 ]
@@ -103,7 +103,7 @@
 %%==============================================================================
 %% 절(section)과 서브절(subsection) 타이틀을 돋움체(sans-serif)로 바꾸기
 %%==============================================================================
-%% Rmarkdown과 titlesec 패키지가 호환되지 않는 이슈가 있음. 
+%% Rmarkdown과 titlesec 패키지가 호환되지 않는 이슈가 있음.
 %% 아래 두줄의 명령을 입력하지 않으면 에러가 발생함
 %% 문제의 원인:
 %% https://stackoverflow.com/questions/40439701/cant-knit-to-pdf-with-custom-styles
@@ -116,8 +116,8 @@
 \titleformat{\section}
   {\sffamily\selectfont\Large\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}
-  {\sffamily\selectfont\large\bfseries}{\thesubsection}{1em}{}  
-  
+  {\sffamily\selectfont\large\bfseries}{\thesubsection}{1em}{}
+
 
 %%==============================================================================
 %% 컬러 정의
@@ -125,12 +125,12 @@
 \definecolor{gray95}{gray}{.95}
 \definecolor{gray85}{gray}{.85}
 \definecolor{aliceblue}{rgb}{0.94, 0.97, 1.0}
-\definecolor{ExerciseColor}{gray}{0.65}              % for example 
+\definecolor{ExerciseColor}{gray}{0.65}              % for example
 \definecolor{problemblue}{RGB}{100, 134, 158}        % for 시각화전략
 \definecolor{light}{HTML}{E6E6FA}
 \definecolor{highlight}{HTML}{800080}
 \definecolor{dark}{HTML}{330033}
-\definecolor{cornflowerblue}{rgb}{0.39, 0.58, 0.93}  % for Exercise 
+\definecolor{cornflowerblue}{rgb}{0.39, 0.58, 0.93}  % for Exercise
 
 
 %%==============================================================================
@@ -178,7 +178,7 @@
   \catcode`#2=\active}
 \newcommand\DeleteShortHightlight[1]{%
   \catcode`#1=12 }
-  
+
 % \MakeShortHighlight[\colorbox{aliceblue}]\|
 % end markdown의 |(pipe) 강조 구현 for LaTex-----
 
@@ -199,13 +199,13 @@
 
 
 %%==============================================================================
-%% shadequote 정의: 강조하는 문장을 표현하기 위해서 
+%% shadequote 정의: 강조하는 문장을 표현하기 위해서
 %%==============================================================================
 %% https://tex.stackexchange.com/questions/16964/block-quote-with-big-quotation-marks
-%% Start shadequote define ----------------------------------------------------- 
+%% Start shadequote define -----------------------------------------------------
 \newfontfamily\quotefont[ExternalLocation=_extensions/bit2r/bitPublish/fonts/KOPUBWORLD_OTF_FONTS/]{KoPubWorld Batang_Pro Light.otf}[%
   Ligatures=TeX
-]  
+]
 \newcommand*\quotesize{40} % if quote size changes, need a way to make shifts relative
 % Make commands for the quotes
 \newcommand*{\openquote}
@@ -245,7 +245,7 @@
    {\def\shadequoteauthor{\par\authorfill\shadedauthorformat{#2}}\def\yshift{2ex}}
 \begin{snugshade}\begin{quote}\openquote}
 {\shadequoteauthor\quotefill\closequote{\yshift}\end{quote}\end{snugshade}}
-%% End shadequote define ------------------------------------------------------- 
+%% End shadequote define -------------------------------------------------------
 
 
 %%==============================================================================
@@ -270,7 +270,7 @@
     innerrightmargin=0pt,
     innerlinewidth=2pt,
     font=\normalfont,
-    frametitle={\textbf{예제 #1.}}, 
+    frametitle={\textbf{예제 #1.}},
     linecolor=ExerciseColor,
   }
 \begin{mdframed}%
@@ -285,7 +285,7 @@
 \newcommand{\examplelabel}[2]{%
    \protected@write \@auxout {}{\string \newlabel {#1}{{#2}{\thepage}{#2}{#1}{}} }%
    \hypertarget{#1}{}
-}   
+}
 \makeatother
 
 
@@ -346,7 +346,7 @@
 
 
 %%==============================================================================
-%% infobox 정의 
+%% infobox 정의
 %%==============================================================================
 \usepackage{ifthen}
 
@@ -363,7 +363,7 @@
     \ifthenelse{\equal{#1}{information}}{\def\infoicon{\faInfoCircle}}{}
     \ifthenelse{\equal{#1}{caution}}{\def\infoicon{\faExclamationTriangle}}{}
     \ifthenelse{\equal{#1}{warning}}{\def\infoicon{\faBomb}}{}
-    \ifthenelse{\equal{#1}{tip}}{\def\infoicon{\faLightbulb[regular]}}{}  
+    \ifthenelse{\equal{#1}{tip}}{\def\infoicon{\faLightbulb[regular]}}{}
     \node[inner sep=0pt] (box) {\parbox[t]{.99\textwidth}{%
       \begin{minipage}[t]{.12\textwidth}
         \centering
@@ -378,9 +378,9 @@
       \BODY
       \end{minipage}\hfill}%
     };
-    \draw[#1,line width=3pt] 
+    \draw[#1,line width=3pt]
       ( $ (box.north east) + (-5pt,3pt) $ ) -- ( $ (box.north east) + (0,3pt) $ ) -- ( $ (box.south east) + (0,-3pt) $ ) -- + (-5pt,0);
-    \draw[#1,line width=3pt] 
+    \draw[#1,line width=3pt]
       ( $ (box.north west) + (5pt,3pt) $ ) -- ( $ (box.north west) + (0,3pt) $ ) -- ( $ (box.south west) + (0,-3pt) $ ) -- + (5pt,0);
   \end{tikzpicture}\par\medskip%
 }
@@ -388,7 +388,7 @@
 
 
 %%==============================================================================
-%% 아이디어 박스 정의 
+%% 아이디어 박스 정의
 %%==============================================================================
 \NewEnviron{information}[1]
   {\par\medskip\noindent
@@ -403,15 +403,15 @@
       \BODY
       \end{minipage}\hfill}%
     };
-    \draw[gray!75!black,line width=3pt] 
+    \draw[gray!75!black,line width=3pt]
       ( $ (box.north east) + (-5pt,3pt) $ ) -- ( $ (box.north east) + (0,3pt) $ ) -- ( $ (box.south east) + (0,-3pt) $ ) -- + (-5pt,0);
-    \draw[gray!75!black,line width=3pt] 
+    \draw[gray!75!black,line width=3pt]
       ( $ (box.north west) + (5pt,3pt) $ ) -- ( $ (box.north west) + (0,3pt) $ ) -- ( $ (box.south west) + (0,-3pt) $ ) -- + (5pt,0);
   \end{tikzpicture}\par\medskip%
 }
 
 %%==============================================================================
-%% 주의 박스 정의 
+%% 주의 박스 정의
 %%==============================================================================
 \NewEnviron{caution}[1]
   {\par\medskip\noindent
@@ -425,16 +425,24 @@
       \BODY
       \end{minipage}\hfill}%
     };
-    \draw[red!75!black,line width=3pt] 
+    \draw[red!75!black,line width=3pt]
       ( $ (box.north east) + (-5pt,3pt) $ ) -- ( $ (box.north east) + (0,3pt) $ ) -- ( $ (box.south east) + (0,-3pt) $ ) -- + (-5pt,0);
-    \draw[red!75!black,line width=3pt] 
+    \draw[red!75!black,line width=3pt]
       ( $ (box.north west) + (5pt,3pt) $ ) -- ( $ (box.north west) + (0,3pt) $ ) -- ( $ (box.south west) + (0,-3pt) $ ) -- + (5pt,0);
   \end{tikzpicture}\par\medskip%
 }
-  
-  
+
+
 %%------------------------------------------------------------------------------
-%------ 차례 작성 
+%------ 차례 작성
 %%------------------------------------------------------------------------------
 \makeindex
 
+%%------------------------------------------------------------------------------
+%------ 각주 from lshort-ko.sty
+%%------------------------------------------------------------------------------
+%%% translator’s footnote
+\NewDocumentCommand \trfnote { +m }
+{%
+    \footnote{[역주]\ #1}%
+}

@@ -1,0 +1,12 @@
+## 02-shell-filedir.qmd
+
+\noindent 2. [상대경로 해결] 만약 `pwd` 명령어를 쳤을 때, 화면에 $\text{/Users/thing}$이 출력된다면, $\text{ls -F ../backup}$은 무엇을 출력할까요?
+
+  \begin{tasks}[label=(\arabic*)](1)
+\task $\text{../backup: No such file or directory}$
+  \task $\text{2012-12-01 2013-01-08 2013-01-27}$
+  \task $\text{2012-12-01/ 2013-01-08/ 2013-01-27/}$
+  \end{tasks}
+<!-- \task $\text{original/ pnas_final/ pnas_sub/}$ -->
+
+

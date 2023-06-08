@@ -9,6 +9,9 @@ contributes:
       css: "_extensions/bit2r/bitPublish/style.css"
     pdf:
       documentclass: book
+      classoption: draft
+      pandoc_args:
+        - "--lua-filter=columns-to-table.lua"
       geometry:                            # 4x6 배판 도서를 위한 설정
         - paper=a4paper
         - layoutwidth=190mm

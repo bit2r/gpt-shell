@@ -7,20 +7,17 @@ source(here::here("_extensions", "bit2r", "bitPublish", "init_environments.R"))
 ```
 
 
-# Preface {.unnumbered}
+# 서문 {.unnumbered}
 
-This is a Quarto book.
+한국 R 사용자회는 기존 수년동안 블로그 형태로 저작된 데이터 과학 관련 저작물을 2022년 쿼토(Quarto) 전자책 기능에 도입하여  디지털 글쓰기의 한 사례로 다양한 전자책을 공개했다.\footnote{https://r2bit.com/book.html} 데이터 과학 글쓰기를 확장한 디지털 글쓰기와 출판은 전혀 다른 개념이라 특히 한국어 특징을 반영한 출판 도구가 전무한 상황에서 한국 R 사용자회가 주도되어 [`bitPublish`](https://github.com/bit2r/bitPublish) 패키지를 개발하게 되었다. 이를 바탕으로 한국 R 사용자회 출판사를 통해 첫번째 챗GPT 시대 데이터 과학 자동화 필수도구인 유닉스 쉘(Unix Shell)을 소개하는 "챗GPT 유닉스 쉘" 출판을 하게 되었다.
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+
+
 
 ```{r}
 #| echo: false
 #| results: asis
 titlebox_block("bitPublish가 제공하는 기능을 이해하고, bitPublish을 이용해서 원하는 
 책을 저작할 수 있다.", title = "학습목표", theme = "bluejeans")
-```
-
-```{bash}
-ls -F
 ```
 
