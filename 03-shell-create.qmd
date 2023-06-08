@@ -6,13 +6,13 @@
 바탕화면(Desktop) `data-shell` 디렉토리로 돌아가서 
 `ls -F` 명령어를 사용하여 무엇을 담고 있는지 살펴봅시다:
 
-```
+```bash
 $ pwd
 /Users/nelle/Desktop/data-shell
 ```
 
 
-```
+```bash
 $ ls -F
 creatures/  data/  molecules/  north-pacific-gyre/  notes.txt  pizza.cfg  solar.pdf  writing/
 ```
@@ -21,7 +21,7 @@ creatures/  data/  molecules/  north-pacific-gyre/  notes.txt  pizza.cfg  solar.
 (출력되는 것은 아무것도 없습니다.):
 
 
-```
+```bash
 $ mkdir thesis
 ```
 
@@ -30,12 +30,12 @@ $ mkdir thesis
 `thesis`는 상대 경로여서(즉, 앞에 슬래쉬가 없음), 
 새로운 디렉토리는 현재 작업 디렉토리 아래 만들어진다:
 
-```
+```bash
 $ ls -F
 creatures/  data/  molecules/  north-pacific-gyre/  notes.txt  pizza.cfg  solar.pdf  thesis/  writing/
 ```
 
-::: {#shell-create-two .rmdcaution}
+::: {.callout-caution}
 **동일한 작업을 수행하는 두가지 방법**
 
 쉘을 사용해서 디렉토리를 생성하는 것이나 파일 탐색기를 사용하는 것과 별반 차이가 없다.
@@ -45,7 +45,7 @@ creatures/  data/  molecules/  north-pacific-gyre/  notes.txt  pizza.cfg  solar.
 파일과 디렉토리는 동일하다.
 :::
 
-::: {#shell-create-naming .rmdcaution}
+::: {.callout-caution}
 
 ## 파일과 디렉토리를 위한 좋은 명칭
 
@@ -74,19 +74,19 @@ creatures/  data/  molecules/  north-pacific-gyre/  notes.txt  pizza.cfg  solar.
 
 `thesis` 디렉토리를 방금 생성했기에 내부에는 아무것도 없다:
 
-```
+```bash
 $ ls -F thesis
 ```
 
 `cd` 명령어를 사용하여 `thesis`로 작업 디렉토리를 변경하자. 
 Nano 텍스트 편집기를 실행해서 `draft.txt` 파일을 생성하자:
 
-```
+```bash
 $ cd thesis
 $ nano draft.txt
 ```
 
-::: {#shell-create-editor .rmdcaution}
+::: {.callout-caution}
 
 **어떤 편집기가 좋을까요?**
 
@@ -118,7 +118,7 @@ $ nano draft.txt
 
 파일이 저장되면, 컨트롤+X (`Ctrl-X`, Control-X)를 사용하여 편집기를 끝내고 쉘로 돌아간다. 
 
-::: {#shell-create-control .rmdcaution}
+::: {.callout-caution}
 
 **Control, Ctrl, ^ Key**
 
@@ -148,7 +148,7 @@ $ ls
 draft.txt
 ```
 
-::: {#shell-create-alternative .rmdcaution}
+::: {.callout-caution}
 
 **파일을 생성하는 다른 방법**
 
@@ -188,7 +188,7 @@ $ touch my_file.txt
 `data-shell` 디렉토리로 돌아가서,
 생성한 초안을 제거해서 `thesis` 디렉토리를 깔끔하게 정리하자:
 
-```
+```bash
 $ cd thesis
 $ rm draft.txt
 ```
@@ -197,11 +197,11 @@ $ rm draft.txt
 `ls` 명령어를 다시 실행하게 되면,
 출력결과는 아무 것도 없게 되는데 파일이 사라진 것을 확인시켜준다:
 
-```
+```bash
 $ ls
 ```
 
-::: {#shell-create-delete .rmdcaution}
+::: {.callout-caution}
 
 **삭제는 영원하다**
 
@@ -215,24 +215,24 @@ $ ls
 
 파일을 다시 생성하고 나서, `cd ..`를 사용하여 `/Users/nelle/Desktop/data-shell` 상위 디렉토리로 이동해보자:
 
-```
+```bash
 $ pwd
 /Users/nelle/Desktop/data-shell/thesis
 ```
 
-```
+```bash
 $ nano draft.txt
 $ ls
 draft.txt
 ```
 
-```
+```bash
 $ cd ..
 ```
 
 `rm thesis`을 사용하여 전체 `thesis` 디렉토리를 제거하려고 하면 오류 메시지가 생긴다:
 
-```
+```bash
 $ rm thesis
 rm: cannot remove `thesis': Is a directory
 ```
@@ -243,11 +243,11 @@ rm: cannot remove `thesis': Is a directory
 `rm` 명령어에 [재귀(recursive)](https://en.wikipedia.org/wiki/Recursion) 선택옵션을 사용해서 
 삭제 작업을 수행할 수 있다:
 
-```
+```bash
 $ rm -r thesis
 ```
 
-::: {#shell-create-safely .rmdcaution}
+::: {.callout-caution}
 
 **`rm` 안전하게 사용하기**
 
@@ -267,7 +267,7 @@ $ rm -r thesis
 
 
 
-::: {#shell-create-great .rmdcaution}
+::: {.callout-caution}
 
 **큰 힘에는 큰 책임이 따른다(With Great Power Comes Great Responsibility)**
 
@@ -275,7 +275,7 @@ $ rm -r thesis
 대신에 `-r` 옵션을 가진 `rm` 명령어를 사용할 수 있다. 
 `-r` 플래그 옵션은 "recursive(재귀적)"을 나타낸다.
 
-```
+```bash
 $ rm -r thesis
 ```
 
@@ -287,7 +287,7 @@ $ rm -r thesis
 삭제되는 것에 염려가 된다면, `rm` 명령어에 `-i` 인터랙티브 플래그를 추가해서
 삭제단계마다 확인을 하고 삭제하는 것도 가능하다.
 
-```
+```bash
 $ rm -r -i thesis
 rm: descend into directory ‘thesis’? y
 rm: remove regular file ‘thesis/draft.txt’? y
@@ -304,12 +304,12 @@ rm: remove directory ‘thesis’? y
 이번에는 `thesis/draft.txt` 파일경로로 바로 `nano`를 실행함을 주목하자. 
 이전에는 `thesis`디렉토리로 가서 `draft.txt`이름으로 `nano`를 실행했다.
 
-```
+```bash
 $ pwd
 /Users/nelle/Desktop/data-shell
 ```
 
-```
+```bash
 $ mkdir thesis
 $ nano thesis/draft.txt
 $ ls thesis
@@ -322,7 +322,7 @@ draft.txt
 `draft.txt`가 특별한 정보를 제공하는 이름이 아니어서 `mv`를 사용하여 파일 이름을 변경하자. 
 `mv`는 "move"의 줄임말이다:
 
-```
+```bash
 $ mv thesis/draft.txt thesis/quotes.txt
 ```
 
@@ -332,7 +332,7 @@ $ mv thesis/draft.txt thesis/quotes.txt
 이렇게 파일을 이동하는 것이 파일 이름을 바꾸는 것과 동일한 효과를 가진다. 
 아니나 다를까, `ls` 명령어를 사용하여 확인하면 `thesis` 디렉토리에는 이제 `quotes.txt` 파일만 있음을 확인할 수 있다:
 
-```
+```bash
 $ ls thesis
 quotes.txt
 ```
@@ -352,14 +352,14 @@ quotes.txt
 (이것이 왜 명령어가 "move(이동)"으로 불리는 이유다.) 
 이번 경우에 사용되는 디렉토리 이름은 앞에서 언급한 특수 디렉토리 이름 `.` 이다.
 
-```
+```bash
 $ mv thesis/quotes.txt .
 ```
 
 과거에 있던 디렉토리에서 파일을 현재 작업 디렉토리로 옮긴 효과가 나타난다.
 `ls` 명령어가 `thesis` 디렉토리가 비였음을 보여준다:
 
-```
+```bash
 $ ls thesis
 ```
 
@@ -370,18 +370,18 @@ $ ls thesis
 이렇게 사용하면, `quotes.txt` 파일이 현재 작업 디렉토리에 있음을 볼 수 있다:
 
 
-```
+```bash
 $ ls quotes.txt
 quotes.txt
 ```
 
-::: {#shell-create-move .rmdcaution}
+::: {.callout-caution}
 
 **현재 폴더로 이동하기**
 
 다음 명령어를 실행한 후에, 정훈이는 `sucrose.dat`, `maltose.dat` 파일을 잘못된 폴더에 넣은 것을 인지하게 되었다:
 
-```
+```bash
 $ ls -F
  analyzed/ raw/
 $ ls -F analyzed
@@ -391,7 +391,7 @@ $ cd raw/
 
 해당 파일을 현재 디렉토리(즉, 현재 사용자가 위치한 폴더)로 이동시키도록 아래 빈칸을 채우시오:
 
-```
+```bash
 $ mv ___/sucrose.dat  ___/maltose.dat ___
 ```
 
@@ -412,7 +412,7 @@ $ mv ___/sucrose.dat  ___/maltose.dat ___
 대부분의 유닉스 명령어와 마찬가지로, `ls` 명령어로 한번 경로 다수를 전달할 수도 있다:
 
 
-```
+```bash
 $ cp quotes.txt thesis/quotations.txt
 $ ls quotes.txt thesis/quotations.txt
 quotes.txt   thesis/quotations.txt
@@ -421,7 +421,7 @@ quotes.txt   thesis/quotations.txt
 복사를 제대로 수행했는지 증명하기 위해서, 
 현재 작업 디렉토리에 있는 `quotes.txt` 파일을 삭제하고 나서, 다시 동일한 `ls` 명령어를 실행한다. 
 
-```
+```bash
 $ rm quotes.txt
 $ ls quotes.txt thesis/quotations.txt
 ls: cannot access quotes.txt: No such file or directory
@@ -432,7 +432,7 @@ thesis/quotations.txt
 이번에는 현재 디렉토리에서 `quotes.txt` 파일은 찾을 수 없지만, 
 삭제하지 않은 thesis 폴더의 복사본은 찾아서 보여준다.
 
-::: {#shell-create-important .rmdcaution}
+::: {.callout-caution}
 
 **파일명이 뭐가 중요해?**
 
@@ -456,7 +456,7 @@ Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이�
 
 :::
 
-::: {#shell-create-rename .rmdcaution}
+::: {.callout-caution}
 
 **파일 이름 바꾸기**
 
@@ -464,6 +464,7 @@ Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이�
 파일명은 `statstics.txt`.
 파일을 생성하고 저장한 후에 곰곰히 생각해 보니 파일명 철자가 틀린 것을 알게 되었다!
 틀린 철자를 바로잡고자 하는데, 다음 중 어떤 명령어를 사용해야 하는가?
+
 1. `cp statstics.txt statistics.txt`
 2. `mv statstics.txt statistics.txt`
 3. `mv statstics.txt .`
@@ -477,22 +478,22 @@ Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이�
 
 :::
 
-::: {#shell-create-move-copy .rmdcaution}
+::: {.callout-caution}
 
 **이동과 복사**
 아래 보여진 일련의 명령문에 뒤에 `ls`명령어의 출력값은 무엇일까요?
 
-```
+```bash
 $ pwd
 /Users/jamie/data
 ```
 
-```
+```bash
 $ ls
 proteins.dat
 ```
 
-```
+```bash
 $ mkdir recombine
 $ mv proteins.dat recombine/
 $ cp recombine/proteins.dat ../proteins-saved.dat
@@ -524,25 +525,25 @@ $ ls
 
 ## 다수 파일과 폴더 작업 {#shell-moving-multiple}
 
-::: {#shell-create-copy-files .rmdcaution}
+::: {.callout-caution}
 
 **다수 파일을 복사하기**
 이번 연습문제에서는 `data-shell/data` 디렉토리에서 명령어를 테스트한다.
 아래 예제에서, 파일명 다수와 디렉토리명이 주어졌을 떄 `cp` 명령어는 어떤 작업을 수행하는가?
 
-```
+```bash
 $ mkdir backup
 $ cp amino-acids.txt animals.txt backup/
 ```
 
 아래 예제에서, 3개 혹은 그 이상의 파일명이 주어졌을 때 `cp` 명령어는 어떤 작업을 수행하는가?
 
-```
+```bash
 $ ls -F
 amino-acids.txt  animals.txt  backup/  elements/  morse.txt  pdb/  planets.txt  salmon.txt  sunspot.txt
 ```
 
-```
+```bash
 $ cp amino-acids.txt animals.txt morse.txt 
 ```
 
@@ -558,7 +559,7 @@ $ cp amino-acids.txt animals.txt morse.txt
 
 :::
 
-::: {#shell-create-wildcards .rmdcaution}
+::: {.callout-caution}
 
 **와일드 카드(Wildcards)**
 
@@ -592,13 +593,13 @@ $ cp amino-acids.txt animals.txt morse.txt
 
 :::
 
-::: {#shell-create-wildcards-plus .rmdcaution}
+::: {.callout-caution}
 
-**와일드카드 추가 문제** 
+## 와일드카드 추가 문제 
 
 정훈이는 미세조정(calibration), 원본 데이터(dataset), 데이터 설명 데이터를 디렉토리에 보관하고 있다:
 
-```
+```bash
 2015-10-23-calibration.txt
 2015-10-23-dataset1.txt
 2015-10-23-dataset2.txt
@@ -617,7 +618,7 @@ $ cp amino-acids.txt animals.txt morse.txt
 일부 데이터를 랩실 동료 기민에게 보내고자 한다.
 정훈이는 백업과 전송 작업을 위해서 다음 명령어를 사용한다:
 
-```
+```bash
 $ cp *dataset* /backup/datasets
 $ cp ____calibration____ /backup/calibration
 $ cp 2015-____-____ ~/send_to_bob/all_november_files/
@@ -625,6 +626,7 @@ $ cp ____ ~/send_to_bob/all_datasets_created_on_a_23rd/
 ```
 
 정훈이가 빈칸을 채우도록 도움을 주세요.
+
 > **해답**
 > 
 > ```
@@ -635,13 +637,12 @@ $ cp ____ ~/send_to_bob/all_datasets_created_on_a_23rd/
 
 :::
 
-::: {#shell-create-directory .rmdcaution}
-
-**디렉토리와 파일 조직화**
+::: {.callout-caution}
+## 디렉토리와 파일 조직화
 
 정훈이가 프로젝트 작업을 하고 있는데, 작업 파일이 그다지 잘 조직적으로 정리되어 있지 않음을 알게 되었다:
 
-```
+```bash
 $ ls -F
 analyzed/  fructose.dat    raw/   sucrose.dat
 ```
@@ -650,12 +651,12 @@ analyzed/  fructose.dat    raw/   sucrose.dat
 이번 학습에서 배운 어떤 명령어를 실행해야,
 아래 명령어를 실행했을 때 다음에 보여지는 출력을 생성할까요?
 
-```
+```bash
 $ ls -F
 analyzed/   raw/
 ```
 
-```
+```bash
 $ ls analyzed
 fructose.dat    sucrose.dat
 ```
@@ -672,54 +673,40 @@ fructose.dat    sucrose.dat
 
 :::
 
-::: {#shell-create-not-file .rmdcaution}
 
-**폴더 구조를 복사하지만, 파일을 복사하지 말자.**
 
-새로운 실험을 시작해 보자. 데이터 파일 없이 이전 실험에게 만들었던 
+\begin{Exercise}\label{Ex1}
+
+\noindent 1. [폴더 구조를 복사하지만, 파일을 복사하지 말자.] 새로운 실험을 시작해 보자. 데이터 파일 없이 이전 실험에게 만들었던 
 파일 구조만 복제하자. 그렇게 하면 새로운 데이터를 쉽게 추가할 수 있게 된다.
-'2016-05-18-data' 디렉토리에 `data` 폴더로 `raw`와 `processed`가 있는데,
-각자 데이터 파일이 담겨있다.
+'2016-05-18-data' 디렉토리에 `data` 폴더로 `raw`와 `processed`가 있는데, 각자 데이터 파일이 담겨있다.
 
 목적은 `2016-05-18-data` 폴더를 `2016-05-20-data` 폴더로 복사하는 것인데 
 복사된 폴더에는 모든 데이터 파일을 제거해야 된다.
-다음 명령어 집합 중 어떤 명령어 집합이 상기 목적을 달성할까요?
-다른 명령어 집합은 무슨 작업을 수행하는 것일가?
+다음 명령어 집합 중 어떤 명령어 집합이 상기 목적을 달성할까요? 다른 명령어 집합은 무슨 작업을 수행하는 것일가?
 
-```
+\begin{tasks}[label=(\arabic*)](1)
+  \task $\text{cd .}$
+\end{tasks}
+
+
+
+\end{Exercise}
+
+```bash
 $ cp -r 2016-05-18-data/ 2016-05-20-data/
 $ rm 2016-05-20-data/raw/*
 $ rm 2016-05-20-data/processed/*
 ```
 
-```
+```bash
 $ rm 2016-05-20-data/raw/*
 $ rm 2016-05-20-data/processed/*
 $ cp -r 2016-05-18-data/ 2016-5-20-data/
 ```
 
-```
+```bash
 $ cp -r 2016-05-18-data/ 2016-05-20-data/
 $ rm -r -i 2016-05-20-data/
 ```
-
->
-> **해답**
->
-> 첫번째 명령어들이 해당 목적을 달성한다.
-> 먼저 재귀적으로 데이터 폴더를 복사한다.
-> 그리고 나서 `rm` 명령어 두번 사용해서 복사한 디렉토리의 모든 파일을 제거한다.
-> 쉘은 `*` 와일드카드로 매칭되는 모든 파일과 하위디렉토리를 확장하도록 한다.
->
-> 두번째 명령어들은 순서가 잘못되었다:
-> 복사하지 않는 파일을 샂게하고 나서 재귀 복사 명령어로 디렉토리를 복사했다.
->
-> 세번째 명령어도 목적을 달성하는데, 시간이 다소 소요된다:
-> 첫번째 명령어가 디렉토리를 재귀적으로 복사하지만, 두번째 명령어는 인터랙티브하게 
-> 각 파일과 디렉토리에 대한 확인하는 과정을 거쳐 
-> 삭제를 하게 되어 시간이 추가로 소요된다.
-
-:::
-
-
 
