@@ -41,6 +41,9 @@ vignettes/*.pdf
 # Quarto book and openAI API-KEY
 .env
 
+data/Crime_Data_from_2020_to_Present.csv
+
+
 /.quarto/
 
 # GPT click

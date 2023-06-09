@@ -1,0 +1,321 @@
+# 챗GPT 데이터 과학 {#cli-ds-gpt}
+
+## 실습 데이터
+
+`palmerpenguins` 패키지에 `penguins` 데이터셋이 붓꽃(iris) 데이터셋 대신 
+데이터 사이언스에서 많이 사용되고 있다. 챗GPT를 활용하여 유닉스 쉘 데이터분석을 위한
+예제 데이터셋을 만들기 위해 펭귄 종별로 명칭을 달리하여 `.csv` 파일로 저장한다.
+
+`data/` 디렉토리 아래 `penguin_adelie.csv`, `penguin_chinstrap.csv`, `data/penguin_gentoo.csv` 
+파일 세개로 나눠진 것을 `fs` 패키지 `dir_ls()` 함수를 통해 확인된다.
+
+```{r}
+# *. 패키지 --------------------------------------------------------------
+
+library(palmerpenguins)
+library(tidyverse)
+
+# *. 데이터 나누기 --------------------------------------------------------------
+
+species <- palmerpenguins::penguins %>%
+  count(species) %>%
+  pull(species) %>%
+  as.character(.)
+
+save_species <- function(species_name = "Adelie") {
+  palmerpenguins::penguins %>%
+    filter(str_detect(species, species_name)) %>%
+    write_csv(glue::glue("data/penguin_{str_to_lower(species_name)}.csv"))
+}
+
+walk(species, save_species)
+
+fs::dir_ls(path = "data/", glob="data/penguin_*.csv")
+```
+
+## 펭귄종별 개체수 
+
+펭귄 종별로 `.csv` 파일을 나눈 이유는 실제 현장에서 다양하게 쪼개진 데이터를 
+하나로 묶어 분석을 수행하는 경우가 많은 일일이 데이터를 열어 분석가가 직접
+분석하는 것은 손이 많이 가고 경우에 따라서는 실수가 들어가기 때문에 이를 방지할 필요가 있다.
+
+펭귄 종별 개체수 빈도수를 계산하는 유닉스 쉘 프로그램을 작성해보자.
+
+:::{.callout-note}
+### 첫번째 프롬프트
+
+"펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다. \
+각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로 \
+종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요."
+:::
+
+첫번째 프롬프트를 작성하고 ShellGPT에 실행하면 다음과 같은 결과가 나온다.
+`sgpt`에서 제시한 유닉스 쉘 명령어를 해석하면 "이 셸 명령은 세 개의 서로 다른 CSV 파일에서 펭귄 데이터를 읽고, 종 열을 추출하고, 고유 값을 정렬 및 계산한 후 결과를 출력합니다."라는 취지로 작성된 것을 확인하고 이를 `[E]xecute`로 실행하면 기대했던 결과를 얻을 수 없음이 확인된다.
+
+```bash
+$ sgpt -s "펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다. \
+> 각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로 \
+> 종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요."
+cat data/penguin_adelie.csv | tail -n +2 | cut -d ',' -f 2 | sort | uniq -c
+cat data/penguin_chinstrap.csv | tail -n +2 | cut -d ',' -f 2 | sort | uniq -c
+cat data/penguin_gentoo.csv | tail -n +2 | cut -d ',' -f 2 | sort | uniq -c
+[E]xecute, [D]escribe, [A]bort: D
+This shell command reads penguin data from three different CSV files, extracts the species column, sorts and counts the unique values, and outputs the results.
+[E]xecute, [D]escribe, [A]bort: E
+     44 Biscoe
+     56 Dream
+     52 Torgersen
+     68 Dream
+    124 Biscoe
+```
+
+두번째 프롬프트에서는 명확하게 펭귄종(`species`)이 위치한 칼럼을 특정하고 쉘 명령어를 작성하도록 지시하고 이를 바로 실행해보자.
+
+:::{.callout-note}
+### 두번째 프롬프트
+
+"펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다. \
+각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로 \
+종은 species 첫번째 칼럼에 위치하고, 종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요."
+:::
+
+원하는 결과가 나오기는 하지만 `species`도 각 1 빈도수로 출력되는데 이유는 `.csv` 파일에 칼럼명도 
+펭귄 개체로 인식해서 함께 빈도수를 계산했기 때문이다. 이에 대한 문제도 제기하고 프롬프트를 수정해보자.
+
+```bash
+$ sgpt -s "펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다. \
+> 각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로 \
+> 종은 species 첫번째 칼럼에 위치하고, 종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요."
+cat data/penguin_adelie.csv | cut -d ',' -f 1 | sort | uniq -c
+cat data/penguin_chinstrap.csv | cut -d ',' -f 1 | sort | uniq -c
+cat data/penguin_gentoo.csv | cut -d ',' -f 1 | sort | uniq -c
+[E]xecute, [D]escribe, [A]bort: E
+    152 Adelie
+      1 species
+     68 Chinstrap
+      1 species
+    124 Gentoo
+      1 species
+```
+
+첫번째 행이 칼럼명임을 명시해서 세번째 프롬프트를 작성한다. 하지만 제시된 프롬프트만으로 깔끔한 결과를 제시하지 못하고 있다.
+
+:::{.callout-note}
+### 세번째 프롬프트
+"펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다. \
+각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로 \
+종은 species 첫번째 칼럼에 위치하고, 첫번째 행은 칼럼명이고, 종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요."
+:::
+
+```bash
+$ sgpt -s "펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다. \
+> 각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로 \
+> 종은 species 첫번째 칼럼에 위치하고, 첫번째 행은 칼럼명이고, 종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요."
+awk -F"," 'NR>1{a[$1]++} END{for(i in a) print i,a[i]}' data/penguin_adelie.csv data/penguin_chinstrap.csv data/penguin_gentoo.csv
+[E]xecute, [D]escribe, [A]bort: D
+Count the number of occurrences of the first column in three CSV files and print the results.
+[E]xecute, [D]escribe, [A]bort: E
+Gentoo 124
+Chinstrap 68
+Adelie 152
+species 2
+```
+
+맥락을 유지하여 원하는 결과를 얻을 수 있는 챗GPT 채팅 인터페이스를 사용하여 결과를 도출할 수 있도록 작업해보자.
+먼저 `sgpt`가 제시한 유닉스 쉘 스크립트를 챗GPT를 통해 의미를 파악해보자.
+
+:::{.callout-note}
+### 코드해석 프롬프트 
+
+> 다음 유닉스 쉘 코드를 해석해주세요.
+> awk -F"," 'NR>1{a[$1]++} END{for(i in a) print i,a[i]}' data/penguin_adelie.csv data/penguin_chinstrap.csv data/penguin_gentoo.csv
+
+\rule{7cm}{0.3mm}
+
+주어진 awk 명령은 3개의 CSV 파일(penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv)에 대해 동작하는데, 이 파일들의 각 줄을 처리합니다. -F","는 각 라인이 쉼표(,)로 구분된 필드로 구성된 CSV 형식임을 의미합니다.
+
+- awk 스크립트의 각 부분을 분석하면 다음과 같습니다:
+
+- NR>1 {a[$1]++}: NR은 현재까지 읽은 라인 수를 나타내는 변수입니다. NR>1이라는 조건은 첫 번째 행(즉, 헤더 행)을 건너뛰도록 합니다. 그 다음에 오는 {a[$1]++}는 첫 번째 필드($1)의 값을 key로 사용하여 배열 a의 해당 요소의 값을 1 증가시킵니다. 다시 말해, 이 명령은 각 파일에서 첫 번째 필드의 값이 나타나는 횟수를 계산합니다.
+
+- END {for(i in a) print i,a[i]}: 이 부분은 모든 입력을 처리한 후 실행되는 명령입니다. END 부분에서는 for 반복문을 사용하여 배열 a의 모든 요소를 반복하고, 각 key(i)와 그에 대응하는 값(a[i])을 출력합니다.
+
+결국, 이 awk 명령은 3개의 CSV 파일에서 첫 번째 필드의 각 값이 나타나는 횟수를 출력합니다. 첫 번째 행(헤더)은 건너뜁니다. 이 코드는 첫 필드가 범주형 변수(예: 특정 분류)인 경우 해당 변수의 각 값의 출현 빈도를 확인하는 데 유용할 수 있습니다.
+
+:::
+
+`species 2`를 제거하는 유닉스 쉘 코드를 작성하는 것이 목표라서 이를 달성할 수 있도록 프롬프트에 직설적으로 작성한다.
+
+:::{.callout-note}
+### `species 2` 제거 프롬프트
+
+> 쉘 코드를 실행하면 다음과 같은 결과가 나옵니다.  species 2 를 제외시키도록 코드를 다시 작성해주세요.
+> 
+> Gentoo 124
+> Chinstrap 68
+> Adelie 152
+> species 2
+
+\rule{7cm}{0.3mm}
+
+주어진 출력에서 'species'라는 키 값이 있습니다. 이 값은 아마도 CSV 파일의 헤더에서 오는 값일 것입니다. 그렇다면, awk 명령을 수정하여 'species'를 무시하도록 할 수 있습니다. 다음은 수정된 코드입니다:
+
+```bash
+awk -F"," 'NR>1 && $1 != "species" {a[$1]++} END{for(i in a) print i,a[i]}' data/penguin_adelie.csv data/penguin_chinstrap.csv data/penguin_gentoo.csv
+```
+
+이 코드는 원래의 코드에서 추가된 && $1 != "species" 조건을 통해, 첫 번째 필드의 값이 "species"인 행은 건너뛰게 됩니다. 이렇게 하면 'species'라는 키 값이 결과에서 제외되게 됩니다.
+
+:::
+
+챗GPT를 통해 얻은 명령어를 복사하여 쉘 프롬프트에 붙여넣고 실행시키면 원하는 결과를 얻은 것이 확인된다.
+
+```bash
+$ awk -F"," 'NR>1 && $1 != "species" {a[$1]++} END{for(i in a) print i,a[i]}' data/penguin_adelie.csv data/penguin_chinstrap.csv data/penguin_gentoo.csv
+Gentoo 124
+Chinstrap 68
+Adelie 152
+```
+
+R 코드를 통해 세개로 쪼개진 `.csv` 파일이 목표를 달성했는지 검산해보자. 
+펭귄 종 순서는 다르지만 정확하게 펭귄종별 관측 빈도수가 일치함을 확인할 수 있다.
+
+```{r}
+palmerpenguins::penguins %>%
+  count(species)
+```
+
+## 대용량 데이터
+
+유닉스 쉘을 통해 데이터를 분석하게 되면 가장 큰 장점이 R/파이썬 프로그래밍 언어 혹은 
+엑셀, SAS/SPSS 등과 같은 프로그램을 열지 않고 바로 데이터 분석 작업을 수행할 수 있는 것을 꼽을 수 있다. 특히, 데이터 크기가 수백 MB넘거나 수십GB가 넘는 데이터도 신속하고 빠르게 주어진 컴퓨팅 자원을 활용하여 결과를 낼 수 있다는 것은 크나큰 장점이다.
+
+### 오픈 데이터셋
+
+챗GPT 프롬프트를 통해 실습에 필요한 적절한 데이터셋을 검색하여 바로 찾을 수 있다.
+이런 점이 기존 구글검색과 큰 차이점이자 향후 구글 검색대신 챗GPT를 활용하여 업무에 
+활용하는 사례가 늘어나게 되는 이유가 아닐까 싶다.
+
+:::{.callout-note}
+### 10 MB 이상 오픈 데이터셋
+
+> 파일크기가 10 메가바이트 이상인 오픈 csv 데이터셋을 찾으세요
+
+\rule{7cm}{0.3mm}
+
+데이터셋을 찾는 과정에서 여러 출처를 확인했으나, 파일 크기가 10 메가바이트 이상인 CSV 데이터셋에 대한 구체적인 정보를 제공하는 웹사이트를 찾지 못했습니다. 하지만, 여러 공개 데이터 웹사이트가 존재하며, 이들 웹사이트에서 큰 CSV 파일을 찾을 수 있을 것입니다. 예를 들면, Data.gov, World Bank Open Data, Uniform Crime Reporting Program 등이 있습니다​1​.
+
+따라서, 이러한 웹사이트에서 관심 있는 주제의 데이터셋을 검색하고, 필요에 따라 다운로드를 진행해 보시는 것이 좋겠습니다. 아쉽게도 현재로서는 파일의 크기를 미리 확인하는 방법이 제한적입니다. 한 가지 방법은 데이터셋을 다운로드 받아 직접 파일의 크기를 확인하는 것입니다.
+
+제가 찾아본 결과 중에는 GitHub에 저장된 9.54 메가바이트 크기의 CSV 파일이 있었습니다. 이 파일의 URL은 다음과 같습니다: 
+
+... 중략
+
+이 파일이 사용자의 요구를 충족시킬 수 있을지는 별도로 확인이 필요합니다.
+
+더 구체적인 데이터셋을 찾기 위해서는 사용자의 관심사나 필요한 데이터의 종류에 대한 추가 정보가 필요합니다. 이를 통해 저는 더 구체적인 검색을 진행하고 필요한 데이터셋을 찾는 데 도움이 될 수 있습니다.
+
+:::
+
+
+2020년부터 로스앤젤레스 시에서 발생한 범죄 사건이 담긴 범죄데이터를 DATA.GOV \footnote{https://catalog.data.gov/dataset/crime-data-from-2020-to-present}에서 `.csv` 파일 형태로 다운로드 받는다. LA 범죄데이터에 대한 데이터 사전도 웹페이지에 잘 정리되어 있다. \footnote{https://data.lacity.org/Public-Safety/Crime-Data-from-2020-to-Present/2nrs-mtv8}
+
+`Crime_Data_from_2020_to_Present.csv` 파일은 237 MB로 수 GB크기를 갖지는 않지만 실습을 위한 대용량 데이터로 사용하기에 적합해보인다. 
+
+```bash
+$ du -sh data/*
+237M    data/Crime_Data_from_2020_to_Present.csv
+8.0K    data/penguin_adelie.csv
+4.0K    data/penguin_chinstrap.csv
+8.0K    data/penguin_gentoo.csv
+20K     data/penguins.csv
+```
+
+LA 범죄 데이터에 첫번째 궁금한 점은 LA에서 일어나는 범죄중에 우리나라와 비교하여 빈도수가 높은 범죄를 파악하는 것이다. 이를 위해서 데이터 사전에서 "Crm Cd", "Crm Cd Desc" 두 칼럼이 범죄유형코드와 범죄명이 기술되어 있음을 확인할 수 있다. 
+
+프롬프트를 직관적으로 작성하여 챗GPT 결과를 보고 이를 실제 데이터에 반영하여 결과를 확인해보자.
+
+:::{.callout-note}
+### LA 범죄데이터 범죄유형 프롬프트 
+
+> https://catalog.data.gov/dataset/crime-data-from-2020-to-present 웹사이트에서 2020년부터 현재까지 LA 범죄데이터셋이 있습니다.
+> 범죄유형별("Crm Cd Des") 빈도수를 내림차순 정렬하는 쉘 코드를 작성해주세요.
+
+\rule{7cm}{0.3mm}
+
+먼저, 해당 데이터셋을 다운로드하고 CSV 형식이라고 가정하겠습니다. 그리고 "Crm Cd Des"라는 이름의 열이 범죄 유형을 나타내는 것으로 이해하겠습니다.
+
+파일이 crime_data.csv라는 이름으로 다운로드되었다고 가정하면, 우리는 awk, sort, 그리고 uniq 명령어를 사용하여 범죄 유형별 빈도수를 계산하고 내림차순으로 정렬할 수 있습니다.
+
+다음은 이를 수행하는 쉘 스크립트입니다:
+
+```bash
+awk -F ',' '{print $X}' crime_data.csv | sort | uniq -c | sort -nr
+```
+
+여기서 $X는 "Crm Cd Des" 열의 위치입니다. 이 위치는 CSV 파일의 구조에 따라 다를 수 있으므로, 실제 열 번호로 대체해야 합니다. 예를 들어, "Crm Cd Des"가 CSV 파일의 5번째 열이라면, 스크립트는 다음과 같이 될 것입니다:
+
+```bash
+awk -F ',' '{print $5}' crime_data.csv | sort | uniq -c | sort -nr
+```
+
+이 스크립트는 다음을 수행합니다:
+
+1. awk -F ',' '{print $5}' crime_data.csv: CSV 파일을 읽고 각 행에서 5번째 열(즉, "Crm Cd Des")을 출력합니다.
+2. sort: awk에서 출력한 범죄 유형을 알파벳순으로 정렬합니다.
+3. uniq -c: 정렬된 범죄 유형의 리스트에서 고유한 항목을 찾아 각 항목의 빈도수를 계산합니다.
+4. sort -nr: 빈도수를 기준으로 결과를 내림차순으로 정렬합니다.
+
+이 코드는 간단한 CSV 파일에 대해서는 잘 작동하지만, 데이터에 쉼표나 따옴표 등이 포함된 경우에는 제대로 작동하지 않을 수 있습니다. 이런 경우에는 보다 복잡한 파싱을 수행하는 도구(예: Python의 pandas 라이브러리)를 사용해야 할 수도 있습니다.
+
+:::
+
+출력결과가 너무 길어 `head` 명령어로 범죄빈도가 높은 10개만 뽑아보자.
+
+```bash
+$ awk -F ',' '{print $10}' data/Crime_Data_from_2020_to_Present.csv | sort | uniq -c | sort -nr | head
+  95762 VEHICLE - STOLEN
+  78340 BATTERY - SIMPLE ASSAULT
+  63197 BURGLARY FROM VEHICLE
+  58921 "VANDALISM - FELONY ($400 & OVER
+  58497 THEFT OF IDENTITY
+  58189 BURGLARY
+  53785 "ASSAULT WITH DEADLY WEAPON
+  53735 THEFT PLAIN - PETTY ($950 & UNDER)
+  49939 INTIMATE PARTNER - SIMPLE ASSAULT
+  39442 THEFT FROM MOTOR VEHICLE - PETTY ($950 & UNDER)
+```  
+
+동일한 작업을 R을 활용하여 검증해 보면 동일한 결과가 얻어진 것이 확인된다.
+
+```{r}
+#| eval: false
+
+crimes <- read_csv("data/Crime_Data_from_2020_to_Present.csv")
+
+crimes %>%
+  janitor::clean_names() %>%
+  count(crm_cd, crm_cd_desc, sort = TRUE)
+  
+#> # A tibble: 141 × 3
+#>    crm_cd crm_cd_desc                                                 n
+#>     <dbl> <chr>                                                   <int>
+#>  1    510 VEHICLE - STOLEN                                        95762
+#>  2    624 BATTERY - SIMPLE ASSAULT                                78340
+#>  3    330 BURGLARY FROM VEHICLE                                   63197
+#>  4    740 VANDALISM - FELONY ($400 & OVER, ALL CHURCH VANDALISMS) 58921
+#>  5    354 THEFT OF IDENTITY                                       58497
+#>  6    310 BURGLARY                                                58189
+#>  7    230 ASSAULT WITH DEADLY WEAPON, AGGRAVATED ASSAULT          53785
+#>  8    440 THEFT PLAIN - PETTY ($950 & UNDER)                      53735
+#>  9    626 INTIMATE PARTNER - SIMPLE ASSAULT                       49939
+#> 10    420 THEFT FROM MOTOR VEHICLE - PETTY ($950 & UNDER)         39442
+#> # ℹ 131 more rows
+#> # ℹ Use `print(n = ...)` to see more rows  
+```
+
+고급 데이터 분석을 위한 유닉스 쉘 스크립트를 작성하는 것은 R 혹은 파이썬 코드를 작성하는 
+것과 비교하여 난이도가 있지만 챗GPT의 도움을 받아 공동 개발하게 되면 비교적 수월하게 원하는 결과를 얻을 수 있다. 유닉스 쉘 데이터 분석 장점은 아무래도 특별한 도구(R/파이썬, 엑셀, SAS/SPSS 등)를 사용하지 않고도 
+컴퓨터라면 어느 컴퓨터에도 설치되어 있는 운영체제에서 간단한 분석부터 고급 분석작업까지 
+가볍고 빠르게 수행할 수 있는 장점이 있다. 
+챗GPT의 도입으로 데이터 사이언스에서 가장 큰 수혜주는 아마도 유닉스 쉘이 아닐가 싶다.

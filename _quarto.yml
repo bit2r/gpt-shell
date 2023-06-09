@@ -31,9 +31,10 @@ book:
         - 05-shell-loop.qmd
         - 06-shell-script.qmd
         - 07-shell-find.qmd
-    # - part: "GPT 데이터 과학"
-    #   chapters:
-    #     - 11_cli_ds.qmd
+    - part: "GPT 데이터 과학"
+      chapters:
+        - 11_cli_ds.qmd
+        - 12_cli_ds_gpt.qmd
     - references.qmd
 
 format:
@@ -50,3 +51,14 @@ bibliography: references.bib
 link-citations: false
 
 engine: knitr
+
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+    collapse: true
+    comment: "#>"
+    R.options:
+      knitr.graphics.auto_pdf: true
+editor_options:
+  chunk_output_type: console
