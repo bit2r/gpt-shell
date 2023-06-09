@@ -1,4 +1,17 @@
 
+```{r init, include=FALSE}
+source(here::here("_extensions", "bit2r", "bitPublish", "init_environments.R"))
+```
+
+
+```{r}
+#| echo: false
+#| results: asis
+titlebox_block("기존 명령을 결합하여 새로운 작업을 수행하려면 어떻게 해야 할까요? 라는 질문에 파이프 및 필터와 연결하는 장점을 이해한다.", title = "학습목표", theme = "bluejeans")
+```
+
+
+
 # 파이프와 필터 {#pipe-filter}
 
 몇가지 기초 유닉스 명령어를 배웠기 때문에, 
@@ -8,7 +21,7 @@
 `.pdb` 파일 확장자는 단백질 데이터 은행 (Protein Data Bank) 형식으로, 
 분자의 각 원자 형식과 위치를 표시하는 간단한 텍스트 형식으로 되어 있다.
 
-```
+```bash
 $ ls molecules
 cubane.pdb    ethane.pdb    methane.pdb
 octane.pdb    pentane.pdb   propane.pdb
@@ -22,7 +35,7 @@ octane.pdb    pentane.pdb   propane.pdb
 그래서 쉘은 `*.pdb`을 통해 `.pdb` 전체 리스트 목록을 반환한다:
 
 
-```
+```bash
 $ cd molecules
 $ wc *.pdb
 
@@ -39,7 +52,7 @@ $ wc *.pdb
 
 `wc` 대신에 `wc -l`을 실행하면, 출력결과는 파일마다 행수만을 보여준다:
 
-```
+```bash
 $ wc -l *.pdb
 
   20  cubane.pdb
@@ -53,12 +66,14 @@ $ wc -l *.pdb
 
 단어 숫자만을 얻기 위해서 `-w`, 문자 숫자만을 얻기 위해서 `-c`을 사용할 수 있다.
 
+## 명령어에서 출력 캡처하기 {#pipefilter-capture}
+
 파일 중에서 어느 파일이 가장 짧을까요? 
 단지 6개의 파일이 있기 때문에 질문에 답하기는 쉬울 것이다. 
 하지만 만약에 6000 파일이 있다면 어떨까요? 
 해결에 이르는 첫번째 단계로 다음 명령을 실행한다:
 
-```
+```bash
 $ wc -l *.pdb > lengths.txt
 ```
 
@@ -68,7 +83,7 @@ $ wc -l *.pdb > lengths.txt
 (이것이 왜 화면에 출력결과가 없는 이유다. `wc`가 출력하는 모든 것은 `lengths.txt` 파일에 대신 들어간다.) 
 `ls lengths.txt` 을 통해 파일이 존재하는 것을 확인한다:
 
-```
+```bash
 $ ls lengths.txt
 
 lengths.txt
@@ -78,7 +93,7 @@ lengths.txt
 `cat`은 "concatenate"를 줄인 것이고 하나씩 하나씩 파일의 내용을 출력한다. 
 이번 사례에는 단지 파일이 하나만 있어서, `cat` 명령어는 단지 한 파일이 담고 있는 내용만 보여준다:
 
-```
+```bash
 $ cat lengths.txt
 
   20  cubane.pdb
@@ -90,7 +105,7 @@ $ cat lengths.txt
  107  total
 ```
 
-::: {#shell-pipefilter-page .rmdcaution}
+::: {.callout-caution}
 
 **페이지 단위 출력결과 살펴보기**
 
@@ -103,15 +118,17 @@ $ cat lengths.txt
 
 :::
 
+## 출력 필터링 {#pipefilter-filtering}
+
 이제 `sort` 명령어를 사용해서 파일 내용을 정렬합니다. 
 
-::: {#shell-pipefilter-sort .rmdcaution}
+::: {.callout-caution}
 
 **`sort -n` 명령어는 어떤 작업을 수행할까?**
 
 다음 파일 행을 포함하고 있는 파일에 `sort` 명령어를 실행하면:
 
-```
+```bash
 10
 2
 19
@@ -121,7 +138,7 @@ $ cat lengths.txt
 
 출력결과는 다음과 같다:
 
-```
+```bash
 10
 19
 2
@@ -131,7 +148,7 @@ $ cat lengths.txt
 
 동일한 입력에 대해서 `sort -n`을 실행하면, 대신에 다음 결과를 얻게 된다:
 
-```
+```bash
 2
 6
 10
@@ -147,10 +164,12 @@ $ cat lengths.txt
 
 :::
 
+
+
 `-n` 플래그를 사용해서 알파벳 대신에 숫자 방식으로 정렬할 것을 지정할 수 있다.
 이 명령어는 파일 자체를 변경하지 *않고* 대신에 정렬된 결과를 화면으로 보낸다:
 
-```
+```bash
 $ sort -n lengths.txt
 
   9  methane.pdb
@@ -168,7 +187,7 @@ $ sort -n lengths.txt
 임시 파일이름인 `sorted-lengths.txt`에 정렬된 목록 정보를 담을 수 있다. 
 이것을 실행한 다음에, 또 다른 `head` 명령어를 실행해서 `sorted-lengths.txt`에서 첫 몇 행을 뽑아낼 수 있다:
 
-```
+```bash
 $ sort -n lengths.txt > sorted-lengths.txt
 $ head -n 1 sorted-lengths.txt
 
@@ -182,14 +201,14 @@ $ head -n 1 sorted-lengths.txt
 `head`의 출력 결과는 가장 짧은 행을 가진 파일이 되어야만 된다.
 
 
-::: {#shell-pipefilter-redirection .rmdcaution}
+::: {.callout-caution}
 
 **동일한 파일에 방향변경하기**
 
 명령어 출력결과를 방향변경하는데 동일한 파일에 보내는 것은 매우 
 나쁜 아이디어다. 예를 들어:
 
-```
+```bash
 $ sort -n lengths.txt > lengths.txt
 ```
 
@@ -201,11 +220,11 @@ $ sort -n lengths.txt > lengths.txt
 `>` 사용법을 살펴봤지만, 유사한 연산자로 `>>`도 있는데 다소 다른 방식으로 동작한다.
 문자열을 출력하는 `echo` 명령어를 사용해서, 두 연산자 차이를 밝혀내는데 아래 명령어를 테스트 한다:
 
-```
+```bash
 $ echo hello > testfile01.txt
 ```
 
-```
+```bash
 $ echo hello >> testfile02.txt
 ```
 
@@ -222,7 +241,7 @@ $ echo hello >> testfile02.txt
 
 :::
 
-::: {#shell-pipefilter-append .rmdcaution}
+::: {.callout-caution}
 
 **데이터 덧붙이기**
 
@@ -232,7 +251,7 @@ $ echo hello >> testfile02.txt
 다음 명령어를 실행하게 되면 `animalsUpd.txt` 파일에 
 저장될 내용이 어떤 것일지 아래에서 정답을 고르세요:
 
-```
+```bash
 $ head -n 3 animals.txt > animalsUpd.txt
 $ tail -n 2 animals.txt >> animalsUpd.txt
 ```
@@ -250,12 +269,14 @@ $ tail -n 2 animals.txt >> animalsUpd.txt
 :::
 
 
+## 다른 명령에 출력 전달하기 {#pipefilter-redirection}
+
 이것이 혼란스럽다면, 좋은 친구네요: 
 `wc`, `sort`, `head` 명령어 각각이 무엇을 수행하는지 이해해도, 
 중간에 산출되는 파일에 무슨 일이 진행되고 있는지 따라가기는 쉽지 않다. 
 `sort`와 `head`을 함께 실행해서 이해하기 훨씬 쉽게 만들 수 있다:
 
-```
+```bash
 $ sort -n lengths.txt | head -n 1
 
   9  methane.pdb
@@ -273,7 +294,7 @@ $ sort -n lengths.txt | head -n 1
 다시 처리 결과를 `head`에 보낸다.
 `wc` 출력결과를 `sort`로 보내는데 파이프를 사용했다:
 
-```
+```bash
 $ wc -l *.pdb | sort -n
 
    9 methane.pdb
@@ -285,10 +306,13 @@ $ wc -l *.pdb | sort -n
  107 total
 ```
 
+
+## 여러 명령 결합하기 {#pipefilter-together}
+
 또 다른 파이프를 사용해서 `wc`의 출력결과를 `sort`에 바로 보내고 나서, 
 다시 처리 결과를 `head`로 보내게 되면 전체 파이프라인은 다음과 같이 된다:
 
-```
+```bash
 $ wc -l *.pdb | sort -n | head -n 1
 
    9  methane.pdb
@@ -299,7 +323,7 @@ $ wc -l *.pdb | sort -n | head -n 1
 이번 경우는, 
 `*.pdb`의 행수를 세어서 정렬해서 첫부분만 계산하는 것이 된다.
 
-::: {#shell-pipefilter-connect .rmdcaution}
+::: {.callout-caution}
 
 **명령문을 파이프로 연결하기**
 
@@ -353,6 +377,8 @@ $ wc -l *.pdb | sort -n | head -n 1
 
 ![방향변경과 파이프](images/redirects-and-pipes.png)
 
+## 함께 작동하도록 설계된 도구 {#pipefilter-why}
+ 
 이 간단한 아이디어가 왜 유닉스가 그토록 성공적이었는지를 보여준다. 
 다른 많은 작업을 수행하는 거대한 프로그램을 생성하는 대신에, 
 유닉스 프로그래머는 각자가 한가지 작업만을 잘 수행하는 간단한 도구를 많이 생성하는데 집중하고, 
@@ -368,7 +394,7 @@ $ wc -l *.pdb | sort -n | head -n 1
 여러분도 여러분이 작성한 프로그램을 이러한 방식으로 작성할 수 있어야 하고 *작성해야 한다*. 
 그래서 여러분과 다른 사람들이 이러한 프로그램을 파이프에 넣어서 생태계 전체 힘을 배가할 수 있다.
 
-::: {#shell-pipefilter-direction .rmdcaution}
+::: {.callout-caution}
 
 **입력 방향변경**
 
@@ -381,14 +407,14 @@ $ wc -l *.pdb | sort -n | head -n 1
 
 :::
 
-::: {#shell-pipefilter-meaning .rmdcaution}
+::: {.callout-caution}
 
 **`<` 기호이 의미하는 것은 무엇인가?**
 
 (다운로드 예제 데이터를 갖고 있는 최상위) `data-shell` 디렉토리로 작업 디렉토리를 변경한다.
 다음 두 명령어 차이는 무엇인가?
 
-```
+```bash
 $ wc -l notes.txt
 $ wc -l < notes.txt
 ```
@@ -419,14 +445,14 @@ $ wc -l < notes.txt
 :::
 
 
-::: {#shell-pipefilter-unique .rmdcaution}
+::: {.callout-caution}
 
 **`uniq`가 왜 인접한 중복 행만을 단지 제거한다고 생각합니까?**
 
 명령문 `uniq`는 입력으로부터 인접한 중복된 행을 제거한다. 
 예를 들어, `salmon.txt` 파일에 다음이 포함되었다면,
 
-```
+```bash
 coho
 coho
 steelhead
@@ -455,14 +481,14 @@ steelhead
 
 :::
 
-::: {#shell-pipefilter-comprehension .rmdcaution}
+::: {.callout-caution}
 
 
 **파이프 독해능력**
 
 `data-shell/data` 폴더에 `animals.txt`로 불리는 파일은 다음 데이터를 포함한다
 
-```
+```bash
 2012-11-05,deer
 2012-11-05,rabbit
 2012-11-05,raccoon
@@ -475,7 +501,7 @@ steelhead
 
 다음 아래 파이프라인에 각 파이프를 통과하고, 마지막 방향변경을 마친 텍스트는 무엇이 될까요?
 
-```
+```bash
 $ cat animals.txt | head -n 5 | tail -n 3 | sort -r > final.txt
 ```
 
@@ -496,13 +522,13 @@ $ cat animals.txt | head -n 5 | tail -n 3 | sort -r > final.txt
 
 :::
 
-::: {#shell-pipefilter-construction .rmdcaution}
+::: {.callout-caution}
 
 **파이프 구성하기**
 
 이전 연습문제에 사용된 `animals.txt` 파일을 가지고 다음 명령어를 실행한다:
 
-```
+```bash
 $ cut -d , -f 2 animals.txt
 ```
 
@@ -510,7 +536,7 @@ $ cut -d , -f 2 animals.txt
 콤마를 구분자로 각 행을 쪼개려고 하면 `-d` 플래그를 사용하고,
 `-f` 플래그는 각행의 두번째 필드를 지정하게 되서 출력결과는 다음과 같다:
 
-```
+```bash
 deer
 rabbit
 raccoon
@@ -534,13 +560,13 @@ bear
 :::
 
 
-::: {#shell-pipefilter-selection .rmdcaution}
+::: {.callout-caution}
 
 **파이프 선택?**
 
 `animals.txt` 파일은 아래 형식으로 586줄로 구성되어 있다:
 
-```
+```bash
 2012-11-05,deer
 2012-11-05,rabbit
 2012-11-05,raccoon
@@ -566,21 +592,21 @@ bear
 
 :::
 
-## Nelle 파이프라인: 파일 확인하기 {#nelle-file}
+:::{.callout-note}
+## Nelle 파이프라인: 파일 확인하기 
 
 앞에서 설명한 것처럼 Nelle은 분석기를 통해 시료를 시험해서 17개 파일을 `north-pacific-gyre/2012-07-03` 디렉토리에 생성했다. 
 빠르게 건전성 확인하기 위해, 홈디렉토리에서 시작해서, 다음과 같이 타이핑한다:
 
-```
+```bash
 $ cd north-pacific-gyre/2012-07-03
 $ wc -l *.txt
 ```
 
 
-
 결과는 다음과 같은 18 행이 출력된다:
 
-```
+```bash
 300 NENE01729A.txt
 300 NENE01729B.txt
 300 NENE01736A.txt
@@ -592,7 +618,7 @@ $ wc -l *.txt
 
 이번에는 다음과 같이 타이핑한다:
 
-```
+```bash
 $ wc -l *.txt | sort -n | head -n 5
 
  240 NENE02018B.txt
@@ -608,7 +634,7 @@ $ wc -l *.txt | sort -n | head -n 5
 아마도 누군가 주말에 기계를 사용했고, 다시 재설정하는 것을 깜빡 잊었을 것이다. 
 시료를 다시 시험하기 전에 파일중에 너무 큰 데이터가 있는지를 확인한다:
 
-```
+```bash
 $ wc -l *.txt | sort -n | tail -n 5
 
  300 NENE02040B.txt
@@ -624,7 +650,7 @@ $ wc -l *.txt | sort -n | tail -n 5
 시험실 관례로 'Z'는 결측치가 있는 시료를 표식하기 위해 사용된다. 
 더 많은 결측 시료를 찾기 위해, 다음과 같이 타이핑한다:
 
-```
+```bash
 $ ls *Z.txt
 
 NENE01971Z.txt    NENE02040Z.txt
@@ -638,59 +664,35 @@ NENE01971Z.txt    NENE02040Z.txt
 그래서 와일드 카드 표현식 `*[AB].txt`을 사용하여 파일을 조심해서 선택하기로 한다. 
 언제나 그렇듯이, '\*'는 임의 숫자의 문자를 매칭한다. 
 `[AB]` 표현식은 'A'혹은 'B'를 매칭해서 Nelle이 가지고 있는 유효한 데이터 파일 모두를 매칭한다.
-
-::: {#shell-pipefilter-expression .rmdcaution}
-
-**와일드카드 표현식(Wildcard Expressions)**
-
-와일드카드 표현식은 매우 복잡할 수 있지만, 종종 다소 장황할 수 있는 비용을 지불하고 
-간단한 구문만 사용해서 작성하기도 한다.
-`data-shell/north-pacific-gyre/2012-07-03` 디렉토리를 생각해 보자:
-`*[AB].txt` 와일드카드 표현식은 `A.txt` 혹은 `B.txt`으로 끝나는 모든 파일을 매칭시킨다.
-이 와일드카드 표현식을 잊었다고 상상해보자:
-
-1.  `[]` 구문을 사용하지 않는 기본 와일드드카드 표현식으로 동일하게 파일을 매칭할 수 있을까?
-  *힌트*: 표현식이 하나 이상 필요할 수도 있다.
-2.  `[]` 구문을 사용하지 않고 작성한 표현식은 동일한 파일을 매칭한다.
-    두 출력결과의 작은 차이점은 무엇인가?
-3.  최초 와일드카드 표현식은 오류가 나지 않는데 어떤 상황에서 본인 표현식은 오류 메시지를 출력하는가?
-
-> **해답**
-> 1. 
->
-> ```
-> 	$ ls *A.txt
-> 	$ ls *B.txt
-> ```
->	
-> 2. 새로운 명령어에서 나온 출력결과는 명령어가 두개라 구분된다.
-The output from the new commands is separated because there are two commands.
-> 3. `A.txt`로 끝나는 파일이 없거나 `B.txt`로 끝나는 파일이 없는 경우 그렇다.
-
 :::
 
-::: {#shell-pipefilter-remove .rmdcaution}
 
-**불필요한 파일 제거하기**
+\begin{Exercise}\label{Ex4}
 
-저장공간을 절약하고자 중간 처리된 데이터 파일을 삭제하고 
-원본 파일과 처리 스크립트만 보관했으면 한다고 가정하자.
+\noindent 1. [와일드카드 표현식(Wildcard Expressions)] 와일드카드 표현식은 매우 복잡할 수 있지만, 종종 다소 장황할 수 있는 비용을 지불하고 간단한 구문만 사용해서 작성하기도 한다.
+
+`data-shell/north-pacific-gyre/2012-07-03` 디렉토리를 생각해 보자:
+`*[AB].txt` 와일드카드 표현식은 `A.txt` 혹은 `B.txt`으로 끝나는 모든 파일을 매칭시킨다. 이 와일드카드 표현식을 잊었다고 상상해보자:
+
+\begin{tasks}[label=(\arabic*)](1)
+  \task `[]` 구문을 사용하지 않는 기본 와일드드카드 표현식으로 동일하게 파일을 매칭할 수 있을까? *힌트*: 표현식이 하나 이상 필요할 수도 있다.
+  \task `[]` 구문을 사용하지 않고 작성한 표현식은 동일한 파일을 매칭한다.
+    두 출력결과의 작은 차이점은 무엇인가?
+  \task최초 와일드카드 표현식은 오류가 나지 않는데 어떤 상황에서 본인 표현식은 오류 메시지를 출력하는가?
+\end{tasks}
+
+\noindent 2. [불필요한 파일 제거하기] 저장공간을 절약하고자 중간 처리된 데이터 파일을 삭제하고 원본 파일과 처리 스크립트만 보관했으면 한다고 가정하자.
 
 원본 파일은 `.dat`으로 끝나고, 처리된 파일은 `.txt`으로 끝난다.
 다음 중 어떤 명령어가 처리과정에서 생긴 중간 모든 파일을 삭제하게 하는가?
-1. `rm ?.txt`
-2. `rm *.txt`
-3. `rm * .txt`
-4. `rm *.*`
 
-> **해답**
-> 1. 한문자 `.txt` 파일을 제거한다.
-> 2. 정답
-> 3. `*` 기호로 인해 현재 디렉토리 모든 파일과 디렉토리를 매칭시킨다.
-> 그래서 `*` 기호로 매칭되는 모든 것과 추가로 `.txt` 파일도 삭제한다.
-> 4. `*.*` 기호는 임의 확장자를 갖는 모든 파일을 매칭시킨다.
-> 따라서 `*.*` 기호는 모든 파일을 삭제한다.
+\begin{tasks}[label=(\arabic*)](1)
+  \task `rm ?.txt`
+  \task `rm *.txt`
+  \task `rm * .txt`
+  \task `rm *.*`
+\end{tasks}
 
+\end{Exercise}
 
-
-:::
+# ㅌㅌㅌ

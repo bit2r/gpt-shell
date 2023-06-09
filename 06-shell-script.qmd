@@ -11,7 +11,7 @@
 
 `molecules/` 디렉토리로 돌아가서 `middle.sh` 파일에 다음 행을 추가하게 되면 쉘스크립트가 된다:
 
-```
+```bash
 $ cd molecules
 $ nano middle.sh
 ```
@@ -21,7 +21,7 @@ $ nano middle.sh
 `middle.sh` 파일이 존재하지 않는 경우, `middle.sh` 파일을 생성시킨다.
 텍스트 편집기를 사용해서 직접 파일을 편집한다 -- 단순히 다음 행을 삽입시킨다:
 
-```
+```bash
 head -n 15 octane.pdb | tail -n 5
 ```
 
@@ -40,7 +40,7 @@ Our shell is called `bash`, so we run the following command:
 파일을 저장하면, 쉘로 하여금 파일에 담긴 명령어를 실행하도록 한다.
 지금 쉘은 `bash`라서, 다음과 같이 다음 명령어를 실행시킨다:
 
-```
+```bash
 $ bash middle.sh
 
 ATOM      9  H           1      -4.502   0.681   0.785  1.00  0.00
@@ -72,20 +72,20 @@ ATOM     13  H           1      -3.172  -1.337   0.206  1.00  0.00
 단순히 명령어를 다시 타이핑하는 것보다 아마 시간이 더 걸릴 것이다. 
 대신에 `middle.sh`을 편집해서 좀더 다양한 기능을 제공하도록 만들어보자:
 
-```
+```bash
 $ nano middle.sh
 ```
 
 나노 편집기로 `octane.pdb`을 `$1`으로 불리는 특수 변수로 변경하자:
 
-```
+```bash
 head -n 15 "$1" | tail -n 5
 ```
 
 쉘 스크립트 내부에서, `$1`은 "명령라인의 첫 파일 이름(혹은 다른 인자)"을 의미한다. 
 이제 스크립트를 다음과 같이 바꿔 실행해 보자:
 
-```
+```bash
 $ bash middle.sh octane.pdb
 
 ATOM      9  H           1      -4.502   0.681   0.785  1.00  0.00
@@ -98,7 +98,7 @@ ATOM     13  H           1      -3.172  -1.337   0.206  1.00  0.00
 
 혹은 다음과 같이 다른 파일에 대해 스크립트 프로그램을 실행해 보자:
 
-```
+```bash
 $ bash middle.sh pentane.pdb
 
 ATOM      9  H           1       1.324   0.350  -1.332  1.00  0.00
@@ -121,18 +121,18 @@ ATOM     13  H           1      -1.183   0.500  -1.412  1.00  0.00
 이 문제를 특수 변수 `$2` 와 `$3` 을 사용해서 고쳐보자: `head`, `tail` 명령어에 
 해당 줄수를 출력하도록 인자로 넘긴다.
 
-```
+```bash
 $ nano middle.sh
 ```
 
-```
+```bash
 head -n "$2" "$1" | tail -n "$3"
 ```
 
 
 이제 다음을 실행시킨다:
 
-```
+```bash
 $ bash middle.sh pentane.pdb 15 5
 
 ATOM      9  H           1       1.324   0.350  -1.332  1.00  0.00
@@ -144,7 +144,7 @@ ATOM     13  H           1      -1.183   0.500  -1.412  1.00  0.00
 
 명령문의 인자를 변경함으로써 스크립트 동작을 바꿀 수 있게 된다:
 
-```
+```bash
 $ bash middle.sh pentane.pdb 20 5
 
 ATOM     14  H           1      -1.259   1.420   0.112  1.00  0.00
@@ -159,11 +159,11 @@ TER      18              1
 스크립트가 무엇을 수행하는지 알아내야 할지 모른다. 
 스크립트를 상단에 **주석(comments)**을 추가해서 좀더 낫게 만들 수 있다:
 
-```
+```bash
 $ nano middle.sh
 ```
 
-```
+```bash
 # Select lines from the middle of a file.
 # Usage: bash middle.sh filename end_line num_lines
 head -n "$2" "$1" | tail -n "$3"
@@ -179,7 +179,7 @@ head -n "$2" "$1" | tail -n "$3"
 만약 많은 파일을 단 하나 파이프라인으로 처리하고자 한다면 어떨까? 
 예를 들어, `.pdb` 파일을 길이 순으로 정렬하려면, 다음과 같이 타이핑한다:
 
-```
+```bash
 $ wc -l *.pdb | sort -n
 ```
 
@@ -196,11 +196,11 @@ $ wc -l *.pdb | sort -n
 (`"$@"`은  `"$1"` `"$2"` ... 와 동치다).
 예제가 다음에 있다:
 
-```
+```bash
 $ nano sorted.sh
 ```
 
-```
+```bash
 # Sort filenames by their length.
 # Usage: bash sorted.sh one_or_more_filenames
 wc -l "$@" | sort -n
@@ -208,7 +208,7 @@ wc -l "$@" | sort -n
 
 실행방법과 실행결과는 다음과 같다.
 
-```
+```bash
 $ bash sorted.sh *.pdb ../creatures/*.dat
 
 9 methane.pdb
@@ -226,7 +226,7 @@ $ bash sorted.sh *.pdb ../creatures/*.dat
 유일무이한 개체 목록으로 나열
 정훈이는 데이터 파일 수백개를 갖고 있는데, 각각은 다음과 같은 형식을 가지고 있다:
 
-```
+```bash
 2013-11-05,deer,5
 2013-11-05,rabbit,22
 2013-11-05,raccoon,7
@@ -266,14 +266,14 @@ $ bash sorted.sh *.pdb ../creatures/*.dat
 스크립트가 아주 많은 파일을 처리하고 했지만, 어떠한 파일 이름도 부여하지 않는다면 무슨 일이 발생할까? 
 예를 들어, 만약 다음과 같이 타이핑한다면 어떻게 될까요?:
 
-```
+```bash
 $ bash sorted.sh
 ```
 
 하지만 `*.dat` (혹은 다른 어떤 것)를 타이핑하지 않는다면 어떨까요? 
 이 경우 `$@`은 아무 것도 전개하지 않아서, 스크립트 내부의 파이프라인은 사실상 다음과 같다:
 
-```
+```bash
 $ wc -l | sort -n
 ```
 
@@ -290,14 +290,14 @@ $ wc -l | sort -n
 파일에 명령어를 저장하고자 한다. 
 명령문을 다시 타이핑(그리고 잠재적으로 잘못 타이핑할 수도 있다)하는 대신에, 다음과 같이 할 수도 있다:
 
-```
+```bash
 $ history | tail -n 5 > redo-figure-3.sh
 ```
 
 
 `redo-figure-3.sh` 파일은 이제 다음을 담고 있다:
 
-```
+```bash
 297 bash goostats NENE01729B.txt stats-NENE01729B.txt
 298 bash goodiff stats-NENE01729B.txt /data/validated/01729.txt > 01729-differences.txt
 299 cut -d ',' -f 2-3 01729-differences.txt > 01729-time-series.txt
@@ -315,7 +315,7 @@ $ history | tail -n 5 > redo-figure-3.sh
 
 다음 명령어를 실행시키게 되면:
 
-```
+```bash
 $ history | tail -n 5 > recent.sh
 ```
 
@@ -346,7 +346,7 @@ Nelle의 지도교수는 모든 분석결과가 재현가능해야 된다는 고
 모든 분석 단계를 담아내는 가장 쉬운 방법은 스크립트에 있다.
 편집기를 열어서 다음과 같이 작성한다:
 
-```
+```bash
 # 데이터 파일별로 통계량 계산.
 for datafile in "$@"
 do
@@ -358,14 +358,14 @@ done
 `do-stats.sh` 이름으로된 파일에 저장해서, 
 다음과 같이 타이핑해서 첫번째 단계 분석을 다시 실행할 수 있게 되었다:
 
-```
+```bash
 $ bash do-stats.sh NENE*[AB].txt
 ```
 
 
 또한 다음과 같이도 할 수 있다:
 
-```
+```bash
 $ bash do-stats.sh NENE*[AB].txt | wc -l
 ```
 
@@ -374,7 +374,7 @@ $ bash do-stats.sh NENE*[AB].txt | wc -l
 Nelle의 스크립트에서 주목할 한가지는 스크립트를 실행하는 사람이 무슨 파일을 처리할지를 결정하게 하는 것이다. 
 스크립트를 다음과 같이 작성할 수 있다:
 
-```
+```bash
 # Site A, Site B 데이터 파일에 대한 통계량 계산
 for datafile in NENE*[AB].txt
 do
@@ -396,14 +396,14 @@ done
 
 `molecules` 디렉토리에서, 다음 명령어를 포함하는 `script.sh`라는 쉘스크립트가 있다고 가정한다:
 
-```
+```bash
 head -n $2 $1
 tail -n $3 $1
 ```
 
 `molecules` 디렉토리에서 다음 명령어를 타이핑한다:
 
-```
+```bash
 bash script.sh '*.pdb' 1 1
 ```
 
@@ -419,7 +419,7 @@ bash script.sh '*.pdb' 1 1
 > 특수 변수 $1, $2, $3은 스크립트에 명령라인 인수를 나타낸다. 따라서 
 > 실행되는 명령어는 다음과 같다:
 >
-> ```
+> ```bash
 > $ head -n 1 cubane.pdb ethane.pdb octane.pdb pentane.pdb propane.pdb
 > $ tail -n 1 cubane.pdb ethane.pdb octane.pdb pentane.pdb propane.pdb
 > ```
@@ -437,7 +437,7 @@ bash script.sh '*.pdb' 1 1
 그 디렉토리에서 해당 확장자를 가지는 파일 중에 가장 긴 줄을 가진 파일이름을 화면에 출력하세요. 
 예를 들어, 다음은
 
-```
+```bash
 $ bash longest.sh /tmp/data pdb
 ```
 
@@ -465,12 +465,12 @@ $ bash longest.sh /tmp/data pdb
 만약 다음 행을 담고 있는 스크립트로 `bash example.sh *.dat`을 실행할 때, 
 `example.sh` 이름의 스크립트가 무엇을 수행하는지 설명하세요:
 
-```
+```bash
 # 스크립트 1
 echo *.*
 ```
 
-```
+```bash
 # 스크립트 2
 for filename in $1 $2 $3
 do
@@ -478,7 +478,7 @@ do
 done
 ```
 
-```
+```bash
 # 스크립트 3
 echo $@.pdb
 ```
@@ -505,7 +505,7 @@ echo $@.pdb
 Nelle 컴퓨터 `north-pacific-gyre/2012-07-03` 디렉토리의 
 `do-errors.sh` 파일에 다음과 같은 스크립트가 저장되었다고 가정하자. 
 
-```
+```bash
 # Calculate stats for data files.
 for datafile in "$@"
 do
@@ -516,14 +516,14 @@ done
 
 다음을 실행하게 되면:
 
-```
+```bash
 $ bash do-errors.sh NENE*[AB].txt
 ```
 
 출력결과는 아무 것도 없다.
 원인을 파악하고자 `-x` 선택옵션을 사용해서 스크립트를 재실행시킨다:
 
-```
+```bash
 bash -x do-errors.sh NENE*[AB].txt
 ```
 

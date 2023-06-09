@@ -11,26 +11,26 @@ book:
   title: "챗GPT 유닉스 쉘"
   author:
     - name: "이광춘"
-      affiliations: "사단법인 한국 R 사용자회"
+      affiliations: "비영리법인 한국 R 사용자회"
     - name: "신종화"
-      affiliations: "사단법인 한국 R 사용자회"
+      affiliations: "비영리법인 한국 R 사용자회"
   date: last-modified
   date-format: "YYYY년 MM월 DD일"
   chapters:
     - index.qmd
-#    - part: "들어가며"
-#      chapters:
-#        - 00_setup.qmd
-    #     # - 01_openAI.qmd
+    - part: "들어가며"
+      chapters:
+        - 00_setup.qmd
+    # - 01_openAI.qmd
     - part: "쉘 프로그래밍"
       chapters:
-        # - 01-shell-intro.qmd
-        # - 02-shell-filedir.qmd
+        - 01-shell-intro.qmd
+        - 02-shell-filedir.qmd
         - 03-shell-create.qmd
-        # - 04-shell-pipefilter.qmd
-        # - 05-shell-loop.qmd
-        # - 06-shell-script.qmd
-        # - 07-shell-find.qmd
+        - 04-shell-pipefilter.qmd
+        - 05-shell-loop.qmd
+        - 06-shell-script.qmd
+        - 07-shell-find.qmd
     # - part: "GPT 데이터 과학"
     #   chapters:
     #     - 11_cli_ds.qmd

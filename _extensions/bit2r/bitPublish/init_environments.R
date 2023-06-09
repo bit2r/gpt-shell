@@ -34,25 +34,25 @@ if(!require("hrbrthemes")){
 showtext.opts(dpi = 300)
 
 # 한글 폰트
-font_add("NanumSquare", 
-         regular = here("_extensions", "bit2r", "bitPublish", "fonts", "NanumSquare", 
-                        "NanumSquareR.otf"), 
-         bold = here("_extensions", "bit2r", "bitPublish", "fonts", "NanumSquare", 
+font_add("NanumSquare",
+         regular = here("_extensions", "bit2r", "bitPublish", "fonts", "NanumSquare",
+                        "NanumSquareR.otf"),
+         bold = here("_extensions", "bit2r", "bitPublish", "fonts", "NanumSquare",
                      "NanumSquareB.otf"))
 
 # 영문폰트
 font_add("Nimbus Sans L",
-         regular = here("_extensions", "bit2r", "bitPublish", "fonts", "Nimbus Sans L", 
-                        "NimbusSanL-Reg.otf"),     
-         bold = here("_extensions", "bit2r", "bitPublish", "fonts", "Nimbus Sans L", 
-                     "NimbusSanL-Bol.otf"),     
-         italic = here("_extensions", "bit2r", "bitPublish", "fonts", "Nimbus Sans L", 
-                       "NimbusSanL-RegIta.otf"),     
-         bolditalic = here("_extensions", "bit2r", "bitPublish", "fonts", "Nimbus Sans L", 
+         regular = here("_extensions", "bit2r", "bitPublish", "fonts", "Nimbus Sans L",
+                        "NimbusSanL-Reg.otf"),
+         bold = here("_extensions", "bit2r", "bitPublish", "fonts", "Nimbus Sans L",
+                     "NimbusSanL-Bol.otf"),
+         italic = here("_extensions", "bit2r", "bitPublish", "fonts", "Nimbus Sans L",
+                       "NimbusSanL-RegIta.otf"),
+         bolditalic = here("_extensions", "bit2r", "bitPublish", "fonts", "Nimbus Sans L",
                            "NimbusSanL-BolIta.otf"))
 
 
-## 청크 옵션에서 폰트를 선택할 수 있도록 후크 추가    
+## 청크 옵션에서 폰트를 선택할 수 있도록 후크 추가
 knitr::knit_hooks$set(
   nanum = function(before, options, envir)
     if (before) par(family = "NanumSquare"),
@@ -76,15 +76,15 @@ theme_set(hrbrthemes::theme_ipsum(base_family = "NanumSquare"))
 ## https://github.com/rstudio/gt/issues/818 참고로 작성
 as_latex_with_caption <- function(gt, label, caption) {
   gt <- gt::as_latex(gt)
-  
+
   caption <- paste0(
     "\\caption{\\label{", label, "}", caption, "}")
-  
+
   latex <- strsplit(gt[1], split = "\n")[[1]]
   latex <- c(latex[-length(latex)], caption, latex[length(latex)])
   latex <- paste(latex, collapse = "\n")
   gt[1] <- latex
-  
+
   gt
 }
 
@@ -98,10 +98,10 @@ table_with_caption <- function(tab, label) {
 
     align <- paste(ifelse(sapply(iris, is.numeric), "r", "l"), collapse = "")
 
-    tab2 <- tab                                          
-    factor_columns <- sapply(tab2, is.factor)  
-    numeric_columns <- sapply(tab2, is.numeric)  
-    
+    tab2 <- tab
+    factor_columns <- sapply(tab2, is.factor)
+    numeric_columns <- sapply(tab2, is.numeric)
+
     change_format <- function(x, digits, big.mark) {
       if (!is.null(digits) & !is.null(big.mark)) {
         x <- format(x, digits = digits, big.mark = big.mark)
@@ -112,20 +112,20 @@ table_with_caption <- function(tab, label) {
       } else {
         x <- x
       }
-      
+
       x
     }
-    
+
     tab2[factor_columns] <- lapply(tab2[factor_columns], as.character)
     tab2[numeric_columns] <- lapply(tab2[numeric_columns], change_format,
                                     digits = digits, big.mark = big.mark)
-    
+
     contents <- NULL
-    
+
     for (i in seq(NROW(tab2))) {
       contents <- paste0(contents, paste(paste(tab2[i, ], collapse = " & "), "\\\\\n"))
     }
-    
+
     str <- ""
     str <- paste0(str, "")
     # str <- paste0(str, "\\begin{table}[htb!]\n")
@@ -135,19 +135,19 @@ table_with_caption <- function(tab, label) {
     str <- paste0(str, "\\midrule\\noalign{}\n")
     str <- paste0(str, contents)
     str <- paste0(str, "\\bottomrule\\noalign{}\n")
-    str <- paste0(str, caption_lab)      
+    str <- paste0(str, caption_lab)
     str <- paste0(str, "\\end{longtable}\n")
-    # str <- paste0(str, "\\end{table}\n")    
+    # str <- paste0(str, "\\end{table}\n")
 
     cat(str)
-    
+
     # knitr::kable(tab, format = "latex", label = label, caption = caption) |>
     #   cat()
   }
-  
+
   if (knitr::is_html_output()) {
     knitr::kable(tab)
-  }  
+  }
 }
 
 
@@ -163,19 +163,19 @@ custom_block <- function(msg = NULL, type = c("information", "caution", "warning
     } else {
       title <- "{}"
     }
-    
+
     block <- paste0("\n::: {.infobox", " data-latex=\"{", type, "}", title, "\"}\n", msg, "\n:::\n")
   }
-  
+
   if (knitr::is_html_output()) {
     if (!is.null(title)) {
-      block <- paste0("\n::: {.infobox .", type, " data-latex=\"\"}\n**", title, "**\n\n", 
+      block <- paste0("\n::: {.infobox .", type, " data-latex=\"\"}\n**", title, "**\n\n",
       msg, ":::\n")
     } else {
       block <- paste0("\n::: {.infobox .", type, " data-latex=\"\"}\n", msg, "\n:::\n")
     }
   }
-  
+
   cat(block)
 }
 
@@ -183,30 +183,30 @@ custom_block <- function(msg = NULL, type = c("information", "caution", "warning
 ##==============================================================================
 ## quote 블록의 정의
 ##==============================================================================
-quote_block <- function(msg = NULL, speaker = NULL, 
+quote_block <- function(msg = NULL, speaker = NULL,
                         align = c("left", "center", "right")) {
   align <- match.arg(align)
-  
+
   if (knitr::is_latex_output()) {
     if (!is.null(speaker)) {
       speaker <- paste0("{", speaker, "}")
     } else {
       speaker <- "{}"
     }
-    
+
     align <- substr(align, 1, 1)
     block <- paste0("\n\\begin{shadequote}[", align, "]", speaker, "\n", msg, "\\end{shadequote}\n")
   }
-  
+
   if (knitr::is_html_output()) {
     if (!is.null(speaker)) {
-      block <- paste0("<blockquote class=\"otro-blockquote\">\n", msg, "\n<span>", 
-                      speaker, "</span>\n</blockquote>\n")      
+      block <- paste0("<blockquote class=\"otro-blockquote\">\n", msg, "\n<span>",
+                      speaker, "</span>\n</blockquote>\n")
     } else {
       block <- paste0("<blockquote class=\"otro-blockquote\">\n", msg, "\n</blockquote>\n")
     }
   }
-  
+
   cat(block)
 }
 
@@ -214,29 +214,26 @@ quote_block <- function(msg = NULL, speaker = NULL,
 ##==============================================================================
 ## titlebox 블록의 정의
 ##==============================================================================
-titlebox_block <- function(msg = NULL, title = NULL, 
-                           theme = c("bluejeans", "grapefruit", "bittersweet", 
-                                     "sunflower", "grass", "mint", "aqua", 
-                                     "lavander", "pinkrose", "light", "gray", 
+titlebox_block <- function(msg = NULL, title = NULL,
+                           theme = c("bluejeans", "grapefruit", "bittersweet",
+                                     "sunflower", "grass", "mint", "aqua",
+                                     "lavander", "pinkrose", "light", "gray",
                                      "night")) {
   theme <- match.arg(theme)
   if (is.null(theme)) {
     theme <- "bluejeans"
   }
-  
+
   if (knitr::is_latex_output()) {
-    block <- paste0("\\titlebox{", title, "}{C", theme, "}{", msg, "}\n") 
+    block <- paste0("\\titlebox{", title, "}{C", theme, "}{", msg, "}\n")
   }
-  
+
   if (knitr::is_html_output()) {
-    block <- paste0("<titlebox class=\"", theme, "\">\n", 
+    block <- paste0("<titlebox class=\"", theme, "\">\n",
                     "<h4><span class=\"C", theme, "\">", title, "</span></h4>\n",
                     "<p>", msg, "</p>\n",
                     "</titlebox>\n")
   }
-  
+
   cat(block)
 }
-
-
-

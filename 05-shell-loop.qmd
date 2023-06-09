@@ -12,19 +12,19 @@
 원본 파일을 `original-basilisk.dat`와 `original-unicorn.dat`으로 이름을 변경해서 저장한다. 
 하지만 다음 명령어를 사용할 수 없다:
 
-```
+```bash
 $ cp *.dat original-*.dat
 ```
 
 왜냐하면 상기 두 파일 경우에 전개가 다음과 같이 될 것이기 때문이다:
 
-```
+```bash
 $ cp basilisk.dat unicorn.dat original-*.dat
 ```
 
 상기 명령어는 파일을 백업하지 않고 대신에 오류가 발생된다:
 
-```
+```bash
 cp: target `original-*.dat' is not a directory
 ```
 
@@ -37,7 +37,7 @@ cp: target `original-*.dat' is not a directory
 **루프(loop)**를 사용할 수 있다.
 교대로 각 파일에 대해 첫 3줄을 화면에 출력하는 단순한 예제가 다음에 나와 있다:
 
-```
+```bash
 $ for filename in basilisk.dat unicorn.dat
 > do
 >    head -n 3 $filename	# 루프 내부에 들여쓰기는 가독성에 도움을 준다.
@@ -92,13 +92,13 @@ UPDATED: 1738-11-24
 이번 예제는 `data-shell/molecules` 디렉토리를 가정한다.
 `ls` 명령어를 던지면 출력결과는 다음과 같다:
 
-```
+```bash
 cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
 ```
 
 다음 코드의 출력결과는 어떻게 나오는가?
 
-```
+```bash
 $ for datafile in *.pdb
 > do
 >    ls *.pdb
@@ -107,7 +107,7 @@ $ for datafile in *.pdb
 
 이제 다음 코드의 출력결과는 무엇인가?
 
-```
+```bash
 $ for datafile in *.pdb
 > do
 >	ls $datafile
@@ -183,7 +183,7 @@ $ for datafile in *.pdb
 사람 코드를 읽는 독자에게 목적을 좀더 명확히 하기 위해서 루프의 변수명을 `filename`로 했다. 
 쉘 자체는 변수명이 어떻게 작명되든지 문제삼지 않는다. 만약 루프를 다음과 같이 작성하거나:
 
-```
+```bash
 $ for x in basilisk.dat unicorn.dat
 > do
 >    head -n 3 $x
@@ -192,7 +192,7 @@ $ for x in basilisk.dat unicorn.dat
 
 혹은:
 
-```
+```bash
 $ for temperature in basilisk.dat unicorn.dat
 > do
 >    head -n 3 $temperature
@@ -212,7 +212,7 @@ $ for temperature in basilisk.dat unicorn.dat
 
 `data-shell/molecules` 디렉토리에서 다음 루프를 실행하게 되면 출력결과는 어떻게 될까?
 
-```
+```bash
 $ for filename in c*
 > do
 >    ls $filename 
@@ -231,7 +231,7 @@ $ for filename in c*
 
 대신에 다음 명령어를 사용하면 출력결과는 어떻게 달라지나?
 
-```
+```bash
 $ for filename in *c*
 > do
 >    ls $filename 
@@ -253,7 +253,7 @@ $ for filename in *c*
 `data-shell/creatures` 디렉토리에서 예제를 계속해서 학습해보자.
 다음에 좀더 복잡한 루프가 있다:
 
-```
+```bash
 $ for filename in *.dat
 > do
 >     echo $filename
@@ -266,13 +266,13 @@ $ for filename in *.dat
 첫 명령어 `echo`는 명령 라인 매개변수를 표준 출력으로 화면에 뿌려준다. 
 예를 들어:
 
-```
+```bash
 $ echo hello there
 ```
 
 상기 명령은 다음과 같이 출력된다:
 
-```
+```bash
 hello there
 ```
 
@@ -280,7 +280,7 @@ hello there
 이 사례에서, 쉘이 파일 이름으로 `$filename`을 전개했기 때문에, 
 `echo $filename`은 단지 파일 이름만 화면에 출력한다. 다음과 같이 작성할 수 없다는 것에 주의한다:
 
-```
+```bash
 $ for filename in *.dat
 > do
 >     $filename
@@ -301,14 +301,14 @@ $ for filename in *.dat
 리스트 원소중 일부가 공백을 갖는 경우, 해당 원소를 인용부호로 감싸서 사용해야 된다.
 데이터 파일이 다음과 같은 이름으로 되었다고 가정하자:
 
-```
+```bash
 red dragon.dat
 purple unicorn.dat
 ```
 
 다음을 사용하여 파일을 처리하려고 한다면:
 
-```
+```bash
 $ for filename in "red dragon.dat" "purple unicorn.dat"
 > do
 >     head -n 100 "$filename" | tail -n 3
@@ -319,7 +319,7 @@ $ for filename in "red dragon.dat" "purple unicorn.dat"
 상기 파일은 존재하지 않는다. 그래서 상기 코드를 실행하게 되면, `head` 명령어는 
 파일을 찾을 수가 없어서 예상되는 파일명을 보여주는 오류 메시지가 반환된다:
 
-```
+```bash
 head: cannot open ‘red dragon.dat’ for reading: No such file or directory
 head: cannot open ‘purple unicorn.dat’ for reading: No such file or directory
 ```
@@ -327,7 +327,7 @@ head: cannot open ‘purple unicorn.dat’ for reading: No such file or director
 상기 루프 내부 `$filename` 파일명 주위 인용부호를 제거하고 공백 효과를 살펴보자.
 `creatures` 디렉토리에서 코드를 실행시키게 되면 `unicorn.dat` 파일에 대한 결과를 루프 명령어 실행 결과를 얻게 됨에 주목한다:
 
-```
+```bash
 head: cannot open ‘red’ for reading: No such file or directory
 head: cannot open ‘dragon.dat’ for reading: No such file or directory
 head: cannot open ‘purple’ for reading: No such file or directory
@@ -338,7 +338,7 @@ CAAGTGTTCC
 
 원래 파일 복사문제로 되돌아가서, 다음 루프를 사용해서 문제를 해결해 보자:
 
-```
+```bash
 $ for filename in *.dat
 > do
 >     cp $filename original-$filename
@@ -349,13 +349,13 @@ $ for filename in *.dat
 상기 루프는 `cp` 명령문을 각 파일이름에 대해 실행한다.
 처음에 `$filename`이 `basilisk.dat`로 전개될 때, 쉘은 다음을 실행한다:
 
-```
+```bash
 cp basilisk.dat original-basilisk.dat
 ```
 
 두번째에는 명령문은 다음과 같다:
 
-```
+```bash
 cp unicorn.dat original-unicorn.dat
 ```
 
@@ -382,7 +382,7 @@ Nelle은 이제 `goostats` 프로그램(논문 지도교수가 작성한 쉘 스
 --- 'Z'가 아닌 'A' 혹은 'B'로 파일이름이 끝나는 것이 적합한 파일이라는 것을 명심한다. 
 홈 디렉토리에서 시작해서, 박사과정 Nelle이 다음과 같이 타이핑한다:
 
-```
+```bash
 $ cd north-pacific-gyre/2012-07-03
 $ for datafile in NENE*[AB].txt
 > do
@@ -400,7 +400,7 @@ NENE02043B.txt
 다음 단계는 `goostats` 분석 프로그램이 생성할 파일이름을 무엇으로 할지 결정하는 것이다. 
 "stats"을 각 입력 파일에 접두어로 붙이는 것이 간단해 보여서, 루프를 변경해서 작업을 수행하도록 한다:
 
-```
+```bash
 $ for datafile in NENE*[AB].txt
 > do
 >     echo $datafile stats-$datafile
@@ -424,14 +424,14 @@ NENE02043B.txt stats-NENE02043B.txt
 위쪽 화살표에 반응해서 컴퓨터 쉘은 한줄에 전체 루프를 다시 보여준다. 
 (스크립트 각 부분이 구분되는데 세미콜론이 사용됨):
 
-```
+```bash
 $ for datafile in NENE*[AB].txt; do echo $datafile stats-$datafile; done
 ```
 
 왼쪽 화살표 키를 사용해서, 
 Nelle은 `echo`명령어를 `bash goostats`으로 변경하고 백업한다:
 
-```
+```bash
 $ for datafile in NENE*[AB].txt; do bash goostats $datafile stats-$datafile; done
 ```
 
@@ -445,7 +445,7 @@ $ for datafile in NENE*[AB].txt; do bash goostats $datafile stats-$datafile; don
 편집해서 다음과 같이 작성한다:
 
 
-```
+```bash
 $ for datafile in NENE*[AB].txt; do echo $datafile; bash goostats $datafile stats-$datafile; done
 ```
 
@@ -460,7 +460,7 @@ $ for datafile in NENE*[AB].txt; do echo $datafile; bash goostats $datafile stat
 
 이번에 프로그램을 실행하면, 매 5초간격으로 한줄을 출력한다:
 
-```
+```bash
 NENE01729A.txt
 NENE01729B.txt
 NENE01736A.txt
@@ -485,7 +485,7 @@ NENE01736A.txt
 이들 명령어 중 하나를 반복실행하기 위해서 `!123`("123"은 명령 숫자로 교체된다.)을 사용한다. 
 예를 들어 Nelle이 다음과 같이 타이핑한다면:
 
-```
+```bash
 $ history | tail -n 5
   456  ls -l NENE0*.txt
   457  rm stats-NENE01729B.txt.txt
@@ -525,7 +525,7 @@ $ history | tail -n 5
 `data-shell/molecules` 디렉토리에 있다고 가정하자.
 다음 루프의 효과는 무엇인가?
 
-```
+```bash
 $ for alkanes in *.pdb
 > do
 >     echo $alkanes
@@ -553,7 +553,7 @@ $ for alkanes in *.pdb
 
 이번에도 `data-shell/molecules` 디렉토리에 있다고 가정하고, 다음 루프 실행 출력결과는 무엇일까?
 
-```
+```bash
 $ for datafile in *.pdb
 > do
 >     cat $datafile >> all.pdb
@@ -584,7 +584,7 @@ $ for datafile in *.pdb
 `echo` 명령어를 사용하는 것이다.
 실제로 명령어를 실행하지 않고, 다음 루프가 실행할 명령어를 머릿속으로 미리보고자 한다고 가정한다: 
 
-```
+```bash
 $ for file in *.pdb
 > do
 >   analyze $file > analyzed-$file
@@ -593,7 +593,7 @@ $ for file in *.pdb
 
 아래 두 루프 사이에 차이는 무엇이고, 어느 것을 시운전으로 실행하고 싶은가?
 
-```
+```bash
 # Version 1
 $ for file in *.pdb
 > do
@@ -601,7 +601,7 @@ $ for file in *.pdb
 > done
 ```
 
-```
+```bash
 # Version 2
 $ for file in *.pdb
 > do
@@ -629,7 +629,7 @@ $ for file in *.pdb
 실험을 조직하도록 이에 상응하는 디렉토리 구조를 갖추고자 한다.
 다음 코드 실행결과는 어떻게 될까?
 
-```
+```bash
 $ for species in cubane ethane methane
 > do
 >     for temperature in 25 30 37 40
