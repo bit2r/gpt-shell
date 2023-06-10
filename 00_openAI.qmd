@@ -1,0 +1,248 @@
+```{r init, include=FALSE}
+source(here::here("_extensions", "bit2r", "bitPublish", "init_environments.R"))
+```
+
+
+```{r}
+#| echo: false
+#| results: asis
+titlebox_block("본서에서는 주로 작업 자동화 관련 챗GPT를 다루지만 OpenAI를 비롯한 다양한 거대언어모형(LLM) 기반 AI를 활용하여 다양한 자연어 처리 관련 업무를 수행할 수 있다. OpenAI 환경설정을 통해 유닉스 쉘 작업자동화 외에 챗GPT를 활용할 수 있는 업무에 대해서 간략히 살펴본다.", title = "학습목표", theme = "bluejeans")
+```
+
+
+# OpenAI 들어가며
+
+```{r}
+#| echo: false
+library(reticulate)
+
+use_condaenv(condaenv = 'gpt-shell')
+```
+
+## 텍스트 완성
+
+GPT\index{GPT}를 사용하여 다양한 작업을 수행할 수 있지만 가장 기본적인 작업은 글쓰기다. GPT가 생성형 AI로 해당 텍스트를 주어지면 나머지 텍스트를 해당 최대 토큰 크기(`max_tokens`)\index{openai!max\_tokens} 길이만큼 텍스트를 생성해준다.
+
+```{python}
+#| eval: false
+import os
+import openai
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+complete_next = openai.Completion.create(
+  model="text-davinci-003",
+  prompt="나의 살던 고향은",
+  max_tokens=7,
+  temperature=0)
+  
+complete_next['choices'][0]['text']
+```
+
+```bash
+'\n\n나의'
+```
+
+
+토큰 크기를 100으로 지정하면 제법 긴 텍스트를 출력한다. 영어 토큰에 최적화되어 있는 관계로 한글의 경우 토큰 낭비(?)가 심한 것으로 보인다. 고로 비용이 제법 나가는 점은 한국어로 작업을 할 때 고려해야만 된다.
+
+```{python}
+#| eval: false
+complete_next_100 = openai.Completion.create(
+  model="text-davinci-003",
+  prompt="나의 살던 고향은",
+  max_tokens=100,
+  temperature=0)
+  
+complete_next_100['choices'][0]['text']
+```
+
+```bash
+'\n\n나의 고향은 전라남도 여수시입니다. 여수는 전라남도의 동부에 위치한 해안 도시로'
+```
+
+## 키워드 추출
+
+조금더 흥미로운 주제로 해당 문서를 제시하고 관련 텍스트의 주요 키워드\index{keywords}를 추출해보자. `Attention Is All You Need` 논문\cite{vaswani2017attention}은 AI 분야에서 획기적인 논문으로 평가받있지만 별도 키워드는 제시되고 있지 않아 논문 초록을 앞에 제시하고 `Keywords:`를 뒤에 두고 논문의 주요 키워드를 추출하게 한다.
+
+```{python}
+#| eval: false
+prompt_keywords = "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 Englishto-German translation task, improving over the existing best results, including ensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.\n\n keywords:"
+
+keywords = openai.Completion.create(
+  model="text-davinci-003",
+  prompt=prompt_keywords,
+  temperature = 0.5,
+  max_tokens  = 50)
+
+keywords['choices'][0]['text']
+```
+
+
+`max_tokens`\index{openai!max\_tokens}을 50으로 제한하여 `temperature = 0.5`\index{openai!tempearature}로 너무 창의적이지 않게 키워드 추출 작업을 지시한 경우 다음과 같은 결과를 어덱 된다.
+
+```         
+'\nSequence transduction, neural networks, attention mechanisms, machine translation, parsing'
+```
+
+이번에는 한글 논문초록에서 키워드를 추출해보자. 2020년 출간된 논문\cite{Lee2020}의 한글 초록에서 제시된 키워드와 OpenAI GPT가 제시하고 있는 키워드와 비교해보자.
+
+-   논문 소스코드: [바로가기](https://statkclee.github.io/comp_document/automation-kasdba.html)
+-   PDF 출판 논문: [다운로드](https://statkclee.github.io/comp_document/data/00006_002_39.pdf)
+
+```{python}
+#| eval: false
+prompt_keywords = "알파고가 2016년 바둑 인간 챔피언 이세돌 9단을 현격한 기량차이로 격파하면서 인공지능에 대한 관심이 급격히 증가하였다. 그와 동시에 기계가 인간의 일자리 잠식을 가속화하면서 막연한 불안감이 삽시간에 전파되었다. 기계와의 일자리 경쟁은 컴퓨터의 출현이전부터 시작되었지만 인간만의 고유한 영역으로 알고 있던 인지, 창작 등 다양한 분야에서 오히려 인간보다 더 우수한 성능과 저렴한 가격 경쟁력을 보여주면서 기존 인간의 일자리가 기계에 대체되는 것이 가시권에 들었다. 이번 문헌조사와 실증 데이터 분석을 통해서 기계가 인간의 일자리를 대체하는 자동화의 본질에 대해서 살펴보고, 인간과 기계의 업무 분장을 통해 더 생산성을 높일 수 있는 방안을 제시하고자 한다.\n\n 키워드:"
+
+keywords = openai.Completion.create(
+  model="text-davinci-003",
+  prompt=prompt_keywords,
+  temperature = 0.5,
+  max_tokens  = 100)
+
+keywords['choices'][0]['text']
+```
+
+```bash
+' 인공지능, 자동화, 인간과 기계의 업무 분장, 생산성 \n\n이 문헌조사는 인공지능이 인'
+```
+
+GPT가 생성한 키워드를 논문저자가 추출한 키워드와 비교하면 다소 차이가 있지만 그래도 상위 3개 키워드는 높은 일치도를 보이고 있다.\index{자동화}\index{업무 분장}\index{키워드}
+
+
+| OpenAI GPT 키워드 | 논문저자 추출 |
+|-------------------|-------------------|
+| - 인공지능           |-   자동화 |
+| - 자동화           |-   데이터 과학|
+| - 인간과 기계의 업무 분장           |-   인공지능|
+| - 생산성이 문헌조사는 인공지능이 인'           |-   일자리 |
+|                               | - 기계와 사람의 업무분장|
+
+
+GPT-4는 더 높은 성능을 보여주고 있다. <https://chat.openai.com/chat?model=gpt-4>에 해당 텍스트를 던져주면 다음과 같이 키워드를 추출하고 요약을 해준다.
+
+![](images/completion_keywords.jpg){width="500"}
+
+
+## 텍스트 요약
+
+`Attention Is All You Need` 논문 초록은 <https://platform.openai.com/tokenizer> 계산기를 통해 230개 토큰 1,138 문자로 작성된 것이 확인된다. 
+영어 기준 다음과 같은 맥락을 이해하고 이를 대략 20% 수준 50 토큰으로 줄여보자. 
+
+- 100 토큰은 대략 75 단어
+- 평균 단어는 대략 5 문자로 구성
+- 100 토큰은 375개 문자
+
+```{python}
+#| eval: false
+prompt_keywords = "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 Englishto-German translation task, improving over the existing best results, including ensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.\n\n summary:"
+
+keywords = openai.Completion.create(
+  model="text-davinci-003",
+  prompt=prompt_keywords,
+  temperature = 0.5,
+  max_tokens  = 50)
+
+keywords['choices'][0]['text']
+```
+
+상기 논문 초록을 50개 토큰으로 요약\index{요약}하면 다음과 같이 48개 토큰, 277 문자수로 요약해준다.
+
+```bash
+'\n\nThe Transformer is a new neural network architecture based solely on attention mechanisms, which is shown to outperform existing models on two machine translation tasks. It is more parallelizable and requires significantly less time to train than existing models, achieving a B'
+```
+
+## 여론조사 할일 생성
+
+TO-DO 리스트를 제작하는 것은 해당 작업을 절차적으로 구분지어 수행할 수 있게 되어 
+해당 작업의 성공가능성을 높이고 생산성도 높일 수 있다.
+여론조사\index{여론조사}를 한사람이 수행하는 경우는 거의 없지만 일반적으로 여론조사에서 수행할 일에 대해서 
+지시명령어를 작성하여 결과를 살펴보자.
+
+
+```{python}
+#| eval: false
+
+todo_list = openai.Completion.create(
+  model="text-davinci-003",
+  prompt="여론조사를 위해서 해야될 일을 작성하세요\n\n1.",
+  temperature=0.3,
+  max_tokens = 1000,
+  top_p = 0.1,
+  frequency_penalty=0,
+  presence_penalty=0.5,
+  stop=["6."]
+)
+
+todo_text = todo_list['choices'][0]['text']
+```
+
+```bash
+' 여론조사 대상자를 선정하고, 여론조사 대상자의 수를 결정합니다.\n\n2. 여론조사 대상자들에게 여론조사 질문지를 배포합니다.\n\n3. 여론조사 대상자들에게 여론조사 응답을 요청합니다.\n\n4. 여론조사 응답을 수집하고, 분석합니다.\n\n5. 여론조사 결과를 보고서로 작성합니다.'
+```
+
+```{r}
+#| eval: false
+library(reticulate)
+cat(glue::glue("1. {py$todo_text}"))
+```
+
+작업수행결과를 가독성 좋게 정리하면 다음과 같다.
+
+1. 여론조사 대상자를 선정하고, 여론조사 대상자의 수를 결정합니다.
+2. 여론조사 대상자들에게 여론조사 질문지를 배포합니다.
+3. 여론조사 대상자들에게 여론조사 응답을 요청합니다.
+4. 여론조사 응답을 수집하고, 분석합니다.
+5. 여론조사 결과를 보고서로 작성합니다.
+
+
+지금까지 OpenAI API를 사용하여 텍스트 자동생성기능을 활용하여 키워드 추출, 문서요약,
+작업목록 생성과 같은 업무를 통해 가능성을 살펴봤다. 
+이제 데이터 과학업무 생산성의 주요한 도구인 유닉스 쉘(Unix Shell)을  챗GPT로 
+또 다른 데이터 과학의 세계로 나아가자.
+
+
+
+\begin{Exercise}\label{Ex01}
+
+\noindent 1. 챗GPT를 사용하면 어떤 작업을 수행할 수 있을까요?
+\begin{tasks}[label=(\arabic*)](1)
+\task 강화 학습 모델 훈련
+\task 음성 인식 시스템 구축
+\task 대화형 챗봇 개발
+\task 이미지 분류 알고리즘 개발
+\end{tasks}
+
+\noindent 2. 다음 중 GPT-4를 사용하여 자연어 처리에 어떻게 활용할 수 있는지 가장 적합하지 않은 예는 무엇일까요?
+\begin{tasks}[label=(\arabic*)](1)
+\task  감성 분석
+\task  기계 번역
+\task  음성을 텍스트로 변환
+\task  문장 생성
+\end{tasks}
+
+\noindent 3. 챗GPT를 이용하여 불가능한 자연어 처리 작업은 무엇일까요?
+\begin{tasks}[label=(\arabic*)](1)
+\task  텍스트 요약
+\task  텍스트 기반의 질의 응답
+\task  전문가 시스템을 위한 지식 표현
+\task  실시간 비디오 분석
+\end{tasks}
+
+\noindent 4. 챗GPT가 할 수 없는 자연어 처리 작업은 무엇일까요?
+\begin{tasks}[label=(\arabic*)](1)
+\task  문장 교정
+\task  개체명 인식
+\task  독해 이해
+\task  특정 개인의 미래 행동 예측
+\end{tasks}
+
+\noindent 5. 다음 중 챗GPT를 활용한 챗봇 개발이 아닌 작업은 무엇일까요?
+\begin{tasks}[label=(\arabic*)](1)
+\task  고객 지원 서비스 개발
+\task  대화형 게임 스크립트 작성
+\task  자동 완성 기능 개발
+\task  이미지 인식 시스템 개발
+\end{tasks}
+
+\end{Exercise}
