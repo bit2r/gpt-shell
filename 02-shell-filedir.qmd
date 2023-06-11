@@ -273,7 +273,7 @@ $ cd exercise-data
 
 상기 명령어는 홈 디렉토리에 바탕화면(`Desktop`) 디렉토리로 이동하고 나서, `shell-lesson-data` 디렉토리로 이동하고 나서, `exercise-data` 디렉토리에 이동하게 된다.
 `cd` 명령어는 아무것도 출력하지는 않지만, `pwd` 명령어를 실행하게 되면 `/Users/nelle/Desktop/shell-lesson-data/exercise-data` 위치한 것을 확인하게 된다.
-인자 없이 `ls` 명령어를 실행하게 되면, `/Users/nelle/Desktop/data-shell/data` 디렉토리 파일과 디렉토리를 출력하게 되는데 이유는 지금 있는 위치이기 때문이다:
+인자 없이 `ls` 명령어를 실행하게 되면, `/Users/nelle/Desktop/shell-lesson-data/data` 디렉토리 파일과 디렉토리를 출력하게 되는데 이유는 지금 있는 위치이기 때문이다:
 
 ``` bash
 $ pwd

@@ -1,3 +1,6 @@
+\label{chap:bitpublish}
+\newcounter{exam_num_bitpub}
+\setcounter{exam_num_bitpub}{0}
 
 # 파일과 디렉토리 작업 {#shell-create}
 
@@ -143,49 +146,55 @@ $ nano draft.txt
 `nano`는 화면에 어떤 출력도 뿌려주지 않고 끝내지만, 
 `ls` 명령어를 사용하여 `draft.txt` 파일이 생성된 것을 확인할 수 있다:
 
-```
+```bash
 $ ls
 draft.txt
 ```
 
-::: {.callout-caution}
+\addtocounter{exam_num_bitpub}{1}
+\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
 
-**파일을 생성하는 다른 방법**
+\textbf{파일을 생성하는 다른 방법}
 
 `nano` 편집기를 사용해서 텍스트 파일을 생성하는 방법을 살펴봤다.
-홈 디렉토리에서 다음 명령어를 실행해 보자:
-
-```
-$ cd                  # 홈 디렉토리로 이동하기
-$ touch my_file.txt
-```
+홈 디렉토리에서 다음 t쉘 명령어를 실행해 보자:
 
 1.  `touch` 명령어는 어떤 작업을 수행하는가?
     GUI 파일 탐색기를 사용해서 본인 홈 디렉토리를 살펴보게 되면,
     파일이 생성된 것이 보이는가?
-2. `ls -l` 명령어를 사용해서 파일을 살펴보자. `my_file.txt` 파일은 얼마나 큰가?
+2. `ls -l` 명령어를 사용해서 파일을 살펴보자. `my\_file.txt` 파일은 얼마나 큰가?
 3.  이런 방식으로 파일을 언제 생성하면 좋을까?
 
-> **실행결과 및 해석**
->
-> 1.  `touch` 명령어가 홈 디렉토리에 'my_file.txt' 파일을 새로 생성시킨다.
->     터미널로 현재 홈 디렉토리에 있는 경우, `ls` 를 타이핑하게 되면 
->     새로 생성된 파일을 확인할 수 있다. GUI 파일 탐색기로도 
->     'my_file.txt' 파일을 볼 수 있다.
->
-> 2.  'ls -l' 명령어로 파일을 조사하게 되면, 'my_file.txt' 파일크기가 0kb 임에 주목한다.
->     다른 말로 표현하면, 데이터가 아무 것도 없다는 의미가 된다.
->     텍스트 편집기로 'my_file.txt' 파일을 열게 되면, 텅 비어 있다.
->
-> 3.  일부 프로그램은 그 자체로 출력 파일을 생성하지 않지만,
->     빈 파일이 이미 생성되어 있는 것을 요구조건으로 하는 경우가 있다.
->     프로그램이 실행되면, 출력결과를 채울 수 있는 파일이 존재하는지 검색한다.
->     이런 프로그램에게 `touch` 명령어는 빈 텍스트 파일을 효율적으로 생성할 수 있는 
->     메커니즘을 제공한다는 점에서 유용하다.
 
-:::
+\end{example}
 
-`data-shell` 디렉토리로 돌아가서,
+```bash
+$ cd                  # 홈 디렉토리로 이동하기
+$ touch my_file.txt
+```
+
+:::{.callout-tip}
+### 실행결과 및 해석*
+
+1.  `touch` 명령어가 홈 디렉토리에 'my_file.txt' 파일을 새로 생성시킨다.
+    터미널로 현재 홈 디렉토리에 있는 경우, `ls` 를 타이핑하게 되면 
+    새로 생성된 파일을 확인할 수 있다. GUI 파일 탐색기로도 
+    'my_file.txt' 파일을 볼 수 있다.
+    
+2.  'ls -l' 명령어로 파일을 조사하게 되면, 'my_file.txt' 파일크기가 0kb 임에 주목한다.
+    다른 말로 표현하면, 데이터가 아무 것도 없다는 의미가 된다.
+    텍스트 편집기로 'my_file.txt' 파일을 열게 되면, 텅 비어 있다.
+    
+3.  일부 프로그램은 그 자체로 출력 파일을 생성하지 않지만,
+    빈 파일이 이미 생성되어 있는 것을 요구조건으로 하는 경우가 있다.
+    프로그램이 실행되면, 출력결과를 채울 수 있는 파일이 존재하는지 검색한다.
+    이런 프로그램에게 `touch` 명령어는 빈 텍스트 파일을 효율적으로 생성할 수 있는 
+    메커니즘을 제공한다는 점에서 유용하다.
+    
+:::    
+
+`shell-lesson-data` 디렉토리로 돌아가서,
 생성한 초안을 제거해서 `thesis` 디렉토리를 깔끔하게 정리하자:
 
 ```bash
@@ -375,11 +384,15 @@ $ ls quotes.txt
 quotes.txt
 ```
 
-::: {.callout-caution}
+\addtocounter{exam_num_bitpub}{1}
+\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
 
-**현재 폴더로 이동하기**
+\textbf{현재 폴더로 이동하기}
 
 다음 명령어를 실행한 후에, 정훈이는 `sucrose.dat`, `maltose.dat` 파일을 잘못된 폴더에 넣은 것을 인지하게 되었다:
+
+\end{example}
 
 ```bash
 $ ls -F
@@ -395,13 +408,15 @@ $ cd raw/
 $ mv ___/sucrose.dat  ___/maltose.dat ___
 ```
 
-> 
-> ```
-> $ mv ../analyzed/sucrose.dat ../analyzed/maltose.dat .
-> ```
-> 
-> `..` 디렉토리는 부모 디렉토리(즉, 현재 디렉토리에서 상위 디렉토리를 지칭)
-> `.` 디렉토리는 현재 디렉토리를 지칭함을 상기한다.
+:::{.callout-tip}
+### 해답과 설명
+
+```bash
+$ mv ../analyzed/sucrose.dat ../analyzed/maltose.dat .
+```
+
+`..` 디렉토리는 부모 디렉토리(즉, 현재 디렉토리에서 상위 디렉토리를 지칭)
+`.` 디렉토리는 현재 디렉토리를 지칭함을 상기한다.
 
 :::
 
@@ -456,32 +471,44 @@ Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이�
 
 :::
 
-::: {.callout-caution}
+\addtocounter{exam_num_bitpub}{1}
+\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
 
-**파일 이름 바꾸기**
+\textbf{파일 이름 바꾸기}
 
 데이터를 분석하는데 필요한 통계 검정 목록을 담고 있는 `.txt` 파일을 현재 디렉토리에 생성했다고 가정하자;
 파일명은 `statstics.txt`.
 파일을 생성하고 저장한 후에 곰곰히 생각해 보니 파일명 철자가 틀린 것을 알게 되었다!
 틀린 철자를 바로잡고자 하는데, 다음 중 어떤 명령어를 사용해야 하는가?
 
-1. `cp statstics.txt statistics.txt`
-2. `mv statstics.txt statistics.txt`
-3. `mv statstics.txt .`
+1. `cp statstics.txt statistics.txt` \newline
+2. `mv statstics.txt statistics.txt` \newline
+3. `mv statstics.txt .` \newline
 4. `cp statstics.txt .`
 
-> **해답**
-> 1. No. 철자오류가 수정된 파일이 생성되지만, 철자가 틀린 파일도 디렉토리에 여전히 존재하기 때문에 삭제작업이 필요하다.
-> 2. Yes, 이 명령어를 통해서 파일명을 고칠 수 있다.
-> 3. No, 마침표(.)는 파일을 이동할 디렉토리를 나타내지 새로운 파일명을 제시하고 있지는 않고 있다; 동일한 파일명은 생성될 수 없다.
-> 4. No, 마침표(.)는 파일을 복사할 디렉토리를 나타내지 새로운 파일명을 제시하고 있지는 않고 있다; 동일한 파일명은 생성될 수 없다.
+\end{example}
 
+:::{.callout-tip}
+### 해답과 설명
+
+1. No. 철자오류가 수정된 파일이 생성되지만, 철자가 틀린 파일도 디렉토리에 여전히 존재하기 때문에 삭제작업이 필요하다.
+2. Yes, 이 명령어를 통해서 파일명을 고칠 수 있다.
+3. No, 마침표(.)는 파일을 이동할 디렉토리를 나타내지 새로운 파일명을 제시하고 있지는 않고 있다; 동일한 파일명은 생성될 수 없다.
+4. No, 마침표(.)는 파일을 복사할 디렉토리를 나타내지 새로운 파일명을 제시하고 있지는 않고 있다; 동일한 파일명은 생성될 수 없다.
 :::
 
 ::: {.callout-caution}
 
-**이동과 복사**
+\addtocounter{exam_num_bitpub}{1}
+\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+
+\textbf{이동과 복사}
+
 아래 보여진 일련의 명령문에 뒤에 `ls`명령어의 출력값은 무엇일까요?
+
+\end{example}
 
 ```bash
 $ pwd
@@ -505,31 +532,40 @@ $ ls
 3.   `proteins.dat recombine`
 4.   `proteins-saved.dat`
 
-> **해답**
-> `/Users/jamie/data` 디렉토리에서 출발해서, `recombine` 이름의 디렉토리를 새로 생성한다.
-> 두번째 행은 `proteins.dat` 파일을 새로 만든 폴더 `recombine`으로 이동(`mv`) 시킨다.
-> 세번째 행은 방금전에 이동한 파일에 대한 사본을 생성시킨다.
-> 여기서 조금 까다로운 점은 파일이 복사되는 디렉토리다.
-> `..` 이 의미하는 바가 "한단계 위로 이동"하라는 의미라서,
-> 복사되는 파일은 이제 `/Users/jamie` 디렉토리에 위치하게 됨을 상기한다.
-> `..` 이 의미하는 바는 복사되는 파일 위치에 대한 것이 **아니라** 현재 작업 디렉토리에 대한 
->  것으로 해석됨에 유의한다. 
->  그래서, 그래서, `ls` 명령어를 사용해서 보여지게 되는 것은 (`/Users/jamie/data`에 있기 때문에) `recombine` 폴더가 된다.
->
-> 1. No, 상기 해설을 참조한다. `proteins-saved.dat` 데이터는 `/Users/jamie` 폴더에 위치한다.
-> 2. Yes
-> 3. No, 상기 해설을 참조한다.  `proteins.dat` 데이터는 `/Users/jamie/data/recombine` 폴더에 위치한다.
-> 4. No, 상기 해설을 참조한다.  `proteins-saved.dat` 데이터는 `/Users/jamie` 폴더에 위치한다.
+:::{.callout-tips}
+### 해답과 설명
+
+`/Users/jamie/data` 디렉토리에서 출발해서, `recombine` 이름의 디렉토리를 새로 생성한다.
+두번째 행은 `proteins.dat` 파일을 새로 만든 폴더 `recombine`으로 이동(`mv`) 시킨다.
+세번째 행은 방금전에 이동한 파일에 대한 사본을 생성시킨다.
+여기서 조금 까다로운 점은 파일이 복사되는 디렉토리다.
+`..` 이 의미하는 바가 "한단계 위로 이동"하라는 의미라서,
+복사되는 파일은 이제 `/Users/jamie` 디렉토리에 위치하게 됨을 상기한다.
+`..` 이 의미하는 바는 복사되는 파일 위치에 대한 것이 **아니라** 현재 작업 디렉토리에 대한 
+것으로 해석됨에 유의한다. 
+그래서, 그래서, `ls` 명령어를 사용해서 보여지게 되는 것은 (`/Users/jamie/data`에 있기 때문에) `recombine` 폴더가 된다.
+
+1. No, 상기 해설을 참조한다. `proteins-saved.dat` 데이터는 `/Users/jamie` 폴더에 위치한다.
+2. Yes
+3. No, 상기 해설을 참조한다.  `proteins.dat` 데이터는 `/Users/jamie/data/recombine` 폴더에 위치한다.
+4. No, 상기 해설을 참조한다.  `proteins-saved.dat` 데이터는 `/Users/jamie` 폴더에 위치한다.
 
 :::
 
 ## 다수 파일과 폴더 작업 {#shell-moving-multiple}
 
-::: {.callout-caution}
+한 번에 여러 파일을 복사하거나 이동해야 하는 경우가 종종 있다. 파일명을 목록으로 제공하거나 와일드카드를 사용하여 패턴을 지정하면 된다. **와일드카드(Wildcards)**는 Unix 파일 시스템을 탐색할 때 특정한 패턴이나 일련의 문자를 대체하거나 대표하는 데 사용되는 특수 문자로 '*', '?', '%' 등이 대표적이다.
 
-**다수 파일을 복사하기**
+\addtocounter{exam_num_bitpub}{1}
+\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+
+\textbf{다수 파일을 복사하기}
+
 이번 연습문제에서는 `data-shell/data` 디렉토리에서 명령어를 테스트한다.
 아래 예제에서, 파일명 다수와 디렉토리명이 주어졌을 떄 `cp` 명령어는 어떤 작업을 수행하는가?
+
+\end{example}
 
 ```bash
 $ mkdir backup
@@ -547,15 +583,17 @@ amino-acids.txt  animals.txt  backup/  elements/  morse.txt  pdb/  planets.txt  
 $ cp amino-acids.txt animals.txt morse.txt 
 ```
 
-> **해답**
-> 하나이상 파일명 다음에 디렉토리명이 주어지게 되면(즉, 목적지 디렉토리는 마지막 인자에 위치해야 한다.), 
-> `cp` 명령어는 파일을 해당 디렉토리에 복사한다.
->
-> 연달아 파일명이 세게 주어지면, `cp` 명령어는 오류를 던지는데 이유는 마지막 인자로 디렉토리를 기대했기 때문이다.
->
-> ```
-> cp: target ‘morse.txt’ is not a directory
-> ```
+:::{.callout-tip}
+### 해답과 설명
+
+하나이상 파일명 다음에 디렉토리명이 주어지게 되면(즉, 목적지 디렉토리는 마지막 인자에 위치해야 한다.), 
+`cp` 명령어는 파일을 해당 디렉토리에 복사한다.
+
+연달아 파일명이 세게 주어지면, `cp` 명령어는 오류를 던지는데 이유는 마지막 인자로 디렉토리를 기대했기 때문이다.
+
+```bash
+cp: target ‘morse.txt’ is not a directory
+```
 
 :::
 
@@ -593,11 +631,15 @@ $ cp amino-acids.txt animals.txt morse.txt
 
 :::
 
-::: {.callout-caution}
+\addtocounter{exam_num_bitpub}{1}
+\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
 
-## 와일드카드 추가 문제 
+\textbf{와일드카드 추가 문제}
 
 정훈이는 미세조정(calibration), 원본 데이터(dataset), 데이터 설명 데이터를 디렉토리에 보관하고 있다:
+
+\end{example}
 
 ```bash
 2015-10-23-calibration.txt
@@ -627,20 +669,26 @@ $ cp ____ ~/send_to_bob/all_datasets_created_on_a_23rd/
 
 정훈이가 빈칸을 채우도록 도움을 주세요.
 
-> **해답**
-> 
-> ```
-> $ cp *calibration.txt /backup/calibration
-> $ cp 2015-11-* ~/send_to_bob/all_november_files/
-> $ cp *-23-dataset* ~send_to_bob/all_datasets_created_on_a_23rd/
-> ```
+:::{.callout-tip}
+### 해답과 설명
 
+```
+$ cp *calibration.txt /backup/calibration
+$ cp 2015-11-* ~/send_to_bob/all_november_files/
+$ cp *-23-dataset* ~send_to_bob/all_datasets_created_on_a_23rd/
+```
 :::
 
-::: {.callout-caution}
-## 디렉토리와 파일 조직화
+
+\addtocounter{exam_num_bitpub}{1}
+\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+
+\textbf{디렉토리와 파일 조직화}
 
 정훈이가 프로젝트 작업을 하고 있는데, 작업 파일이 그다지 잘 조직적으로 정리되어 있지 않음을 알게 되었다:
+
+\end{example}
 
 ```bash
 $ ls -F
@@ -661,23 +709,27 @@ $ ls analyzed
 fructose.dat    sucrose.dat
 ```
 
-> **해답**
-> 
-> ```
-> mv *.dat analyzed
-> ```
-> 
-> 정훈이는 `analyzed` 디렉토리에 `fructose.dat`, `sucrose.dat` 파일을 이동시킬 필요가 있다.
-> 쉘에서  현재 디렉토리에서 `*.dat` 와일드카드가 `.dat` 확장자를 갖는 모든 파일을 매칭한다.
-> `mv` 명령어가 `.dat` 확장자를 갖는 파일을 `analyzed` 디렉토리로 이동시킨다.
+
+:::{.callout-tip}
+### 해답과 설명
+
+```
+$ mv *.dat analyzed
+```
+ 
+정훈이는 `analyzed` 디렉토리에 `fructose.dat`, `sucrose.dat` 파일을 이동시킬 필요가 있다.
+쉘에서  현재 디렉토리에서 `*.dat` 와일드카드가 `.dat` 확장자를 갖는 모든 파일을 매칭한다.
+`mv` 명령어가 `.dat` 확장자를 갖는 파일을 `analyzed` 디렉토리로 이동시킨다.
 
 :::
 
+\addtocounter{exam_num_bitpub}{1}
+\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
 
+\textbf{폴더 구조를 복사하지만, 파일을 복사하지 말자.}
 
-\begin{Exercise}\label{Ex1}
-
-\noindent 1. [폴더 구조를 복사하지만, 파일을 복사하지 말자.] 새로운 실험을 시작해 보자. 데이터 파일 없이 이전 실험에게 만들었던 
+새로운 실험을 시작해 보자. 데이터 파일 없이 이전 실험에게 만들었던 
 파일 구조만 복제하자. 그렇게 하면 새로운 데이터를 쉽게 추가할 수 있게 된다.
 '2016-05-18-data' 디렉토리에 `data` 폴더로 `raw`와 `processed`가 있는데, 각자 데이터 파일이 담겨있다.
 
@@ -685,13 +737,7 @@ fructose.dat    sucrose.dat
 복사된 폴더에는 모든 데이터 파일을 제거해야 된다.
 다음 명령어 집합 중 어떤 명령어 집합이 상기 목적을 달성할까요? 다른 명령어 집합은 무슨 작업을 수행하는 것일가?
 
-\begin{tasks}[label=(\arabic*)](1)
-  \task $\text{cd .}$
-\end{tasks}
-
-
-
-\end{Exercise}
+\end{example}
 
 ```bash
 $ cp -r 2016-05-18-data/ 2016-05-20-data/
@@ -709,4 +755,58 @@ $ cp -r 2016-05-18-data/ 2016-5-20-data/
 $ cp -r 2016-05-18-data/ 2016-05-20-data/
 $ rm -r -i 2016-05-20-data/
 ```
+
+:::{.callout-tip}
+### 해답과 설명
+
+첫번째 명령어들이 해당 목적을 달성한다. 먼저 재귀적으로 데이터 폴더를 복사한다. 그리고 나서 `rm` 명령어 두번 사용해서 복사한 디렉토리의 모든 파일을 제거한다. 쉘은 `*` 와일드카드로 매칭되는 모든 파일과 하위디렉토리를 확장하도록 한다.
+
+두번째 명령어들은 순서가 잘못되었다: 복사하지 않는 파일을 샂게하고 나서 재귀 복사 명령어로 디렉토리를 복사했다.
+
+세번째 명령어도 목적을 달성하는데, 시간이 다소 소요된다: 첫번째 명령어가 디렉토리를 재귀적으로 복사하지만, 두번째 명령어는 인터랙티브하게 각 파일과 디렉토리에 대한 확인하는 과정을 거쳐 삭제를 하게 되어 시간이 추가로 소요된다.
+
+:::
+
+\begin{Exercise}\label{Ex3}
+
+\noindent 1. 다음 중 쉘에서 디렉토리를 생성하는 명령어는 무엇인가요?
+\begin{tasks}[label=(\arabic*)](1)
+  \task cd thesis
+  \task ls -F
+  \task mkdir thesis
+  \task pwd
+  \task rm thesis
+\end{tasks}
+
+\noindent 2. 쉘에서 `mkdir thesis` 명령어를 실행하면 어떤 결과를 기대할 수 있나요?
+\begin{tasks}[label=(\arabic*)](1)
+  \task 현재 디렉토리에서 thesis라는 이름의 파일을 생성합니다.
+  \task 현재 디렉토리에서 thesis라는 이름의 디렉토리를 생성합니다.
+  \task thesis라는 이름의 파일을 삭제합니다.
+  \task thesis 디렉토리로 이동합니다.
+  \task thesis라는 이름의 파일을 엽니다.
+\end{tasks}
+
+
+\noindent 3. 다음 중 파일이나 디렉토리의 이름으로 적절하지 않은 것은 무엇인가요?
+\begin{tasks}[label=(\arabic*)](1)
+  \task data\_analysis
+  \task data-analysis
+  \task data analysis
+  \task data.analysis
+  \task data\_analysis\_1
+\end{tasks}
+
+\noindent 4. 다음 중 파일이나 디렉토리의 이름으로 사용하면 좋지 않은 문자는 무엇인가요?
+\begin{tasks}[label=(\arabic*)](1)
+  \task \_ (밑줄)
+  \task - (대쉬)
+  \task . (마침표)
+  \task (공백)
+  \task 숫자
+\end{tasks}
+
+\noindent 5. 명령라인으로 작업할 때 파일과 디렉토리 이름을 지을 때 고려해야 할 사항들은 무엇인가요?
+
+\end{Exercise}
 
