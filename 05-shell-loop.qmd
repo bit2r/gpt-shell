@@ -52,9 +52,8 @@ UPDATED: 1738-11-24
 ```
 
 
-::: {#shell-loop-indent .rmdcaution}
-
-**`for` 루프 내부에 코드 들여쓰기**
+::: {.callout-caution}
+### `for` 루프 내부에 코드 들여쓰기
 
 `for` 루프 내부의 코드를 들여쓰는 것이 일반적인 관행이다.
 들여쓰는 유일한 목적은 코드를 더 읽기 쉽게 하는 것 밖에 없다 -- `for` 루프를 실행하는데는 꼭 필요하지는 않다.
@@ -85,9 +84,8 @@ UPDATED: 1738-11-24
 `$filename` 은 `${filename}`와 동치지만, `${file}name`와는 다르다. 
 이 표기법을 다른 사람 프로그램에서 찾아볼 수 있다.
 
-::: {#shell-loop-variable .rmdcaution}
-
-**루프 내부의 변수**
+::::: {#exr-loop-variable}
+### 루프 내부의 변수
 
 이번 예제는 `data-shell/molecules` 디렉토리를 가정한다.
 `ls` 명령어를 던지면 출력결과는 다음과 같다:
@@ -116,45 +114,48 @@ $ for datafile in *.pdb
 
 왜 상기 두 루프 실행결과는 다를까?
 
-> **해답**
-> 첫번째 코드 블록은 루프를 돌릴 때마다 동일한 출력결과를 출력한다.
-> 배쉬는 루프 몸통 내부 와일드카드 `*.pdb`을 확장해서 `.pdb`로 끝나는 
-> 모든 파일을 매칭시킨다.
-> 확장된 루프는 다음과 같이 생겼다:
-> 
-> ```
-> $ for datafile in cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
-> > do
-> >	ls cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
-> > done
-> 
-> cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
-> cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
-> cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
-> cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
-> cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
-> cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
-> ```
-> 
->
-> 두번째 코드 블록은 루프를 돌 때마다 다른 파일을 출력한다.
-> `datafile` 파일 변수값이 `$datafile`을 통해 평가되고 
-> `ls` 명령어를 사용해서 파일 목록을 출력하게 된다.
->
-> ```
-> cubane.pdb
-> ethane.pdb
-> methane.pdb
-> octane.pdb
-> pentane.pdb
-> propane.pdb
-> ```
+:::{.callout-tip}
+
+### 해답과 설명
+
+첫번째 코드 블록은 루프를 돌릴 때마다 동일한 출력결과를 출력한다.
+배쉬는 루프 몸통 내부 와일드카드 `*.pdb`을 확장해서 `.pdb`로 끝나는 
+모든 파일을 매칭시킨다.
+확장된 루프는 다음과 같이 생겼다:
+
+``` bash
+$ for datafile in cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
+> do
+>	ls cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
+> done
+
+cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
+cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
+cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
+cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
+cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
+cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
+```
+
+두번째 코드 블록은 루프를 돌 때마다 다른 파일을 출력한다.
+`datafile` 파일 변수값이 `$datafile`을 통해 평가되고 
+`ls` 명령어를 사용해서 파일 목록을 출력하게 된다.
+
+``` bash
+cubane.pdb
+ethane.pdb
+methane.pdb
+octane.pdb
+pentane.pdb
+propane.pdb
+```
 
 :::
 
-::: {#shell-loop-prompt .rmdcaution}
+:::::
 
-**프롬프트 따라가기**
+::: {#shell-loop-prompt .rmdcaution}
+### 프롬프트 따라가기
 
 루프안에서 타이핑을 할 때, 쉘 프롬프트가 `$`에서 `>`으로 바뀐다. 
 두번째 프롬프트는, `>`, 온전한 명령문 타이핑이 끝마치지 않았음을 상기시키려고 다르게 표기된다.
@@ -162,7 +163,7 @@ $ for datafile in *.pdb
 
 :::
 
-::: {#shell-loop-symbols .rmdcaution}
+::: {.callout-caution}
 
 **동일한 기호, 하지만 다른 의미**
 
@@ -206,9 +207,8 @@ $ for temperature in basilisk.dat unicorn.dat
 (`x`같은) 의미없는 이름이나, (`temperature`같은) 오해를 줄 수 있는 이름은 
 오해를 불러일으켜서 독자가 생각하기에 당연히 프로그램이 수행해야 할 작업을 프로그램이 수행하지 못하게 할 가능성을 높인다.
 
-::: {#shell-loop-control .rmdcaution}
-
-**파일 집합 제한걸기**
+::::: {#exr-restriction}
+### 파일 집합 제한걸기
 
 `data-shell/molecules` 디렉토리에서 다음 루프를 실행하게 되면 출력결과는 어떻게 될까?
 
@@ -225,9 +225,14 @@ $ for filename in c*
 3.  `cubane.pdb`, `octane.pdb`, `pentane.pdb` 파일만 출력된다.
 4.  `cubane.pdb` 파일만 출력된다.
 
-> **해답**
-> 정답은 4. 와일드카드 `*` 문자는 0 혹은 그 이상 문자를 매칭하게 된다.
-> 따라서, 문자 `c`로 시작하는 문자 다음에 0 혹은 그 이상 문자를 갖는 모든 파일이 매칭된다.
+:::{.callout-tip}
+### 해답과 설명
+
+정답은 4. 와일드카드 `*` 문자는 0 혹은 그 이상 문자를 매칭하게 된다.
+따라서, 문자 `c`로 시작하는 문자 다음에 0 혹은 그 이상 문자를 갖는 모든 파일이 매칭된다.
+:::
+
+:::::
 
 대신에 다음 명령어를 사용하면 출력결과는 어떻게 달라지나?
 
@@ -244,13 +249,18 @@ $ for filename in *c*
 4.  `cubane.pdb` 와 `octane.pdb` 파일이 출력된다.
 5.  `octane.pdb` 파일만 출력된다.
 
-> **해답**
-> 정답은 4. 와일드카드 `*` 문자는 0 혹은 그 이상 문자를 매칭하게 된다.
-> 따라서, `c` 앞에 0 혹은 그 이상 문자가 올 수 있고, `c` 문자 다음에 0 혹은 그 이상 문자가 모두 매칭된다.
+:::{.callout-tip}
+### 해답과 설명
+
+
+정답은 4. 와일드카드 `*` 문자는 0 혹은 그 이상 문자를 매칭하게 된다.
+따라서, `c` 앞에 0 혹은 그 이상 문자가 올 수 있고, `c` 문자 다음에 0 혹은 그 이상 문자가 모두 매칭된다.
 
 :::
 
-`data-shell/creatures` 디렉토리에서 예제를 계속해서 학습해보자.
+
+
+`shell-lesson-data/creatures` 디렉토리에서 예제를 계속해서 학습해보자.
 다음에 좀더 복잡한 루프가 있다:
 
 ```bash
@@ -293,9 +303,7 @@ $ for filename in *.dat
 마지막으로, `head`와 `tail` 조합은 어떤 파일이 처리되든 81-100줄만 선택해서 화면에 뿌려준다.
 (파일이 적어도 100줄로 되었음을 가정)
 
-::: {#shell-loop-space .rmdcaution}
-
-**파일, 디렉토리, 변수 등 이름에 공백**
+## 파일, 디렉토리, 변수 등 이름에 공백
 
 공백(whitespace)을 사용해서 루프를 돌릴 때 리스트의 각 원소를 구별했다.
 리스트 원소중 일부가 공백을 갖는 경우, 해당 원소를 인용부호로 감싸서 사용해야 된다.
@@ -368,9 +376,187 @@ cp unicorn.dat original-unicorn.dat
 
 ![For Loop in Action](images/shell_script_for_loop_flow_chart.svg){width=100%}
 
-## Nelle의 파이프라인: 많은 파일 처리하기 {#nelle-shell-loop}
 
-Nelle은 이제 `goostats` 프로그램(논문 지도교수가 작성한 쉘 스크립트)을 사용해서 데이터 파일을 처리할 준비가 되었다. 
+::: {callout-caution}
+### 역사(history)를 아는 사람은 반복할 수 있다.
+
+앞선 작업을 반복하는 또다른 방법은 `history` 명령어를 사용하는 것이다.
+실행된 마지막 수백개 명령어 리스트를 얻고 나서, 
+이들 명령어 중 하나를 반복실행하기 위해서 `!123`("123"은 명령 숫자로 교체된다.)을 사용한다. 
+예를 들어 Nelle이 다음과 같이 타이핑한다면:
+
+```bash
+$ history | tail -n 5
+  456  ls -l NENE0*.txt
+  457  rm stats-NENE01729B.txt.txt
+  458  bash goostats NENE01729B.txt stats-NENE01729B.txt
+  459  ls -l NENE0*.txt
+  460  history
+```
+
+그리고 나서, 단순히 `!458`을 타이핑함으로써,
+`NENE01729B.txt` 파일에 `goostats`을 다시 실행할 수 있게 된다.
+
+:::
+
+::: {.callout-caution}
+### 다른 이력(history) 명령어
+
+이력(history)에 접근하는 단축 명령어가 다수 존재한다.
+
+- `Ctrl-R` 탄축키는 "reverse-i-search" 이력 검색모드로 
+  입력한 텍스트와 매칭되는 가장 최슨 명령어를 이력에서 찾아서 제시한다.
+  `Ctrl-R` 단축키를 한번 혹은 그 이상 누르게 되면 그 이전 매칭을 검색해 준다.
+- `!!` 명령어는 바로 직전 명령어를 불러온다.
+  (키보드 윗화살표를 사용하는 것보다 더 편리할수도 편리하지 않을 수도 있다.)
+- `!$` 명령어는 마지막 명령문의 마지막 단어를 불러온다.
+  기대했던 것보다 훨씬 유용할 수 있다:
+  `bash goostats NENE01729B.txt stats-NENE01729B.txt` 명령문을 실행한 후에
+  `less !$`을 타이핑하게 되면 `stats-NENE01729B.txt` 파일을 찾아준다.
+  키보드 위화살표를 눌러 명령라인을 편집하는 것보다 훨씬 빠르다.
+  
+:::
+
+::::: {#exr-loop-save}
+### 루프 내부에서 파일에 저장하기 - 1부
+
+`data-shell/molecules` 디렉토리에 있다고 가정하자.
+다음 루프의 효과는 무엇인가?
+
+```bash
+$ for alkanes in *.pdb
+> do
+>     echo $alkanes
+>     cat $alkanes > alkanes.pdb
+> done
+```
+
+
+1. `fructose.dat`, `glucose.dat`, `sucrose.dat`을 출력하고, `sucrose.dat`에서 나온 텍스트를 `xylose.dat`에 저장된다.
+2. `fructose.dat`, `glucose.dat`, `sucrose.dat`을 출력하고, 모든 파일 3개에서 나온 텍스트를 합쳐 `xylose.dat`에 저장된다.
+3. `fructose.dat`, `glucose.dat`, `sucrose.dat`, `xylose.dat`을 출력하고, `sucrose.dat`에서 나온 텍스트를 `xylose.dat`에 저장된다.
+4. 위 어느 것도 아니다.
+
+:::{.callout-tip}
+### 해답과 해설
+
+1. 순차적으로 각 파일의 텍스트가 `alkanes.pdb` 파일에 기록된다.
+하지만, 루프가 매번 반복될 때마다 파일에 덮어쓰기가 수행되어서 마지막 `alkanes.pdb` 파일 텍스트만 `alkanes.pdb` 파일에 기록된다.
+
+:::
+:::::
+
+
+::::: {#exr-loop-save-2}
+### 루프 내부에서 파일에 저장하기 - 2부
+
+이번에도 `data-shell/molecules` 디렉토리에 있다고 가정하고, 다음 루프 실행 출력결과는 무엇일까?
+
+```bash
+$ for datafile in *.pdb
+> do
+>     cat $datafile >> all.pdb
+> done
+```
+
+1.  `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb` 파일에 나온 모든 모든 텍스트가 하나로 붙여져서 
+    `all.pdb` 파일에 저장된다.
+2.  `ethane.pdb` 파일에 나온 텍스트만 `all.pdb` 파일에 저장된다.
+3.  `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb`, `propane.pdb` 파일에서 나온 모든 텍스트가 
+    하나로 풑여져서 `all.pdb` 파일에 저장된다.
+4.  `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb`, `propane.pdb` 파일에서 나온 
+    모든 텍스트가 화면에 출력되고 `all.pdb` 파일에 저장된다.
+
+:::{.callout-tip}    
+### 해답과 설명
+
+정답은 3. 명령어 실행 출력결과를 방향변경하여 덮었는 것이 아니라 `>>` 기호는 파일에 덧붙인다.
+`cat` 명령어에서 나온 출력결과가 파일로 방향변경되어 어떤 출력결과도 화면에 출력되지는 않는다.
+:::
+
+:::::
+
+::::: {#exr-dry-run}
+### 시운전(Dry Run)
+
+루프는 한번에 많은 작업을 수행하는 방식이다 --- 만약 잘못된 것이 있다면,
+한번에 실수를 대단히 많이 범하게 된다.
+루프가 수행하는 작업을 점검하는 한 방법이 실제로 루프를 돌리는 대신에
+`echo` 명령어를 사용하는 것이다.
+실제로 명령어를 실행하지 않고, 다음 루프가 실행할 명령어를 머릿속으로 미리보고자 한다고 가정한다: 
+
+```bash
+$ for file in *.pdb
+> do
+>   analyze $file > analyzed-$file
+> done
+```
+
+아래 두 루프 사이에 차이는 무엇이고, 어느 것을 시운전으로 실행하고 싶은가?
+
+```bash
+# Version 1
+$ for file in *.pdb
+> do
+>   echo analyze $file > analyzed-$file
+> done
+```
+
+```bash
+# Version 2
+$ for file in *.pdb
+> do
+>   echo "analyze $file > analyzed-$file"
+> done
+```
+
+:::{.callout-tip}
+### 해답과 설명
+
+두번째 버젼을 실행하면 좋을 것이다.
+달러 기호로 접두명을 주었기 때문에 루프 변수를 확장해서 인용부호로 감싼 모든 것을 화면에 출력한다.
+
+첫번째 버전은 `echo analyze $file` 명령을 수행해서 `analyzed-$file` 파일로 
+출력결과를 방향변경하여 저장시킨다. 따라서 파일이 쭉 자동생성된다:`analyzed-cubane.pdb`,
+`analyzed-ethane.pdb` ...
+ 
+두가지 버젼을 직접 실행해보고 출력결과를 살펴보자!
+`analyzed-*.pdb` 파일을 열어서 파일에 기록된 내용도 살펴본다.
+:::
+
+:::::
+
+::::: {#exr-nested-loop}
+### 중첩루프(Nested Loops)
+
+다른 화합물과 다른 온도를 갖는 조합을 해서, 각 반응율 상수를 측정하는 
+실험을 조직하도록 이에 상응하는 디렉토리 구조를 갖추고자 한다.
+다음 코드 실행결과는 어떻게 될까?
+
+```bash
+$ for species in cubane ethane methane
+> do
+>     for temperature in 25 30 37 40
+>     do
+>         mkdir $species-$temperature
+>     done
+> done
+```
+
+:::{.callout-tip}
+### 해답과 설명
+
+중첩 루프(루프 내부에 루프가 포함됨)를 생성하게 된다.
+외부 루프에 각 화학물이, 내부 루프(중첩된 루프)에 온도 조건을 반복하게 되서,
+화학물과 온도를 조합한 새로운 디렉토리가 쭉 생성된다.
+
+직접 코드를 실행해서 어떤 디렉토리가 생성되는지 확인한다!
+
+:::::
+
+## 사례: 많은 파일 처리하기 {#nelle-shell-loop}
+
+넬(Nelle)은 이제 `goostats` 프로그램(논문 지도교수가 작성한 쉘 스크립트)을 사용해서 데이터 파일을 처리할 준비가 되었다. 
 `goostats` 프로그램은 표본추출 단백질 파일에서 통계량을 산출하는데 인자를 두개 받는다:
 
 1. 입력파일 (원본 데이터를 포함)
@@ -476,174 +662,52 @@ NENE01736A.txt
 출력결과가 좋아보인다.
 그래서 커피를 마시고 그동안 밀린 논문을 읽기로 한다.
 
-::: {#shell-loop-history .rmdcaution}
+```{=tex}
+\begin{Exercise}\label{Ex5}
 
-**역사(history)를 아는 사람은 반복할 수 있다.**
+\noindent 1. 다음 중 쉘 스크립트에서 for 루프의 일반적인 구조에 대한 설명으로 가장 올바른 것은 무엇인가요?
 
-앞선 작업을 반복하는 또다른 방법은 `history` 명령어를 사용하는 것이다.
-실행된 마지막 수백개 명령어 리스트를 얻고 나서, 
-이들 명령어 중 하나를 반복실행하기 위해서 `!123`("123"은 명령 숫자로 교체된다.)을 사용한다. 
-예를 들어 Nelle이 다음과 같이 타이핑한다면:
+\begin{tasks}[label=(\arabic*)](1)
+  \task for 키워드 다음에는 루프가 실행될 명령어가 따라옵니다.
+  \task 리스트의 각 아이템에 대해 루프를 실행하려면 for 키워드를 사용해야 합니다.
+  \task 루프 내에서는 \$ 기호를 이용해 변수의 이름을 호출할 수 있습니다.
+  \task done 키워드를 사용하면 루프가 종료되고, 이후 코드가 실행됩니다.
+  \task 모든 위의 내용이 올바릅니다.
+\end{tasks}
 
-```bash
-$ history | tail -n 5
-  456  ls -l NENE0*.txt
-  457  rm stats-NENE01729B.txt.txt
-  458  bash goostats NENE01729B.txt stats-NENE01729B.txt
-  459  ls -l NENE0*.txt
-  460  history
+\noindent 2. 다음 중 변수 이름에 대한 설명으로 가장 올바른 것은 무엇인가요?
+
+\begin{tasks}[label=(\arabic*)](1)
+  \task 변수 이름은 \$filename과 \${filename}의 두 가지 형태로 사용할 수 있습니다.
+  \task 변수 이름은 코드를 작성하는 사람과 읽는 사람이 이해할 수 있는 의미 있는 이름을 가져야 합니다.
+  \task 쉘은 변수 이름을 식별하지 못하므로 변수 이름은 프로그램의 기능에 영향을 주지 않습니다.
+  \task 변수 이름은 항상 temperature와 같은 구체적인 이름이어야 합니다.
+  \task (1)와 (2)의 내용이 모두 올바릅니다
+\end{tasks}
+
+\noindent 3. 다음 중 쉘 스크립트에서 for문을 사용하여 파일에서 특정 정보를 추출하는 코드를 가장 잘 설명한 것은 무엇인가요?
+
+\begin{tasks}[label=(\arabic*)](1)
+  \task for filename in basilisk.dat minotaur.dat unicorn.dat; do echo \$filename; head -n 2 \$filename | tail -n 1; done
+  \task for filename in basilisk.dat minotaur.dat unicorn.dat; do tail -n 2 \$filename | head -n 1; done
+  \task for file in basilisk.dat minotaur.dat unicorn.dat; do echo \$file; tail -n 2 \$file | head -n 1; done
+  \task for file in basilisk.dat minotaur.dat unicorn.dat; do echo \$file; head -n 2 \$file | tail -n 1; done
+  \task for filename in basilisk.dat minotaur.dat unicor
+\end{tasks}
+
+\noindent 4. 다음 중 쉘 스크립트에서 변수 이름을 정할 때 고려해야 할 사항을 가장 잘 설명한 것은 무엇인가요?
+
+\begin{tasks}[label=(\arabic*)](1)
+  \task 변수 이름은 반드시 x나 y와 같은 한 글자로 이루어져야 합니다.
+  \task 변수 이름은 반드시 해당 코드를 작성한 사람이 이해할 수 있도록 해야 합니다.
+  \task 변수 이름은 반드시 해당 코드를 읽는 사람이 이해할 수 있도록 해야 합니다.
+  \task 변수 이름은 항상 filename 또는 file로 지정해야 합니다.
+  \task 변수 이름은 반드시 해당 코드를 작성한 사람과 해당 코드를 읽는 사람 모두가 이해할 수 있도록 해야 합니다.
+\end{tasks}
+
+\noindent 5. 쉘 스크립트에서 0부터 9까지의 숫자를 출력하는 for loop을 작성하세요.
+
+\noindent 6. basilisk.dat, minotaur.dat, unicorn.dat 세 파일에 대하여, 각 파일의 두 번째 줄을 출력하는 쉘 스크립트의 for loop을 작성하세요.
+
+\end{Exercise}
 ```
-
-그리고 나서, 단순히 `!458`을 타이핑함으로써,
-`NENE01729B.txt` 파일에 `goostats`을 다시 실행할 수 있게 된다.
-
-:::
-
-::: {#shell-loop-history-differ .rmdcaution}
-
-**다른 이력(history) 명령어**
-
-이력(history)에 접근하는 단축 명령어가 다수 존재한다.
-
-- `Ctrl-R` 탄축키는 "reverse-i-search" 이력 검색모드로 
-  입력한 텍스트와 매칭되는 가장 최슨 명령어를 이력에서 찾아서 제시한다.
-  `Ctrl-R` 단축키를 한번 혹은 그 이상 누르게 되면 그 이전 매칭을 검색해 준다.
-- `!!` 명령어는 바로 직전 명령어를 불러온다.
-  (키보드 윗화살표를 사용하는 것보다 더 편리할수도 편리하지 않을 수도 있다.)
-- `!$` 명령어는 마지막 명령문의 마지막 단어를 불러온다.
-  기대했던 것보다 훨씬 유용할 수 있다:
-  `bash goostats NENE01729B.txt stats-NENE01729B.txt` 명령문을 실행한 후에
-  `less !$`을 타이핑하게 되면 `stats-NENE01729B.txt` 파일을 찾아준다.
-  키보드 위화살표를 눌러 명령라인을 편집하는 것보다 훨씬 빠르다.
-  
-:::
-
-::: {#shell-loop-save .rmdcaution}
-
-**루프 내부에서 파일에 저장하기 - 1부**
-
-`data-shell/molecules` 디렉토리에 있다고 가정하자.
-다음 루프의 효과는 무엇인가?
-
-```bash
-$ for alkanes in *.pdb
-> do
->     echo $alkanes
->     cat $alkanes > alkanes.pdb
-> done
-```
-
-
-1. `fructose.dat`, `glucose.dat`, `sucrose.dat`을 출력하고, `sucrose.dat`에서 나온 텍스트를 `xylose.dat`에 저장된다.
-2. `fructose.dat`, `glucose.dat`, `sucrose.dat`을 출력하고, 모든 파일 3개에서 나온 텍스트를 합쳐 `xylose.dat`에 저장된다.
-3. `fructose.dat`, `glucose.dat`, `sucrose.dat`, `xylose.dat`을 출력하고, `sucrose.dat`에서 나온 텍스트를 `xylose.dat`에 저장된다.
-4. 위 어느 것도 아니다.
-
-> **해답**
-> 1. 순차적으로 각 파일의 텍스트가 `alkanes.pdb` 파일에 기록된다.
-> 하지만, 루프가 매번 반복될 때마다 파일에 덮어쓰기가 수행되어서 마지막 `alkanes.pdb` 파일 텍스트만
-> `alkanes.pdb` 파일에 기록된다.
-
-:::
-
-
-::: {#shell-loop-save2 .rmdcaution}
-
-**루프 내부에서 파일에 저장하기 - 2부**
-
-이번에도 `data-shell/molecules` 디렉토리에 있다고 가정하고, 다음 루프 실행 출력결과는 무엇일까?
-
-```bash
-$ for datafile in *.pdb
-> do
->     cat $datafile >> all.pdb
-> done
-```
-
-1.  `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb` 파일에 나온 모든 모든 텍스트가 하나로 붙여져서 
-    `all.pdb` 파일에 저장된다.
-2.  `ethane.pdb` 파일에 나온 텍스트만 `all.pdb` 파일에 저장된다.
-3.  `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb`, `propane.pdb` 파일에서 나온 모든 텍스트가 
-    하나로 풑여져서 `all.pdb` 파일에 저장된다.
-4.  `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb`, `propane.pdb` 파일에서 나온 
-    모든 텍스트가 화면에 출력되고 `all.pdb` 파일에 저장된다.
-    
-> **해답**
-> 정답은 3. 명령어 실행 출력결과를 방향변경하여 덮었는 것이 아니라 `>>` 기호는 파일에 덧붙인다.
-> `cat` 명령어에서 나온 출력결과가 파일로 방향변경되어 어떤 출력결과도 화면에 출력되지는 않는다.
-
-:::
-
-::: {#shell-loop-dry-run .rmdcaution}
-
-**시운전(Dry Run)**
-
-루프는 한번에 많은 작업을 수행하는 방식이다 --- 만약 잘못된 것이 있다면,
-한번에 실수를 대단히 많이 범하게 된다.
-루프가 수행하는 작업을 점검하는 한 방법이 실제로 루프를 돌리는 대신에
-`echo` 명령어를 사용하는 것이다.
-실제로 명령어를 실행하지 않고, 다음 루프가 실행할 명령어를 머릿속으로 미리보고자 한다고 가정한다: 
-
-```bash
-$ for file in *.pdb
-> do
->   analyze $file > analyzed-$file
-> done
-```
-
-아래 두 루프 사이에 차이는 무엇이고, 어느 것을 시운전으로 실행하고 싶은가?
-
-```bash
-# Version 1
-$ for file in *.pdb
-> do
->   echo analyze $file > analyzed-$file
-> done
-```
-
-```bash
-# Version 2
-$ for file in *.pdb
-> do
->   echo "analyze $file > analyzed-$file"
-> done
-```
-
-> **해답**
-> 두번째 버젼을 실행하면 좋을 것이다.
-> 달러 기호로 접두명을 주었기 때문에 루프 변수를 확장해서 인용부호로 감싼 모든 것을 화면에 출력한다.
->
-> 첫번째 버전은 `echo analyze $file` 명령을 수행해서 `analyzed-$file` 파일로 
-> 출력결과를 방향변경하여 저장시킨다. 따라서 파일이 쭉 자동생성된다:`analyzed-cubane.pdb`,
-> `analyzed-ethane.pdb` ...
-> 
-> 두가지 버젼을 직접 실행해보고 출력결과를 살펴보자!
-> `analyzed-*.pdb` 파일을 열어서 파일에 기록된 내용도 살펴본다.
-
-:::
-
-::: {#shell-loop-nested .rmdcaution}
-
-**중첩루프(Nested Loops)**
-다른 화합물과 다른 온도를 갖는 조합을 해서, 각 반응율 상수를 측정하는 
-실험을 조직하도록 이에 상응하는 디렉토리 구조를 갖추고자 한다.
-다음 코드 실행결과는 어떻게 될까?
-
-```bash
-$ for species in cubane ethane methane
-> do
->     for temperature in 25 30 37 40
->     do
->         mkdir $species-$temperature
->     done
-> done
-```
-
-> **해답**
-> 중첩 루프(루프 내부에 루프가 포함됨)를 생성하게 된다.
-> 외부 루프에 각 화학물이, 내부 루프(중첩된 루프)에 온도 조건을 반복하게 되서,
-> 화학물과 온도를 조합한 새로운 디렉토리가 쭉 생성된다.
->
-> 직접 코드를 실행해서 어떤 디렉토리가 생성되는지 확인한다!
-
-:::

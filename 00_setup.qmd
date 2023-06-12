@@ -440,6 +440,7 @@ $ sudo apt-get install tree
 :::
 
 
+```{=tex}
 \begin{Exercise}\label{Ex00}
 
 \noindent 1. 실습 데이터를 준비하고 압축을 해제하는데 사용된 명령어는 무엇일까요?
@@ -478,7 +479,8 @@ $ sudo apt-get install tree
 
 \noindent 6. 소프트웨어 카펜트리 유닉스 쉘에 사용되는 실습데이터를 `curl` 명령어로 다운로드 받아 압축을 풀어 `curl` 명령어로 저장을 한 후에 압축을 풀고 전체 디렉토리 구조를 일별합니다. 실습데이터는 소프트웨어 카펜트리 유닉스 쉘 학습 페이지에서 직접 다운로드 받을 수 있다. \footnote{https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip}
 `shell-lesson-data.zip` 압축을 풀고 폴더명은 shell-data 으로 지정합니다. 마지막으로, shell-data 아래 전체 디렉토리 구조만 나무형식으로 파일은 제외하고 보여주세요.
-\end{tasks}
 
 \end{Exercise}
+```
+
 

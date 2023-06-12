@@ -206,43 +206,50 @@ cat(glue::glue("1. {py$todo_text}"))
 \begin{Exercise}\label{Ex01}
 
 \noindent 1. 챗GPT를 사용하면 어떤 작업을 수행할 수 있을까요?
+
 \begin{tasks}[label=(\arabic*)](1)
-\task 강화 학습 모델 훈련
-\task 음성 인식 시스템 구축
-\task 대화형 챗봇 개발
-\task 이미지 분류 알고리즘 개발
+  \task 강화 학습 모델 훈련
+  \task 음성 인식 시스템 구축
+  \task 대화형 챗봇 개발
+  \task 이미지 분류 알고리즘 개발
 \end{tasks}
 
 \noindent 2. 다음 중 GPT-4를 사용하여 자연어 처리에 어떻게 활용할 수 있는지 가장 적합하지 않은 예는 무엇일까요?
+
 \begin{tasks}[label=(\arabic*)](1)
-\task  감성 분석
-\task  기계 번역
-\task  음성을 텍스트로 변환
-\task  문장 생성
+  \task  감성 분석
+  \task  기계 번역
+  \task  음성을 텍스트로 변환
+  \task  문장 생성
 \end{tasks}
 
 \noindent 3. 챗GPT를 이용하여 불가능한 자연어 처리 작업은 무엇일까요?
+
 \begin{tasks}[label=(\arabic*)](1)
-\task  텍스트 요약
-\task  텍스트 기반의 질의 응답
-\task  전문가 시스템을 위한 지식 표현
-\task  실시간 비디오 분석
+  \task  텍스트 요약
+  \task  텍스트 기반의 질의 응답
+  \task  전문가 시스템을 위한 지식 표현
+  \task  실시간 비디오 분석
 \end{tasks}
 
 \noindent 4. 챗GPT가 할 수 없는 자연어 처리 작업은 무엇일까요?
+
 \begin{tasks}[label=(\arabic*)](1)
-\task  문장 교정
-\task  개체명 인식
-\task  독해 이해
-\task  특정 개인의 미래 행동 예측
+  \task  문장 교정
+  \task  개체명 인식
+  \task  독해 이해
+  \task  특정 개인의 미래 행동 예측
 \end{tasks}
 
 \noindent 5. 다음 중 챗GPT를 활용한 챗봇 개발이 아닌 작업은 무엇일까요?
+
 \begin{tasks}[label=(\arabic*)](1)
-\task  고객 지원 서비스 개발
-\task  대화형 게임 스크립트 작성
-\task  자동 완성 기능 개발
-\task  이미지 인식 시스템 개발
+  \task  고객 지원 서비스 개발
+  \task  대화형 게임 스크립트 작성
+  \task  자동 완성 기능 개발
+  \task  이미지 인식 시스템 개발
 \end{tasks}
 
 \end{Exercise}
+
+

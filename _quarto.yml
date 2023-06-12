@@ -25,11 +25,11 @@ book:
     - part: "쉘 프로그래밍"
       chapters:
         # - 01-shell-intro.qmd
-        # - 02-shell-filedir.qmd
-        - 03-shell-create.qmd
-    #     # - 04-shell-pipefilter.qmd
-    #     # - 05-shell-loop.qmd
-    #     # - 06-shell-script.qmd
+        - 02-shell-filedir.qmd
+    #     - 03-shell-create.qmd
+    #     - 04-shell-pipefilter.qmd
+    #     - 05-shell-loop.qmd
+    #     - 06-shell-script.qmd
     #     - 07-shell-find.qmd
     # - part: "GPT 데이터 과학"
     #   chapters:

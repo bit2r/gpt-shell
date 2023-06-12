@@ -1,9 +1,42 @@
 
+% 0. 데이터 ---------------------------------------------
+
+shell-lesson-data
+
+% 0. 그림/이미지 -----------------------------------------
+%% 마크다운 이미지 ----------------------------------
+
+@fig-ex-01 (도전과제 질문에 사용되는 파일 시스템)에 나온 디렉토리 구조를 상정한다.
+
+![파일 시스템](images/filesystem-challenge.svg){#fig-ex-01 fig-align="center"}
+
+%% R/파이썬 이미지 ----------------------------------
+`/Users`  [@fig-home-directory]에서 Nelle 과학자 컴퓨터 계정과, 랩실 동료 미이라(Mummy)와 늑대인간(Wolfman) 디렉토리를 볼 수 있다.
+
+```{r}
+#| label: fig-home-directory
+#| echo: false
+#| fig-align: "center"
+#| fig-width: 203
+#| fig-cap: ”홈 디렉토리"
+
+knitr::include_graphics("images/home-directories.svg")
+```
+
 % 0. 색인 --------------------------------------
 \index{}
 \textbf{}
 
-shell-lesson-data
+% 1. _extension.yml --------------------------------------
+
+contributes:
+  format:
+    html:
+      theme: cosmo
+      css: "_extensions/bit2r/bitPublish/style.css"
+    pdf:
+      documentclass: book
+      classoption: draft
 
 % 1. 예제 --------------------------------------
 \label{chap:bitpublish}

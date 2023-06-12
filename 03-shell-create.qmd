@@ -1,6 +1,3 @@
-\label{chap:bitpublish}
-\newcounter{exam_num_bitpub}
-\setcounter{exam_num_bitpub}{0}
 
 # 파일과 디렉토리 작업 {#shell-create}
 
