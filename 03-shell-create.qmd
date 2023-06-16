@@ -148,11 +148,8 @@ $ ls
 draft.txt
 ```
 
-\addtocounter{exam_num_bitpub}{1}
-\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-
-\textbf{파일을 생성하는 다른 방법}
+::: {#exr-create-another}
+### 파일을 생성하는 다른 방법
 
 `nano` 편집기를 사용해서 텍스트 파일을 생성하는 방법을 살펴봤다.
 홈 디렉토리에서 다음 t쉘 명령어를 실행해 보자:
@@ -162,9 +159,6 @@ draft.txt
     파일이 생성된 것이 보이는가?
 2. `ls -l` 명령어를 사용해서 파일을 살펴보자. `my\_file.txt` 파일은 얼마나 큰가?
 3.  이런 방식으로 파일을 언제 생성하면 좋을까?
-
-
-\end{example}
 
 ```bash
 $ cd                  # 홈 디렉토리로 이동하기
@@ -190,6 +184,10 @@ $ touch my_file.txt
     메커니즘을 제공한다는 점에서 유용하다.
     
 :::    
+
+:::
+
+
 
 `shell-lesson-data` 디렉토리로 돌아가서,
 생성한 초안을 제거해서 `thesis` 디렉토리를 깔끔하게 정리하자:
@@ -381,15 +379,11 @@ $ ls quotes.txt
 quotes.txt
 ```
 
-\addtocounter{exam_num_bitpub}{1}
-\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-
-\textbf{현재 폴더로 이동하기}
+::: {#exr-move-folder}
+### 현재 폴더로 이동하기
 
 다음 명령어를 실행한 후에, 정훈이는 `sucrose.dat`, `maltose.dat` 파일을 잘못된 폴더에 넣은 것을 인지하게 되었다:
 
-\end{example}
 
 ```bash
 $ ls -F
@@ -416,6 +410,8 @@ $ mv ../analyzed/sucrose.dat ../analyzed/maltose.dat .
 `.` 디렉토리는 현재 디렉토리를 지칭함을 상기한다.
 
 :::
+:::
+
 
 
 `cp` 명령어는 `mv` 명령어와 거의 동일하게 동작한다. 
@@ -468,11 +464,8 @@ Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이�
 
 :::
 
-\addtocounter{exam_num_bitpub}{1}
-\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-
-\textbf{파일 이름 바꾸기}
+::: {#exr-rename}
+### 파일 이름 바꾸기
 
 데이터를 분석하는데 필요한 통계 검정 목록을 담고 있는 `.txt` 파일을 현재 디렉토리에 생성했다고 가정하자;
 파일명은 `statstics.txt`.
@@ -484,8 +477,6 @@ Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이�
 3. `mv statstics.txt .` \newline
 4. `cp statstics.txt .`
 
-\end{example}
-
 :::{.callout-tip}
 ### 해답과 설명
 
@@ -494,18 +485,13 @@ Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이�
 3. No, 마침표(.)는 파일을 이동할 디렉토리를 나타내지 새로운 파일명을 제시하고 있지는 않고 있다; 동일한 파일명은 생성될 수 없다.
 4. No, 마침표(.)는 파일을 복사할 디렉토리를 나타내지 새로운 파일명을 제시하고 있지는 않고 있다; 동일한 파일명은 생성될 수 없다.
 :::
+:::
 
-::: {.callout-caution}
 
-\addtocounter{exam_num_bitpub}{1}
-\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-
-\textbf{이동과 복사}
+::: {#exr-move-copy}
+### 이동과 복사
 
 아래 보여진 일련의 명령문에 뒤에 `ls`명령어의 출력값은 무엇일까요?
-
-\end{example}
 
 ```bash
 $ pwd
@@ -548,21 +534,19 @@ $ ls
 4. No, 상기 해설을 참조한다.  `proteins-saved.dat` 데이터는 `/Users/jamie` 폴더에 위치한다.
 
 :::
+:::
+
+
 
 ## 다수 파일과 폴더 작업 {#shell-moving-multiple}
 
 한 번에 여러 파일을 복사하거나 이동해야 하는 경우가 종종 있다. 파일명을 목록으로 제공하거나 와일드카드를 사용하여 패턴을 지정하면 된다. **와일드카드(Wildcards)**는 Unix 파일 시스템을 탐색할 때 특정한 패턴이나 일련의 문자를 대체하거나 대표하는 데 사용되는 특수 문자로 '*', '?', '%' 등이 대표적이다.
 
-\addtocounter{exam_num_bitpub}{1}
-\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-
-\textbf{다수 파일을 복사하기}
+::: {#exr-copy-multiple}
+### 다수 파일을 복사하기
 
 이번 연습문제에서는 `data-shell/data` 디렉토리에서 명령어를 테스트한다.
 아래 예제에서, 파일명 다수와 디렉토리명이 주어졌을 떄 `cp` 명령어는 어떤 작업을 수행하는가?
-
-\end{example}
 
 ```bash
 $ mkdir backup
@@ -593,6 +577,8 @@ cp: target ‘morse.txt’ is not a directory
 ```
 
 :::
+:::
+
 
 ::: {.callout-caution}
 
@@ -628,15 +614,10 @@ cp: target ‘morse.txt’ is not a directory
 
 :::
 
-\addtocounter{exam_num_bitpub}{1}
-\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-
-\textbf{와일드카드 추가 문제}
+::: {#exr-wildcards}
+### 와일드카드 추가 문제
 
 정훈이는 미세조정(calibration), 원본 데이터(dataset), 데이터 설명 데이터를 디렉토리에 보관하고 있다:
-
-\end{example}
 
 ```bash
 2015-10-23-calibration.txt
@@ -664,6 +645,8 @@ $ cp 2015-____-____ ~/send_to_bob/all_november_files/
 $ cp ____ ~/send_to_bob/all_datasets_created_on_a_23rd/
 ```
 
+:::
+
 정훈이가 빈칸을 채우도록 도움을 주세요.
 
 :::{.callout-tip}
@@ -677,15 +660,11 @@ $ cp *-23-dataset* ~send_to_bob/all_datasets_created_on_a_23rd/
 :::
 
 
-\addtocounter{exam_num_bitpub}{1}
-\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
+::: {#exr-file-directory}
 
-\textbf{디렉토리와 파일 조직화}
+### 디렉토리와 파일 조직화
 
 정훈이가 프로젝트 작업을 하고 있는데, 작업 파일이 그다지 잘 조직적으로 정리되어 있지 않음을 알게 되었다:
-
-\end{example}
 
 ```bash
 $ ls -F
@@ -719,12 +698,10 @@ $ mv *.dat analyzed
 `mv` 명령어가 `.dat` 확장자를 갖는 파일을 `analyzed` 디렉토리로 이동시킨다.
 
 :::
+:::
 
-\addtocounter{exam_num_bitpub}{1}
-\begin{example}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-\examplelabel{ex1}{\ref{chap:bitpublish}.\arabic{exam_num_bitpub}}
-
-\textbf{폴더 구조를 복사하지만, 파일을 복사하지 말자.}
+::: {#exr-delete}
+### 폴더 구조를 복사하지만, 파일을 복사하지 말자.
 
 새로운 실험을 시작해 보자. 데이터 파일 없이 이전 실험에게 만들었던 
 파일 구조만 복제하자. 그렇게 하면 새로운 데이터를 쉽게 추가할 수 있게 된다.
@@ -734,7 +711,6 @@ $ mv *.dat analyzed
 복사된 폴더에는 모든 데이터 파일을 제거해야 된다.
 다음 명령어 집합 중 어떤 명령어 집합이 상기 목적을 달성할까요? 다른 명령어 집합은 무슨 작업을 수행하는 것일가?
 
-\end{example}
 
 ```bash
 $ cp -r 2016-05-18-data/ 2016-05-20-data/
@@ -763,6 +739,8 @@ $ rm -r -i 2016-05-20-data/
 세번째 명령어도 목적을 달성하는데, 시간이 다소 소요된다: 첫번째 명령어가 디렉토리를 재귀적으로 복사하지만, 두번째 명령어는 인터랙티브하게 각 파일과 디렉토리에 대한 확인하는 과정을 거쳐 삭제를 하게 되어 시간이 추가로 소요된다.
 
 :::
+:::
+
 
 \begin{Exercise}\label{Ex3}
 
