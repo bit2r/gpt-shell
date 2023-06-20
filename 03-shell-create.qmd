@@ -2,20 +2,25 @@
 # 파일과 디렉토리 작업 {#shell-create}
 
 이제는 어떻게 파일과 디렉토리를 살펴보는지 알게 되었지만, 
-우선, 어떻게 파일과 디렉토리를 생성할 수 있을까요? 
-바탕화면(Desktop) `data-shell` 디렉토리로 돌아가서 
+우선, 어떻게 파일과 디렉토리를 생성할 수 있을까요?\index{디렉토리!생성} \index{파일!생성}
+바탕화면(Desktop) `shell-lesson-data` 디렉토리로 돌아가서 
 `ls -F` 명령어를 사용하여 무엇을 담고 있는지 살펴봅시다:
 
 ```bash
 $ pwd
-/Users/nelle/Desktop/data-shell
+/Users/nelle/Desktop/shell-lesson-data
 ```
+
+다음으로 `exercise-data/writing` 디렉토리로 이동하여 그 안에 무엇이 들어 있는지 살펴봅시다:
 
 
 ```bash
+$ cd exercise-data/writing/
 $ ls -F
-creatures/  data/  molecules/  north-pacific-gyre/  notes.txt  pizza.cfg  solar.pdf  writing/
+haiku.txt  LittleWomen.txt
 ```
+
+## 디렉토리 생성
 
 명령어 `mkdir thesis`을 사용하여 새 디렉토리 `thesis`를 생성합시다
 (출력되는 것은 아무것도 없습니다.):
@@ -26,19 +31,47 @@ $ mkdir thesis
 ```
 
 이름에서 유추를 할 수도, 하지 못할 수도 있지만, 
-`mkdir`은 "make directory(디렉토리 생성하기)"를 의미한다. 
+`mkdir`은 "make directory(디렉토리 생성하기)"를 의미한다. \index{mkdir} 
 `thesis`는 상대 경로여서(즉, 앞에 슬래쉬가 없음), 
 새로운 디렉토리는 현재 작업 디렉토리 아래 만들어진다:
 
 ```bash
 $ ls -F
-creatures/  data/  molecules/  north-pacific-gyre/  notes.txt  pizza.cfg  solar.pdf  thesis/  writing/
+haiku.txt  LittleWomen.txt  thesis/
 ```
+
+
+방금 `thesis` 디렉터리를 만들었으므로 아직 아무것도 없습니다:
+
+```bash
+$ ls -F thesis
+```
+
+`mkdir` 명령어는 한 번에 하나의 디렉터리를 만드는 것으로 국한되지 않는다. `-p` 옵션을 사용하면 `mkdir` 한 번의 작업으로 중첩된 하위 디렉터리가 있는 디렉터리를 만들 수 있습니다:\index{ls!ls -p}
+
+
+```bash
+$ mkdir -p ../project/data ../project/results
+```
+
+`ls` 명령어 `-R` 옵션을 추가하면 디렉터리 내에 중첩된 모든 하위 디렉터리가 나열됩니다. `ls -FR`을 사용하여 `project` 디렉터리에서 방금 만든 디렉터리 계층 구조를 재귀적으로 나열해 보겠습니다:\index{ls!ls -FR}
+
+```bash
+$ ls -FR ../project
+../project/:
+data/  results/
+
+../project/data:
+
+../project/results:
+```
+
+
 
 ::: {.callout-caution}
 **동일한 작업을 수행하는 두가지 방법**
 
-쉘을 사용해서 디렉토리를 생성하는 것이나 파일 탐색기를 사용하는 것과 별반 차이가 없다.
+쉘을 사용해서 디렉토리를 생성하는 것이나 (윈도우) 파일 탐색기를 사용하는 것과 별반 차이가 없다.\index{파일 탐색기}
 운영체제 그래픽 파일 탐색기를 사용해서 현재 디렉토리를 열게 되면,
 `thesis` 디렉토리가 마찬가지로 나타난다.
 파일과 상호작용하는 두가지 다른 방식이 존재하지만,
@@ -53,33 +86,31 @@ creatures/  data/  molecules/  north-pacific-gyre/  notes.txt  pizza.cfg  solar.
 다음에 파일 명칭에 대한 유용한 팁이 몇개 있다.
 
 1. 공백(whitespaces)을 사용하지 마라
-   공백은 이름을 의미있게 할 수도 있지만,
-   공백이 명령라인 인터페이스에서 인자를 구별하는데 사용되기에,
-   파일과 디렉토리 명에서는 피하는 것이 상책이다.
-   공백 대신에 `-` 혹은 `_` 문자를 사용한다.
+
+공백은 이름을 의미있게 할 수도 있지만,
+공백이 명령라인 인터페이스에서 인자를 구별하는데 사용되기에,
+파일과 디렉토리 명에서는 피하는 것이 상책이다.
+공백 대신에 `-` 혹은 `_` 문자를 사용한다. (예를 들어, `north pacific gyre/` 대신 `north-pacific-gyre/`을 사용))
    
 2. 대쉬(`-`)로 명칭을 시작하지 않는다.
-   명령어가 `-`으로 시작되는 명칭을 선택옵션으로 처리하기 때문이다.
+
+명령어가 `-`으로 시작되는 명칭을 선택옵션으로 처리하기 때문이다.
    
 3. 명칭에 문자, 숫자, `.` (마침표), `-` (대쉬) and `_` (밑줄)을 고수한다.
-   명령라인 인터페이스에서 다른 많은 문자는 특별한 의미를 갖는다.
-   학습을 진행하면서 이들 중 일부를 배울 것이다.
-   일부 특수 문자는 명령어가 기대했던 대로 동작하지 못하게 하거나,
-   심한 경우 데이터 유실을 야기할 수도 있다.
+
+명령라인 인터페이스에서 그외 다른 많은 문자는 특별한 의미를 갖는다.
+일부 특수 문자가 잘못 사용되면 명령어가 기대했던 대로 동작하지 못하게 하거나,
+심한 경우 데이터 유실을 야기할 수도 있다.
    
    
 공백을 포함하거나 알파벳이 아닌 문자를 갖는 파일명이나 디렉토리명을 굳이 지정할 필요가 있다면,
 인용부호(`""`)로 파일명이나 디렉토리명을 감싸야 한다.
 :::
 
-`thesis` 디렉토리를 방금 생성했기에 내부에는 아무것도 없다:
-
-```bash
-$ ls -F thesis
-```
+## 텍스트 파일 생성
 
 `cd` 명령어를 사용하여 `thesis`로 작업 디렉토리를 변경하자. 
-Nano 텍스트 편집기를 실행해서 `draft.txt` 파일을 생성하자:
+Nano 텍스트 편집기를 실행해서 `draft.txt` 파일을 생성하자:\index{파일!생성}
 
 ```bash
 $ cd thesis
@@ -90,31 +121,29 @@ $ nano draft.txt
 
 **어떤 편집기가 좋을까요?**
 
-"`nano`가 텍스트 편집기다"라고 말할 때, 정말 "텍스트"만 의미한다. 
+"`nano`가 텍스트 편집기다"라고 말할 때, 정말 "텍스트"만 의미한다. \index{편집기} \index{nano}
 즉, 일반 문자 데이터만 작업할 수 있고, 표, 이미지, 혹은 다른 형태의 인간 친화적 미디어는 작업할 수 없다. 
-`nano`를 워크샵에서 사용하는데 이유는 거의 누구나 훈련없이 사용할 수 있기 때문이다. 
+`nano`를 사용하는 이유는 거의 누구나 훈련없이 사용할 수 있기 때문이다. 
 하지만, 실제 작업에는 좀더 강력한 편집기 사용을 추천한다. 
 유닉스 시스템 계열(맥 OS X, 리눅스)에서 많은 프로그래머는 
-[Emacs](http://www.gnu.org/software/emacs/) 혹은 [Vim](http://www.vim.org/)을 사용하거나, 
+[Emacs](http://www.gnu.org/software/emacs/) 혹은 [Vim](http://www.vim.org/)을 사용하거나, \index{Emacs} \index{Vim}
 (둘다 완전히 비직관적이만, 심지어 유닉스 표준이기도 하다)
-혹은 그래픽 편집기로 [Gedit](http://projects.gnome.org/gedit/)를 사용한다. 
+혹은 그래픽 편집기로 [Gedit](http://projects.gnome.org/gedit/), [VScode](https://code.visualstudio.com/)를 사용한다. 
 윈도우에서는 [Notepad++](http://notepad-plus-plus.org/)를 사용하는 것도 좋다.
 윈도우에는 `메모장(notepad)`이라고 불리는 자체 내장 편집기도 있는데 
-`nano` 편집기와 마찬가지로 명령라인에서 바로 불러 실행될 수 있다.
+`nano` 편집기와 마찬가지로 명령라인에서 바로 불러 실행될 수 있다.\index{Gedit}\index{VScode} \index{메모장}
 
 어떤 편집기를 사용하든, 파일을 검색하고 저장하는 것을 알 필요가 있다. 
 쉘에서 편집기를 시작하면, (아마도) 현재 작업 디렉토리가 디폴트 시작 위치가 된다. 
-컴퓨터 시작 메뉴에서 시작한다면, 대신에 바탕화면(Desktop) 혹은 문서 디렉토리에 파일을 저장하고 싶을지도 모른다. 
-"다른 이름으로 저장하기(Save As ...)"로 다른 디렉토리로 이동하여 작업 디렉토리를 변경하여 파일을 저장할 수도 있다.
+컴퓨터 시작 메뉴에서 시작한다면, 대신에 바탕화면(Desktop) 혹은 문서(Document) 디렉토리에 파일을 저장하고 할 수 있다. 필요한 경우, "다른 이름으로 저장하기(Save As ...)" 명령어로 다른 디렉토리로 이동하여 작업 디렉토리를 변경한 후 파일을 저장한다.
 :::
 
-텍스트 몇 줄을 타이핑하고, 
-컨트롤+O (Control-O, Ctrl 혹은 콘트롤 키보드를 누르면서 `O` 를 누름)를 눌러서 데이터를 디스크에 쓰면 저장된다:
+@fig-nano 처럼 텍스트 몇 줄을 타이핑하자.
+
+![나노 편집기 실제 사용화면](images/nano-screenshot.png){#fig-nano}
+
+타이핑한 텍스트가 만족스럽다면, `컨트롤+O` (`Control-O`, `Ctrl` 혹은 콘트롤 키보드를 누르면서 `O` 를 누름)를 눌러서 데이터를 디스크에 쓰면 저장된다:
 (저장하고자 하는 파일명을 입력하도록 독촉받게 되면 `draft.txt` 기본디폴트로 설정된 것을 받아들이고 엔터키를 친다.)
-
-
-![Nano in Action](images/nano-screenshot.png)
-
 
 파일이 저장되면, 컨트롤+X (`Ctrl-X`, Control-X)를 사용하여 편집기를 끝내고 쉘로 돌아간다. 
 
@@ -152,24 +181,23 @@ draft.txt
 ### 파일을 생성하는 다른 방법
 
 `nano` 편집기를 사용해서 텍스트 파일을 생성하는 방법을 살펴봤다.
-홈 디렉토리에서 다음 t쉘 명령어를 실행해 보자:
-
-1.  `touch` 명령어는 어떤 작업을 수행하는가?
-    GUI 파일 탐색기를 사용해서 본인 홈 디렉토리를 살펴보게 되면,
-    파일이 생성된 것이 보이는가?
-2. `ls -l` 명령어를 사용해서 파일을 살펴보자. `my\_file.txt` 파일은 얼마나 큰가?
-3.  이런 방식으로 파일을 언제 생성하면 좋을까?
+홈 디렉토리에서 다음 쉘 명령어를 실행해 보자:
 
 ```bash
 $ cd                  # 홈 디렉토리로 이동하기
 $ touch my_file.txt
 ```
 
+1.  `touch` 명령어는 어떤 작업을 수행하는가? GUI 파일 탐색기를 사용해서 본인 홈 디렉토리를 살펴보게 되면, 파일이 생성된 것이 보이는가?
+2. `ls -l` 명령어를 사용해서 파일을 살펴보자. `my_file.txt` 파일크기는 얼마나 되는가?
+3.  이런 방식으로 파일을 언제 생성하면 좋을까?
+
+
 :::{.callout-tip}
-### 실행결과 및 해석*
+### 실행결과 및 해석
 
 1.  `touch` 명령어가 홈 디렉토리에 'my_file.txt' 파일을 새로 생성시킨다.
-    터미널로 현재 홈 디렉토리에 있는 경우, `ls` 를 타이핑하게 되면 
+터미널로 현재 홈 디렉토리에 있는 경우, `ls` 를 타이핑하게 되면 
     새로 생성된 파일을 확인할 수 있다. GUI 파일 탐색기로도 
     'my_file.txt' 파일을 볼 수 있다.
     
@@ -188,143 +216,47 @@ $ touch my_file.txt
 :::
 
 
-
-`shell-lesson-data` 디렉토리로 돌아가서,
-생성한 초안을 제거해서 `thesis` 디렉토리를 깔끔하게 정리하자:
+나중에 혼동을 피하려면 진도를 더 나가기 전에 방금 만든 파일을 제거하는 것이 좋다. 그렇지 않으면 향후 실행결과와 다를 수 있다. 이를 위해서 다음 명령을 실행한다:
 
 ```bash
-$ cd thesis
-$ rm draft.txt
-```
-
-상기 명령어는 파일을 제거한다(`rm`은 "remove"를 줄인 것이다.)
-`ls` 명령어를 다시 실행하게 되면,
-출력결과는 아무 것도 없게 되는데 파일이 사라진 것을 확인시켜준다:
-
-```bash
-$ ls
+$ rm my_file.txt
 ```
 
 ::: {.callout-caution}
 
-**삭제는 영원하다**
+**파일명이 뭐가 중요해?**
 
-유닉스에는 삭제된 파일을 복구할 수 있는 휴지통이 없다. 
-(하지만, 유닉스에 기반한 대부분의 그래픽 인터페이스는 휴지통 기능이 있다)
-파일을 삭제하면 파일시스템의 관리대상에서 빠져서 디스트 저장공간이 다시 재사용되게 한다. 
-삭제된 파일을 찾아 되살리는 도구가 존재하지만, 
-어느 상황에서나 동작한다는 보장은 없다. 
-왜냐하면 파일이 저장되었던 공간을 컴퓨터가 바로 재사용할지 모르기 때문이다.
-:::
+넬 박사 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이다. 
+이번 학습에서, 항상 `.txt` 확장자를 사용했다.
+이것은 단지 관례다: 파일 이름을 `mythesis` 혹은 원하는 무엇이든지 작명할 수 있다. 
+하지만, 대부분의 사람들은 두 부분으로 구분된 이름을 사용하여
+사람이나 프로그램이 다른 유형의 파일임을 구분하도록 돕는다. 
+이름에 나온 두번째 부분을 **파일 확장자(filename extension)**라고 부르고, 
+파일에 어떤 유형의 데이터가 담고 있는지 나타낸다. 
+`.txt` 확장자는 텍스트 파일임을, `.pdf`는 PDF 문서임을, 
+`.cfg` 확장자는 어떤 프로그램에 대한 구성정보를 담고 있는 형상관리 파일임을 내고,
+`.png` 확장자는 PNG 이미지 등등을 나타낸다.\index{파일!확장자}
 
-파일을 다시 생성하고 나서, `cd ..`를 사용하여 `/Users/nelle/Desktop/data-shell` 상위 디렉토리로 이동해보자:
+단지 관습이기는 하지만 중요하다. 
+파일에는 바이트(byte) 정보만 담겨져 있다: PDF 문서, 이미지, 등에 대해서 규칙에 따라 
+바이트를 해석하는 것은 사람과 우리가 작성한 프로그램에 맡겨졌다.
 
-```bash
-$ pwd
-/Users/nelle/Desktop/data-shell/thesis
-```
-
-```bash
-$ nano draft.txt
-$ ls
-draft.txt
-```
-
-```bash
-$ cd ..
-```
-
-`rm thesis`을 사용하여 전체 `thesis` 디렉토리를 제거하려고 하면 오류 메시지가 생긴다:
-
-```bash
-$ rm thesis
-rm: cannot remove `thesis': Is a directory
-```
-
-
-`rm` 명령어는 파일에만 동작하고 디렉토리에는 동작하지 않기 때문에 오류가 발생한다. 
-`thesis` 디렉토리를 제거하려면, `draft.txt` 파일도 삭제해야 한다.
-`rm` 명령어에 [재귀(recursive)](https://en.wikipedia.org/wiki/Recursion) 선택옵션을 사용해서 
-삭제 작업을 수행할 수 있다:
-
-```bash
-$ rm -r thesis
-```
-
-::: {.callout-caution}
-
-**`rm` 안전하게 사용하기**
-
-`rm -i thesis/quotations.txt` 타이핑하면 무슨 일이 일어날까?
-`rm` 명령어를 사용할 때 왜 이러한 보호장치가 필요할까?
-
->
-> ```
-> $ rm: remove regular file 'thesis/quotations.txt'?
-> ```
-> 
-> `-i` 선택옵션은 삭제하기 전에 삭제를 확인하게 해준다.
-> 유닉스 쉘에는 휴지통이 없어서, 삭제되는 모든 파일은 영원히 사라진다.
-> `-i` 플래그를 사용하게 되면, 삭제를 원하는 파일만 삭제되는지 점검할 수 있는 기회를 갖게된다.
+`whale.mp3`처럼 고래 PNG 이미지 이름을 갖는 파일을 고래 노래의 음성파일로 변환하는 마술은 없다. 설사 누군가 두번 클릭할 때, 운영체제가 음악 재생기로 열어 실행할 수는 있지만 동작은 되지 않을 것이다.
 
 :::
 
 
+## 파일과 디렉토리 이동 {#shell-move-file}
 
-::: {.callout-caution}
 
-**큰 힘에는 큰 책임이 따른다(With Great Power Comes Great Responsibility)**
-
-디렉토리에 먼저 파일을 제거하고, 그리고 나서 디렉토리를 제거하는 방식은 지루하고 시간이 많이 걸린다. 
-대신에 `-r` 옵션을 가진 `rm` 명령어를 사용할 수 있다. 
-`-r` 플래그 옵션은 "recursive(재귀적)"을 나타낸다.
+다음 명령어로 `shell-lesson-data/exercise-data/writing` 디렉토리로 돌아간다.
 
 ```bash
-$ rm -r thesis
+$ cd ~/Desktop/shell-lesson-data/exercise-data/writing
 ```
-
-디렉토리에 모든 것을 삭제하고 나서 디렉토리 자체도 삭제한다. 
-만약 디렉토리가 하위 디렉토리를 가지고 있다면, `rm -r`은 하위 디렉토리에도 같은 작업을 반복한다. 
-매우 편리하지만, 부주위하게 사용되면 피해가 엄청날 수 있다.
-
-디렉톨리 파일을 재귀적으로 제거하는 것은 매우 위험할 수 있다.
-삭제되는 것에 염려가 된다면, `rm` 명령어에 `-i` 인터랙티브 플래그를 추가해서
-삭제단계마다 확인을 하고 삭제하는 것도 가능하다.
-
-```bash
-$ rm -r -i thesis
-rm: descend into directory ‘thesis’? y
-rm: remove regular file ‘thesis/draft.txt’? y
-rm: remove directory ‘thesis’? y
-```
-
-
-상기 명령어는 `thesis` 디렉토리 내부 모든 것을 삭제하고 나서 `thesis` 디렉토리도 
-삭제하는데 삭제단계별로 확인 절차를 거친다.
-:::
-
-
-다시 한번 디렉토리와 파일을 생성하자. 
-이번에는 `thesis/draft.txt` 파일경로로 바로 `nano`를 실행함을 주목하자. 
-이전에는 `thesis`디렉토리로 가서 `draft.txt`이름으로 `nano`를 실행했다.
-
-```bash
-$ pwd
-/Users/nelle/Desktop/data-shell
-```
-
-```bash
-$ mkdir thesis
-$ nano thesis/draft.txt
-$ ls thesis
-draft.txt
-```
-
-## 파일과 폴더 이동 {#shell-move-file}
-
 
 `draft.txt`가 특별한 정보를 제공하는 이름이 아니어서 `mv`를 사용하여 파일 이름을 변경하자. 
-`mv`는 "move"의 줄임말이다:
+`mv`는 "move"의 줄임말이다:\index{mv} \index{파일!이동} \index{디렉토리!이동}
 
 ```bash
 $ mv thesis/draft.txt thesis/quotes.txt
@@ -346,7 +278,7 @@ quotes.txt
 왜냐하면, `mv` 명령어는 동일 명칭을 갖는
 어떤 기존 파일도 아주 조용히 덮어 써버리는 재주가 있어 데이터 유실에 이르게 된다.
 부가적인 옵션 플래그, `mv -i` (즉 `mv --interactive`)를 사용해서
-덮어쓰기 전에 사용자가 확인하도록 `mv` 명령어를 활용할 수도 있다.
+덮어쓰기 전에 사용자가 확인하도록 `mv` 명령어를 활용할 수도 있다.\index{mv -i}
 
 일관성을 갖고 있어서, `mv`는 디렉토리에도 동작한다 --- 별도 `mvdir` 명령어는 없다.
 
@@ -396,14 +328,14 @@ $ cd raw/
 해당 파일을 현재 디렉토리(즉, 현재 사용자가 위치한 폴더)로 이동시키도록 아래 빈칸을 채우시오:
 
 ```bash
-$ mv ___/sucrose.dat  ___/maltose.dat ___
+$ mv sucrose.dat maltose.dat ____/____
 ```
 
 :::{.callout-tip}
 ### 해답과 설명
 
 ```bash
-$ mv ../analyzed/sucrose.dat ../analyzed/maltose.dat .
+$ mv sucrose.dat maltose.dat ../raw
 ```
 
 `..` 디렉토리는 부모 디렉토리(즉, 현재 디렉토리에서 상위 디렉토리를 지칭)
@@ -412,9 +344,9 @@ $ mv ../analyzed/sucrose.dat ../analyzed/maltose.dat .
 :::
 :::
 
+## 파일 및 디렉터리 복사
 
-
-`cp` 명령어는 `mv` 명령어와 거의 동일하게 동작한다. 
+`cp` 명령어는 `mv` 명령어와 거의 동일하게 동작한다. \index{cp} \index{파일!복사}
 차이점은 이동하는 대신에 복사한다는 점이다. 
 인자로 경로를 두개 갖는 `ls` 명령어로 제대로 작업을 했는지 확인할 수 있다.
 대부분의 유닉스 명령어와 마찬가지로, `ls` 명령어로 한번 경로 다수를 전달할 수도 있다:
@@ -436,33 +368,33 @@ ls: cannot access quotes.txt: No such file or directory
 thesis/quotations.txt
 ```
 
-
 이번에는 현재 디렉토리에서 `quotes.txt` 파일은 찾을 수 없지만, 
 삭제하지 않은 thesis 폴더의 복사본은 찾아서 보여준다.
 
-::: {.callout-caution}
+재귀 옵션 `-r`을 사용하여 디렉터리 및 디렉터리 내부 모든 콘텐츠를 복사할 수도 있다(예를 들어, 디렉터리를 백업하는 경우):\index{ls!ls -r} \index{재귀}
 
-**파일명이 뭐가 중요해?**
+```bash
+$ cp -r thesis thesis_backup
+```
 
-Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이다. 
-이번 학습에서, 항상 `.txt` 확장자를 사용했다.
-이것은 단지 관례다: 파일 이름을 `mythesis` 혹은 원하는 무엇이든지 작명할 수 있다. 
-하지만, 대부분의 사람들은 두 부분으로 구분된 이름을 사용하여
-사람이나 프로그램이 다른 유형의 파일임을 구분하도록 돕는다. 
-이름에 나온 두번째 부분을 **파일 확장자(filename extension)**라고 부르고, 
-파일에 어떤 유형의 데이터가 담고 있는지 나타낸다. 
-`.txt` 확장자는 텍스트 파일임을, `.pdf`는 PDF 문서임을, 
-`.cfg` 확장자는 어떤 프로그램에 대한 구성정보를 담고 있는 형상관리 파일임을 내고,
-`.png` 확장자는 PNG 이미지 등등을 나타낸다.
+`thesis`와 `thesis_backup` 디렉터리 내부 결과를 `ls` 명령어로 확인할 수 있다:
 
-단지 관습이기는 하지만 중요하다. 
-파일은 바이트(byte) 정보를 담고 있다: PDF 문서, 이미지, 등에 대해서 규칙에 따라 
-바이트를 해석하는 것은 사람과 작성된 프로그램에 맡겨졌다.
+```bash
+$ ls thesis thesis_backup
+thesis:
+quotations.txt
 
-`whale.mp3`처럼 고래 PNG 이미지 이름을 갖는 파일을 고래 노래의 음성파일로 변환하는 마술은 없다. 
-설사 누군가 두번 클릭할 때, 운영체제가 음악 재생기로 열어 실행할 수는 있지만 동작은 되지 않을 것이다.
+thesis_backup:
+quotations.txt
+```
 
-:::
+`-r` 플래그를 포함하는 것이 중요하다. 디렉터리를 복사하려는 경우 이 옵션을 생략하면 `-r not specified` 때문에 디렉터리가 생략되었다는 메시지가 표시된다.
+
+```bash
+$ cp thesis thesis_backup
+cp: -r not specified; omitting directory 'thesis'
+```
+
 
 ::: {#exr-rename}
 ### 파일 이름 바꾸기
@@ -470,11 +402,11 @@ Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이�
 데이터를 분석하는데 필요한 통계 검정 목록을 담고 있는 `.txt` 파일을 현재 디렉토리에 생성했다고 가정하자;
 파일명은 `statstics.txt`.
 파일을 생성하고 저장한 후에 곰곰히 생각해 보니 파일명 철자가 틀린 것을 알게 되었다!
-틀린 철자를 바로잡고자 하는데, 다음 중 어떤 명령어를 사용해야 하는가?
+틀린 철자를 바로잡고자 하는데, 다음 중 어떤 명령어를 사용해야 하는가?\index{파일!파일명 변경}
 
-1. `cp statstics.txt statistics.txt` \newline
-2. `mv statstics.txt statistics.txt` \newline
-3. `mv statstics.txt .` \newline
+1. `cp statstics.txt statistics.txt`
+2. `mv statstics.txt statistics.txt`
+3. `mv statstics.txt .`
 4. `cp statstics.txt .`
 
 :::{.callout-tip}
@@ -488,7 +420,7 @@ Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이�
 :::
 
 
-::: {#exr-move-copy}
+::::: {#exr-move-copy}
 ### 이동과 복사
 
 아래 보여진 일련의 명령문에 뒤에 `ls`명령어의 출력값은 무엇일까요?
@@ -515,7 +447,7 @@ $ ls
 3.   `proteins.dat recombine`
 4.   `proteins-saved.dat`
 
-:::{.callout-tips}
+:::{.callout-tip}
 ### 해답과 설명
 
 `/Users/jamie/data` 디렉토리에서 출발해서, `recombine` 이름의 디렉토리를 새로 생성한다.
@@ -524,8 +456,7 @@ $ ls
 여기서 조금 까다로운 점은 파일이 복사되는 디렉토리다.
 `..` 이 의미하는 바가 "한단계 위로 이동"하라는 의미라서,
 복사되는 파일은 이제 `/Users/jamie` 디렉토리에 위치하게 됨을 상기한다.
-`..` 이 의미하는 바는 복사되는 파일 위치에 대한 것이 **아니라** 현재 작업 디렉토리에 대한 
-것으로 해석됨에 유의한다. 
+`..` 이 의미하는 바는 복사되는 파일 위치에 대한 것이 **아니라** 현재 작업 디렉토리에 대한 것으로 해석됨에 유의한다. 
 그래서, 그래서, `ls` 명령어를 사용해서 보여지게 되는 것은 (`/Users/jamie/data`에 있기 때문에) `recombine` 폴더가 된다.
 
 1. No, 상기 해설을 참조한다. `proteins-saved.dat` 데이터는 `/Users/jamie` 폴더에 위치한다.
@@ -534,6 +465,112 @@ $ ls
 4. No, 상기 해설을 참조한다.  `proteins-saved.dat` 데이터는 `/Users/jamie` 폴더에 위치한다.
 
 :::
+
+:::::
+
+## 파일 및 디렉터리 제거
+
+`shell-lesson-data/exercise-data/writing` 디렉토리로 돌아가서,
+생성한 초안을 제거해서 `thesis` 디렉토리를 깔끔하게 정리하자.
+이를 위해 사용할 유닉스 명령은 `rm`('remove'의 줄임말)이다.:\index{rm}\index{파일!제거}\index{파일!삭제}
+  
+```bash
+$ cd thesis
+$ rm draft.txt
+```
+
+상기 명령어는 파일을 제거한다(`rm`은 "remove"를 줄인 것이다.)
+`ls` 명령어를 다시 실행하게 되면,
+출력결과는 아무 것도 없게 되는데 파일이 사라진 것을 확인시켜준다:
+  
+```bash
+ls quotes.txt
+ls: cannot access 'quotes.txt': No such file or directory
+```
+
+::: {.callout-caution}
+### 삭제는 영원하다
+  
+유닉스에는 삭제된 파일을 복구할 수 있는 휴지통이 없다. 
+(하지만, 유닉스에 기반한 대부분의 그래픽 인터페이스는 휴지통 기능이 있다)
+파일을 삭제하면 파일시스템의 관리대상에서 빠져서 디스트 저장공간이 다시 재사용되게 한다. 
+삭제된 파일을 찾아 되살리는 도구가 존재하지만, 
+어느 상황에서나 동작한다는 보장은 없다. 
+왜냐하면 파일이 저장되었던 공간을 컴퓨터가 바로 재사용할지 모르기 때문이다.
+:::
+
+::: {.callout-caution}
+### `rm` 안전하게 사용하기
+
+`rm -i thesis/quotations.txt` 타이핑하면 무슨 일이 일어날까?
+`rm` 명령어를 사용할 때 왜 이러한 보호장치가 필요할까?
+
+:::{.callout-tip}
+
+```
+$ rm: remove regular file 'thesis/quotations.txt'?
+```
+ 
+`-i` 선택옵션은 삭제하기 전에 삭제를 확인하게 해준다. `Y`를 사용하여 삭제를 확인하거나 `N`을 사용하여 파일을 유지한다.
+유닉스 쉘에는 휴지통이 없어서, 삭제되는 모든 파일은 영원히 사라진다.
+`-i` 플래그를 사용하게 되면, 삭제를 원하는 파일만 삭제되는지 점검할 수 있는 기회를 갖게된다.
+:::
+
+:::
+  
+
+`rm thesis`을 사용하여 전체 `thesis` 디렉토리를 제거하려고 하면 오류 메시지가 생긴다:
+  
+```bash
+$ rm thesis
+rm: cannot remove `thesis': Is a directory
+```
+
+
+`rm` 명령어는 파일에만 동작하고 디렉토리에는 동작하지 않기 때문에 오류가 발생한다. 
+`thesis` 디렉토리를 제거하려면, `draft.txt` 파일도 삭제해야 한다.
+`rm` 명령어에 [재귀(recursive)](https://en.wikipedia.org/wiki/Recursion) 선택옵션을 사용해서 삭제 작업을 수행할 수 있다:
+
+```bash
+$ rm -r thesis
+```
+
+셸을 사용하여 삭제한 파일을 복원할 수 있는 방법이 없으므로 `rm -r`은 매우 주의해서 사용해야 한다 (대화형 옵션인 `rm -r -i`를 추가하는 것도 고려해 볼 수 있다).
+
+
+\begin{shadequote}[r]{피터 파커(스파이더맨)의 삼촌 벤자민 파커}
+큰 힘에는 큰 책임이 따른다. (With Great Power Comes Great Responsibility)
+\end{shadequote}
+
+::: {.callout-caution}
+### 큰 힘에는 큰 책임이 따른다
+
+디렉토리에 먼저 파일을 제거하고, 그리고 나서 디렉토리를 제거하는 방식은 지루하고 시간이 많이 걸린다. 
+대신에 `-r` 옵션을 가진 `rm` 명령어를 사용할 수 있다. 
+`-r` 플래그 옵션은 "recursive(재귀적)"을 나타낸다.
+
+```bash
+$ rm -r thesis
+```
+
+디렉토리에 모든 것을 삭제하고 나서 디렉토리 자체도 삭제한다. 
+만약 디렉토리가 하위 디렉토리를 가지고 있다면, `rm -r`은 하위 디렉토리에도 같은 작업을 반복한다. 
+매우 편리하지만, 부주위하게 사용되면 피해가 엄청날 수 있다.
+
+디렉톨리 파일을 재귀적으로 제거하는 것은 매우 위험할 수 있다.
+삭제되는 것에 염려가 된다면, `rm` 명령어에 `-i` 인터랙티브 플래그를 추가해서
+삭제단계마다 확인을 하고 삭제하는 것도 가능하다.
+
+```bash
+$ rm -r -i thesis
+rm: descend into directory ‘thesis’? y
+rm: remove regular file ‘thesis/draft.txt’? y
+rm: remove directory ‘thesis’? y
+```
+
+
+상기 명령어는 `thesis` 디렉토리 내부 모든 것을 삭제하고 나서 `thesis` 디렉토리도 
+삭제하는데 삭제단계별로 확인 절차를 거친다.
 :::
 
 
@@ -580,10 +617,10 @@ cp: target ‘morse.txt’ is not a directory
 :::
 
 
+## 와일드카드 사용 한번에 여러 파일에 접근
+
 ::: {.callout-caution}
-
-**와일드 카드(Wildcards)**
-
+### 와일드 카드(Wildcards)
 
 `*`는 **와일드카드(wildcard)**다. 
 와일드카드는 0 혹은 그 이상의 문자와 매칭되서, 
@@ -619,19 +656,27 @@ cp: target ‘morse.txt’ is not a directory
 
 정훈이는 미세조정(calibration), 원본 데이터(dataset), 데이터 설명 데이터를 디렉토리에 보관하고 있다:
 
+
 ```bash
-2015-10-23-calibration.txt
-2015-10-23-dataset1.txt
-2015-10-23-dataset2.txt
-2015-10-23-dataset_overview.txt
-2015-10-26-calibration.txt
-2015-10-26-dataset1.txt
-2015-10-26-dataset2.txt
-2015-10-26-dataset_overview.txt
-2015-11-23-calibration.txt
-2015-11-23-dataset1.txt
-2015-11-23-dataset2.txt
-2015-11-23-dataset_overview.txt
+.
+├── 2015-10-23-calibration.txt
+├── 2015-10-23-dataset1.txt
+├── 2015-10-23-dataset2.txt
+├── 2015-10-23-dataset_overview.txt
+├── 2015-10-26-calibration.txt
+├── 2015-10-26-dataset1.txt
+├── 2015-10-26-dataset2.txt
+├── 2015-10-26-dataset_overview.txt
+├── 2015-11-23-calibration.txt
+├── 2015-11-23-dataset1.txt
+├── 2015-11-23-dataset2.txt
+├── 2015-11-23-dataset_overview.txt
+├── backup
+│   ├── calibration
+│   └── datasets
+└── send_to_bob
+    ├── all_datasets_created_on_a_23rd
+    └── all_november_files
 ```
 
 또 다른 견학여행을 떠나기 전에, 정훈이는 데이터를 백업하고 
@@ -647,7 +692,51 @@ $ cp ____ ~/send_to_bob/all_datasets_created_on_a_23rd/
 
 :::
 
-정훈이가 빈칸을 채우도록 도움을 주세요.
+정훈이가 빈칸을 채우도록 도움을 주세요. 작업결과 디렉토리 구조는 다음과 같아야 한다.
+
+```bash
+.
+├── 2015-10-23-calibration.txt
+├── 2015-10-23-dataset1.txt
+├── 2015-10-23-dataset2.txt
+├── 2015-10-23-dataset_overview.txt
+├── 2015-10-26-calibration.txt
+├── 2015-10-26-dataset1.txt
+├── 2015-10-26-dataset2.txt
+├── 2015-10-26-dataset_overview.txt
+├── 2015-11-23-calibration.txt
+├── 2015-11-23-dataset1.txt
+├── 2015-11-23-dataset2.txt
+├── 2015-11-23-dataset_overview.txt
+├── backup
+│   ├── calibration
+│   │   ├── 2015-10-23-calibration.txt
+│   │   ├── 2015-10-26-calibration.txt
+│   │   └── 2015-11-23-calibration.txt
+│   └── datasets
+│       ├── 2015-10-23-dataset1.txt
+│       ├── 2015-10-23-dataset2.txt
+│       ├── 2015-10-23-dataset_overview.txt
+│       ├── 2015-10-26-dataset1.txt
+│       ├── 2015-10-26-dataset2.txt
+│       ├── 2015-10-26-dataset_overview.txt
+│       ├── 2015-11-23-dataset1.txt
+│       ├── 2015-11-23-dataset2.txt
+│       └── 2015-11-23-dataset_overview.txt
+└── send_to_bob
+    ├── all_datasets_created_on_a_23rd
+    │   ├── 2015-10-23-dataset1.txt
+    │   ├── 2015-10-23-dataset2.txt
+    │   ├── 2015-10-23-dataset_overview.txt
+    │   ├── 2015-11-23-dataset1.txt
+    │   ├── 2015-11-23-dataset2.txt
+    │   └── 2015-11-23-dataset_overview.txt
+    └── all_november_files
+        ├── 2015-11-23-calibration.txt
+        ├── 2015-11-23-dataset1.txt
+        ├── 2015-11-23-dataset2.txt
+        └── 2015-11-23-dataset_overview.txt
+```
 
 :::{.callout-tip}
 ### 해답과 설명
@@ -701,43 +790,71 @@ $ mv *.dat analyzed
 :::
 
 ::: {#exr-delete}
-### 폴더 구조를 복사하지만, 파일을 복사하지 말자.
+### 폴더 구조 재현
 
 새로운 실험을 시작해 보자. 데이터 파일 없이 이전 실험에게 만들었던 
-파일 구조만 복제하자. 그렇게 하면 새로운 데이터를 쉽게 추가할 수 있게 된다.
+디렉토리 구조만 복제하자. 그렇게 하면 새로운 데이터를 쉽게 추가할 수 있게 된다.
 '2016-05-18-data' 디렉토리에 `data` 폴더로 `raw`와 `processed`가 있는데, 각자 데이터 파일이 담겨있다.
 
 목적은 `2016-05-18-data` 폴더를 `2016-05-20-data` 폴더로 복사하는 것인데 
 복사된 폴더에는 모든 데이터 파일을 제거해야 된다.
 다음 명령어 집합 중 어떤 명령어 집합이 상기 목적을 달성할까요? 다른 명령어 집합은 무슨 작업을 수행하는 것일가?
 
+이전 실험이 `2016-05-18`이라는 폴더에 있고, 이 폴더에는 데이터 폴더가 있으며, 이 폴더에는 차례로 데이터 파일이 들어 있는 `raw` 및 `processed`라는 이름의 폴더가 있다고 가정하자. 목표는 `2016-05-18` 폴더의 폴더 구조를 `2016-05-20`이라는 폴더에 복사하여 최종 디렉터리 구조가 다음과 같이 되도록 하는 것이다:
+
 
 ```bash
-$ cp -r 2016-05-18-data/ 2016-05-20-data/
-$ rm 2016-05-20-data/raw/*
-$ rm 2016-05-20-data/processed/*
+2016-05-20/
+└── data
+   ├── processed
+   └── raw
+```
+
+다음 중 이 목표를 달성할 수 있는 쉘 명령은 무엇인가요? 다른 쉘명령은 무슨 작업을 수행하나요?
+
+```bash
+$ mkdir 2016-05-20
+$ mkdir 2016-05-20/data
+$ mkdir 2016-05-20/data/processed
+$ mkdir 2016-05-20/data/raw
 ```
 
 ```bash
-$ rm 2016-05-20-data/raw/*
-$ rm 2016-05-20-data/processed/*
-$ cp -r 2016-05-18-data/ 2016-5-20-data/
+$ mkdir 2016-05-20
+$ cd 2016-05-20
+$ mkdir data
+$ cd data
+$ mkdir raw processed
 ```
 
 ```bash
-$ cp -r 2016-05-18-data/ 2016-05-20-data/
-$ rm -r -i 2016-05-20-data/
+$ mkdir 2016-05-20/data/raw
+$ mkdir 2016-05-20/data/processed
 ```
+
+```bash
+$ mkdir -p 2016-05-20/data/raw
+$ mkdir -p 2016-05-20/data/processed
+```
+
+```bash
+$ mkdir 2016-05-20
+$ cd 2016-05-20
+$ mkdir data
+$ mkdir raw processed
+```
+
 
 :::{.callout-tip}
 ### 해답과 설명
 
-첫번째 명령어들이 해당 목적을 달성한다. 먼저 재귀적으로 데이터 폴더를 복사한다. 그리고 나서 `rm` 명령어 두번 사용해서 복사한 디렉토리의 모든 파일을 제거한다. 쉘은 `*` 와일드카드로 매칭되는 모든 파일과 하위디렉토리를 확장하도록 한다.
+처음 두 쉘 명령은 목적을 달성한다. 첫 번째 쉘명령은 상대 경로를 사용하여 하위 디렉터리 앞에 최상위 디렉터리를 만든다.
 
-두번째 명령어들은 순서가 잘못되었다: 복사하지 않는 파일을 샂게하고 나서 재귀 복사 명령어로 디렉토리를 복사했다.
+세 번째 쉘명령은 `mkdir` 기본 동작이 존재하지 않는 디렉터리의 하위 디렉터리를 만들지 않는다. 따라서, 중간에 폴더를 먼저 만들어야 하기 때문에 오류를 발생된다.
 
-세번째 명령어도 목적을 달성하는데, 시간이 다소 소요된다: 첫번째 명령어가 디렉토리를 재귀적으로 복사하지만, 두번째 명령어는 인터랙티브하게 각 파일과 디렉토리에 대한 확인하는 과정을 거쳐 삭제를 하게 되어 시간이 추가로 소요된다.
+네 번째 쉘명령도 목적을 달성한다. 하나 이상의 디렉터리 경로 뒤에 `-p` 옵션을 사용하면 `mkdir` 필요에 따라 중간 하위 디렉터리를 만들게 된다는 점을 기억한다.
 
+마지막 쉘명령은 'data' 디렉터리와 같은 수준에서 'raw' 및 'processed' 디렉터리를 생성한다.
 :::
 :::
 

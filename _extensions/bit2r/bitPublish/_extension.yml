@@ -78,8 +78,9 @@ contributes:
         - text: |
             \printindex
       pdfengine: xelatex
+      latex-makeindex: texindy
+      latex-makeindex-opts: -Mlang/korean/utf8-lang
       cite-method: biblatex
-      linkcolor: highlight
       urlcolor: highlight
       keep-tex: false
       keep-md: false
