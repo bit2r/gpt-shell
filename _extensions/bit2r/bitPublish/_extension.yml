@@ -1,6 +1,6 @@
 title: "bitPublish"
 author: "Choonghyun Ryu"
-version: 0.2.3
+version: 0.2.4
 
 contributes:
   format:
@@ -9,7 +9,6 @@ contributes:
       css: "_extensions/bit2r/bitPublish/style.css"
     pdf:
       documentclass: book
-      # classoption: draft
       geometry:                            # 4x6 배판 도서를 위한 설정
         - paper=a4paper
         - layoutwidth=190mm
@@ -77,10 +76,11 @@ contributes:
       include-after-body:
         - text: |
             \printindex
-      pdfengine: xelatex
+      pdf-engine: xelatex
       latex-makeindex: texindy
       latex-makeindex-opts: -Mlang/korean/utf8-lang
       cite-method: biblatex
+      linkcolor: highlight
       urlcolor: highlight
       keep-tex: false
       keep-md: false

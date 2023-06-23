@@ -18,21 +18,20 @@ book:
   date-format: "YYYY년 MM월 DD일"
   chapters:
     - index.qmd
-    # - part: "들어가며"
-    #   chapters:
-    #     - 00_setup.qmd
-    #     - 00_openAI.qmd
     - part: "쉘 프로그래밍"
       chapters:
+        - 00-shell.qmd
         # - 01-shell-intro.qmd
         # - 02-shell-filedir.qmd
         # - 03-shell-create.qmd
         # - 04-shell-pipefilter.qmd
     #     - 05-shell-loop.qmd
-        - 06-shell-script.qmd
+        # - 06-shell-script.qmd
     #     - 07-shell-find.qmd
     # - part: "GPT 데이터 과학"
     #   chapters:
+    #     - 00_setup.qmd
+    #     - 00_openAI.qmd
     #     - 11_cli_ds.qmd
     #     - 12_cli_ds_gpt.qmd
     - references.qmd
