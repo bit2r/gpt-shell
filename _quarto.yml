@@ -21,8 +21,8 @@ book:
     - part: "쉘 프로그래밍"
       chapters:
         # - 00-shell.qmd
-        - 01-shell-intro.qmd
-        # - 02-shell-filedir.qmd
+        # - 01-shell-intro.qmd
+        - 02-shell-filedir.qmd
         # - 03-shell-create.qmd
         # - 04-shell-pipefilter.qmd
     #     - 05-shell-loop.qmd
