@@ -1,0 +1,77 @@
+############
+첫 문단 윤색. 아래와 같습니다:
+
+윈도우 운영체제에서 유닉스 쉘(Shell)을 사용하는 방법은 여러 가지다. 윈도우 운영체제에 내장된 명령 프롬프트(cmd.exe)는 OS/2, 윈도우 임베디드, 윈도우 NT 5.0 이상 기반 시스템의 명령어 인터프리터로 잘 알려져 있다. 최근에는 마이크로소프트가 개발한 파워쉘(PowerShell)이라는, 확장 가능한 명령 줄 인터페이스 셸 및 스크립트 언어를 특징으로 하는 명령어 인터프리터도 주목받고 있다. 하지만, 이런 cmd, PowerShell은 윈도우 운영체제에서만 작동한다는 한계가 있다. 맥과 리눅스, 특히 클라우드를 지배하고 있는 유닉스 쉘을 윈도우에서도 무리없이 사용할 수 있다면, 모든 운영체제에서 공통 작업을 수행하는 데 큰 도움이 될 것이다. 이를 위해 WSL(Windows SubSystem for Linux)를 통해 다양한 리눅스 운영체제를 설치할 수 있으며, Git Bash를 설치하여 윈도우에서도 유닉스 쉘을 활용할 수 있다.
+
+
+###############
+1.2.1 WSL
+
+
+‘가상 머신 플랫폼’ 선택적 구성 요소를 활성화시킨다. 새 Linux 배포판을 설치하기 전
+에 ‘가상 머신 플랫폼’ 구성 요소가 활성화되어 있는지 확인해야 하고, 관리자 권한으로
+PowerShell을 다시 열고 실행한다.
+
+아래와 같이 추천합니다:
+
+‘가상 머신 플랫폼’ 선택적 구성 요소를 활성화시킨다. 새 Linux 배포판을 설치하기 전
+에 ‘가상 머신 플랫폼’ 구성 요소가 활성화되어 있는지 확인해야 하고, 관리자 권한으로
+PowerShell을 다시 열고 실행한다. 보통 화면 아래 왼쪽 구석에 있는 윈도우 아이콘 옆에 있는 돋보기 아이콘의 검색기능을 선택하고, "powershell"을 입력하여 찾는다. 그리고 관리자로 실행"을 찾아 선택한다.
+###########################################
+
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /
+↪ norestart
+
+이 부분은 길어서 자동으로 줄바꾸기가 되는 것인데, 초보 독자는 혼란스러울 수 있습니다.
+
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
+###########################
+
+$ wsl --install -d debina 이후에 설명 추가 필요합니다.
+
+Debian을 설치하는 과정에서 아래 부분에 추가 입력이 필요하다.
+
+Enter new UNIX username: 
+New password:
+Retype new password:
+
+희망하는 사용자ID과 암호를 각각 입력한다.
+
+이후, 정상으로 WSL 데비안 배포판이 설치되었는지 확인하고자 프롬프트에 아래와 같이 입력하고 실행한다.
+
+#################################
+
+1.2.2 ShellGPT 
+
+제목변경 추천
+
+ShellGPT(쉘GPT)
+##########################
+
+CLI/스니펫에 대한 각주 설명 추천:
+
+CLI(Command Line Interface)는 사용자가 키보드에 텍스트를 입력하여 컴퓨터 명령을 내리는 통신방식이다.
+
+스니펫(snippet)은 프로그래밍에서 재사용 가능한 작은 코드 조각으로, 코드 작성을 보다 빠르고 효과적으로 하기 위한 도구로, 특히 반복적으로 사용되는 코드 패턴이나 구조를 빠르게 삽입할 때 유용하다.
+
+###########################
+
+cURL --> curl
+
+###########################
+
+$ sudo apt-get install python3-distutils에 에러가 납니다. 일시적인 접속에러인지 점검해야합니다.
+
+Err:1 http://deb.debian.org/debian bullseye/main amd64 openssl amd64 1.1.1n-0+deb11u3
+  404  Not Found [IP: 146.75.50.132 80]
+E: Failed to fetch http://deb.debian.org/debian/pool/main/o/openssl/openssl_1.1.1n-0%2bdeb11u3_amd64.deb  404  Not Found [IP: 146.75.50.132 80]
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+
+(우분투 20.04에서는 무리없이 잘 진행됩니다)
+###############################
+
+$ sudo pip install shell-gpt==0.9.2
+
+여기에서 shell-gpt==0.9.2가 현재 버전이라면, 현재 버전 설명과 업데이트 예상된다면, shell-gpt를 찾아서 최근 버전을 설치하는 
+설명을 추가해야합니다.

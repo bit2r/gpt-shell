@@ -1,5 +1,11 @@
 
 
+\begin{shadequote}[r]{켄 톰슨(Ken Thompson)}
+유닉스의 가장 큰 장점은 열기, 닫기, 읽기, 쓰기 등 깔끔하고 단순한 인터페이스라고 생각한다. (I think the major good idea in Unix was its clean and simple interface: open, close, read, and write.) 
+\end{shadequote}
+
+
+
 # 쉘 스크립트 {#shell-script}
 
 

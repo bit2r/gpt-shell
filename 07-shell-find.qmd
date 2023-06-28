@@ -4,6 +4,11 @@ editor:
     wrap: sentence
 ---
 
+\begin{shadequote}[r]{무명}
+리눅스는 분명히 유닉스 유산에 빚을 지고 있지만 그 코드는 아니다. 우리는 그런 주장을 하지 않았고 앞으로도 하지 않을 것이다. (Obviously Linux owes its heritage to UNIX, but not its code. We would not, nor will not, make such a claim.)
+\end{shadequote}
+
+
 # 파일, 텍스트, 폴더 찾기 {#shell-find}
 
 "구글(Google)"을 "검색"을 의미하는 동사로 많은 분들이 사용하는 것처럼 유닉스 프로그래머는 "grep"을 동일하게 사용한다.
@@ -497,6 +502,8 @@ $ grep "FE" $(find .. -name '*.pdb')
 
 
 화이트헤드(Alfred North Whitehead) 박사가 1911년 썼듯이 "문명은 생각없이 수행할 수 있는 중요한 작업의 수를 확장함으써 발전한다. (Civilization advances by extending the number of important operations which we can perform without thinking about them.)"
+
+
 
 :::::{#exr-find-rc}
 ### `find` 파이프라인 독해 능력

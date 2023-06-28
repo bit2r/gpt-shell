@@ -5,16 +5,9 @@ editor:
     wrap: sentence
 ---
 
-```{r init, include=FALSE}
-source(here::here("_extensions", "bit2r", "bitPublish", "init_environments.R"))
-```
-
-
-```{r}
-#| echo: false
-#| results: asis
-titlebox_block("파일과 디렉토리(폴더)의 유사성과 차이점을 확인하고, 절대경로와 상대경로를 자유로이 변환시키고, 탭 자동완성과 명령어 선택옵션 인자를 달리한 작업 자동화를 익힌다.", title = "학습목표", theme = "bluejeans")
-```
+\begin{shadequote}[r]{유닉스 철학}
+모든 것은 파일이다. (Everything is a file) 
+\end{shadequote}
 
 
 # 파일과 폴더 넘나들기 {#filedir}

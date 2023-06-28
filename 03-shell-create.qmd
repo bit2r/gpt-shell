@@ -1,17 +1,21 @@
 
+\begin{shadequote}[r]{피터 파커(스파이더맨)의 삼촌 벤자민 파커}
+큰 힘에는 큰 책임이 따른다. (With Great Power Comes Great Responsibility)
+\end{shadequote}
+
+
 # 파일과 디렉토리 작업 {#shell-create}
 
 이제는 어떻게 파일과 디렉토리를 살펴보는지 알게 되었지만, 
 우선, 어떻게 파일과 디렉토리를 생성할 수 있을까요?\index{디렉토리!생성} \index{파일!생성}
-바탕화면(Desktop) `shell-lesson-data` 디렉토리로 돌아가서 
-`ls -F` 명령어를 사용하여 무엇을 담고 있는지 살펴봅시다:
+바탕화면(Desktop) `shell-lesson-data` 디렉토리로 돌아가서 `pwd` 명령어로 현재 디렉토리 위치를 확인한다.
 
 ```bash
 $ pwd
 /Users/nelle/Desktop/shell-lesson-data
 ```
 
-다음으로 `exercise-data/writing` 디렉토리로 이동하여 그 안에 무엇이 들어 있는지 살펴봅시다:
+`ls -F` 명령어를 사용하여 무엇을 담고 있는지 살펴본다. 다음으로 `exercise-data/writing` 디렉토리로 이동하여 그 안에 무엇이 들어 있는지 살펴본다:
 
 
 ```bash
@@ -22,9 +26,8 @@ haiku.txt  LittleWomen.txt
 
 ## 디렉토리 생성
 
-명령어 `mkdir thesis`을 사용하여 새 디렉토리 `thesis`를 생성합시다
-(출력되는 것은 아무것도 없습니다.):
-
+명령어 `mkdir thesis`을 사용하여 새 디렉토리 `thesis`를 생성한다
+(출력되는 것은 아무것도 없다.):
 
 ```bash
 $ mkdir thesis
@@ -40,8 +43,7 @@ $ ls -F
 haiku.txt  LittleWomen.txt  thesis/
 ```
 
-
-방금 `thesis` 디렉터리를 만들었으므로 아직 아무것도 없습니다:
+방금 `thesis` 디렉터리를 만들었으므로 아직 아무것도 없다:
 
 ```bash
 $ ls -F thesis
@@ -83,7 +85,7 @@ data/  results/
 ## 파일과 디렉토리를 위한 좋은 명칭
 
 명령라인으로 작업할 때, 복잡하고 어려운 파일과 디렉토리는 삶을 질을 현격히 저하시킨다.
-다음에 파일 명칭에 대한 유용한 팁이 몇개 있다.
+다음에 파일 명칭에 대한 유용한 팁이 몇 개 있다.
 
 1. 공백(whitespaces)을 사용하지 마라
 
@@ -178,7 +180,7 @@ draft.txt
 ```
 
 ::: {#exr-create-another}
-### 파일을 생성하는 다른 방법
+### 다른 방법으로 파일 생성
 
 `nano` 편집기를 사용해서 텍스트 파일을 생성하는 방법을 살펴봤다.
 홈 디렉토리에서 다음 쉘 명령어를 실행해 보자:
@@ -194,7 +196,7 @@ $ touch my_file.txt
 
 
 :::{.callout-tip}
-### 실행결과 및 해석
+### 정답과 설명
 
 1.  `touch` 명령어가 홈 디렉토리에 'my_file.txt' 파일을 새로 생성시킨다.
 터미널로 현재 홈 디렉토리에 있는 경우, `ls` 를 타이핑하게 되면 
@@ -235,7 +237,7 @@ $ rm my_file.txt
 파일에 어떤 유형의 데이터가 담고 있는지 나타낸다. 
 `.txt` 확장자는 텍스트 파일임을, `.pdf`는 PDF 문서임을, 
 `.cfg` 확장자는 어떤 프로그램에 대한 구성정보를 담고 있는 형상관리 파일임을 내고,
-`.png` 확장자는 PNG 이미지 등등을 나타낸다.\index{파일!확장자}
+`.png` 확장자는 PNG 이미지 등등을 나타낸다.\index{파일!확장자}\index{file!extension}
 
 단지 관습이기는 하지만 중요하다. 
 파일에는 바이트(byte) 정보만 담겨져 있다: PDF 문서, 이미지, 등에 대해서 규칙에 따라 
@@ -537,10 +539,6 @@ $ rm -r thesis
 
 셸을 사용하여 삭제한 파일을 복원할 수 있는 방법이 없으므로 `rm -r`은 매우 주의해서 사용해야 한다 (대화형 옵션인 `rm -r -i`를 추가하는 것도 고려해 볼 수 있다).
 
-
-\begin{shadequote}[r]{피터 파커(스파이더맨)의 삼촌 벤자민 파커}
-큰 힘에는 큰 책임이 따른다. (With Great Power Comes Great Responsibility)
-\end{shadequote}
 
 ::: {.callout-caution}
 ### 큰 힘에는 큰 책임이 따른다

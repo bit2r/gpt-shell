@@ -1,0 +1,26 @@
+curl https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip
+↪ -o shell-lesson-data.zip
+
+줄바꿈이슈가 또 있습니다.
+
+curl https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip -o shell-lesson-data.zip
+
+
+################
+1.1 연습문제 
+
+
+
+연습문제는 페이지 바꾸기를 해서 연습문제를 보여주면 좋겠습니다.
+1.1은 1장 1절에 대한 것으로 보이지는데, 연습문제는 각 장마다 나오는 것인지, 장의 절에 나오는 것인지에 따라서
+번호를 점검해주세요. 이번에는 
+
+1. 연습문제 아닐까요?
+
+#############################
+
+아울러, 매 장이 끝날때는 연습문제 앞 또는 뒤에
+
+간략히 요약을 해주면 좋겠습니다. 설명적 요약이 어렵다면
+
+개조식으로 ....

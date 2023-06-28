@@ -8,12 +8,10 @@ editor:
 source(here::here("_extensions", "bit2r", "bitPublish", "init_environments.R"))
 ```
 
-```{r}
-#| echo: false
-#| eval: false
-#| results: asis
-titlebox_block("기존 명령을 결합하여 새로운 작업을 수행하려면 어떻게 해야 할까요? 라는 질문에 파이프 및 필터와 연결하는 장점을 이해한다.", title = "학습목표", theme = "bluejeans")
-```
+\begin{shadequote}[r]{더글러스 매클로이(Douglas McIlroy)}
+한 가지 작업을 제대로 해내세요 - 한 가지 일을 아주 잘하는 프로그램을 작성한다. 함께 작동하는 프로그램을 작성한다. 텍스트 스트림이 보편적인 인터페이스이기 때문에 텍스트 스트림을 처리하는 프로그램을 작성한다. (Do one thing and do it well - Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface) 
+\end{shadequote}
+
 
 # 파이프와 필터 {#sec-pipe-filter}
 
