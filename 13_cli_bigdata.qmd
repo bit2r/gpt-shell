@@ -1,0 +1,501 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{=tex}
+\begin{shadequote}[r]{존 체임버스 (John Chambers)}
+R을 이해하려면 두 가지 표어가 도움이 된다: (1) 존재하는 모든 것은 객체다(Everything that exists is an object); (2) 발생한 모든 것은 함수 호출이다.(Everything that happens is a function call.)
+\end{shadequote}
+```
+# 대용량 데이터
+
+수 GB가 넘어가는 대용량 데이터를 데이터 분석에 앞서 적절한 크기로 줄이는
+것이 필요하다. 특히, 빠른 데이터 분석을 위해서 대용량 데이터에서 정보를
+잃지 않으면서 일부를 표본추출하여 적절한 크기로 줄인 후에 이를 R/파이썬
+등 전문 데이터 분석 언어로 코딩을 하는 것도 유닉스 쉘과 좋은 성과를 내는
+전략 중 하나가 된다.
+
+## 압축파일 풀기
+
+데이터분석을 위해 정형 데이터가 아닌 비정형 데이터를 마추치게 되면 통상
+압축화일 형태로 전달이 된다. 기본적인 소용량 압축파일은 쉽게 풀리나
+대용량 압축파일(GB가 넘어감)은 전용 압축/압축해제 프로그램을 사용한다.
+
+맥 기준으로 설명하면 `p7zip` 전용 프로그램을 통해 대용량 압축 파일을
+푼다. 설치방법은 `brew install p7zip`을 터미널에서 실행한다.
+`7z x 압축파일명` 명령어를 입력하면 압축파일이 풀려 원본 파일이
+나타난다.
+
+``` bash
+$ brew install p7zip
+$ 7z x data_2016-10-05.zip 
+$ ls -al
+total 11236792
+drwxr-xr-x+   59 stat.....  staff        2006 10 12 18:35 .
+drwxr-xr-x     5 root       admin         170  1 15  2016 ..
+-rwxrwxrwx     1 stat.....  staff  1169766972 10  7 20:21 data_2016-10-05.zip
+-rw-r--r--     1 stat.....  staff  4578470987 10  5 23:18 players_result.txt
+```
+
+`data_2016-10-05.zip` 1.1 GB 압축파일을 풀게되면 4.5 GB 텍스트 파일로
+생성된 것이 확인된다.
+
+## 표본추출 전략 수립
+
+표본추출을 위한 작업을 위해서 먼저 전략을 잘 수립하여야 한다. 전체
+파일에 대한 1% 임의추출을 목표로 삼고 표집하는 경우를 상정한다.
+
+``` bash
+$ wc -l players_result.txt 
+ 174163238 players_result.txt
+```
+
+`wc -l` 명령어는 해당 파일에 행이 얼마나 되는지 알아내는 명령어다. 이를
+통해서 1.7억줄이 있는 것이 확인된다. 이를 바탕으로 1% 임의추출할 경우 약
+170만줄을 임의추출하면 된다.
+
+## 표본추출 툴설치 [^13_cli_bigdata-1]
+
+[^13_cli_bigdata-1]: [How can I shuffle the lines of a text file on the
+    Unix command line or in a shell
+    script?](http://stackoverflow.com/questions/2153882/how-can-i-shuffle-the-lines-of-a-text-file-on-the-unix-command-line-or-in-a-shel)
+
+표본추출을 위해 설치해야 되는 도구는 기본적으로 `sort`, `shuf`,
+`gshuf`가 있다. 기능적인 면을 떠나 대용량 파일의 경우 성능 속도가 도구를
+선택하는 중요한 요인이다.
+
+백만줄을 `seq -f 'line %.0f' 1000000` 명령어로 생성하여 표집한 경우
+성능이 가장 좋은 것은 다음과 같은 순으로 정렬된다.
+
+1.  `shuf`: 0.090 초
+2.  루비 2.0: 0.289 초
+3.  펄 5.18.2: 0.589 초
+4.  파이썬 : 1.342 초
+5.  awk + sort + cut: 3.003 초
+6.  sort -R : 10.661 초
+7.  스칼라: 24.229 초
+8.  배쉬 루프 + sort : 32.593초
+
+따라서 `shuf`를 리눅스에서 `gshuf`를 맥에서 사용하면 최선의 성과를 얻을
+수 있다.
+
+`gshuf`가 맥의 경우 `coreutils`에 포함되어 있기 때문에 이를 설치해야
+되는데, 이전에 `brew link xz`을 실행하고 바로 설치한다.
+
+``` bash
+$ brew link xz
+$ brew install coreutils
+```
+
+## 1% 표본 추출
+
+`gshuf`, `shuf` 명령어는 `-n` 인자로 추출할 행을 수를 지정하면 자동으로
+추출해주는데, 결과를 리다이렉션하여 `players_170000.txt` 파일에
+저장한다.
+
+표본추출결과 데이터 크기를 $\frac{1}{1,000}$, $\frac{1}{10,000}$ 줄인
+것이 확인된다.
+
+``` bash
+$ gshuf -n 17000 players_result.txt > players_17000.txt 
+$ gshuf -n 170000 players_result.txt > players_170000.txt 
+$ ls -al
+total 11236792
+drwxr-xr-x+   59 stat.....  staff        2006 10 12 18:35 .
+drwxr-xr-x     5 root       admin         170  1 15  2016 ..
+-rwxrwxrwx     1 stat.....  staff  1169766972 10  7 20:21 data_2016-10-05.zip
+-rw-r--r--     1 stat.....  staff      447091 10 12 18:35 players_17000.txt
+-rw-r--r--     1 stat.....  staff     4468179 10 12 18:35 players_170000.txt
+-rw-r--r--     1 stat.....  staff  4578470987 10  5 23:18 players_result.txt
+```
+
+## 공공데이터 사례
+
+KT에서 제공하는 유동인구데이터는 파일 형태로 제공된다. 월기준으로 경기도
+유동인구를 공간정보와 함께 제공하는데 대략 파일크기가 350 MB 가 넘는
+크기를 보여주고 있다. 특히, `sex_age_22.csv` 파일은 2022년 경기도 전체
+유동인구 데이터로 크가 5.4 GB를 보여주고 있다.
+
+![](images/big_file.png){fig-align="center" width="414"}
+
+이런 대용량 데이터를 엑셀과 같은 스프레드쉬트 프로그램에서는 여는 것조차
+불가능하다. `Notepad++`와 같은 텍스트 파일 편집기를 인텔 i5 프로세서가
+장착되고 32 GB 주기억장치를 갖는 윈도우 10 환경에서 열어보는 것조차
+불가능하다.
+
+![](images/big_file_error.png){fig-align="center" width="362"}
+
+데이터 파일을 열수도 없도 본격적인 분석은 시작도 할 수 없는 상황인데
+이런 경우 지금까지 학습한 유닉스 쉘을 활용하여 데이터 분석 목적을 달성할
+수 있다. 본격적인 데이터 분석에 들어가기에 앞서 `head`, `tail` 명령어를
+사용하여 데이터 파일 기본상태를 점검한다.
+
+![](images/big_file_view.png){fig-align="center" width="453"}
+
+## 데이터베이스 시스템
+
+데이터베이스(Database)는 데이터를 저장, 검색, 조작, 갱신하기 위한
+시스템으로, 정형화된 데이터를 테이블 형태로 저장하며, 각 테이블은
+열(속성)과 행(레코드)로 구성되고 외래키를 이용하여 관계를 구성한다.
+데이터 과학에서 데이터베이스를 사용하는 경우로 다음을 꼽을 수 있다:
+
+-   대용량 데이터 관리: 데이터베이스는 대용량의 데이터를 효율적으로
+    관리하는 가장 이상적인 방식으로, 안정적이고 효율적인 방식으로
+    데이터를 저장하며, 필요한 경우 쉽게 SQL 언어로 검색하고 추출할 수
+    있다.
+
+-   데이터 무결성 보장: 데이터베이스는 데이터 정확성과 일관성을
+    보장함으로서 데이터 무결성을 보장한다.
+
+-   보안 유지: 데이터베이스는 사용자에게 적절한 권한을 부여하여 데이터에
+    대한 접근을 통제함으로써 데이터 보안을 강화시키고 데이터
+    프라이버시(Data Privacy)도 강화한다.
+
+-   데이터 분석 기능: 데이터베이스는 SQL 쿼리 언어를 통해 다양한
+    질의문(Query) 작성을 지원한다. 이른 통해 데이터 과학자는 필요한
+    데이터를 빠르게 찾고 분석하는데 시간을 단축시킬 수 있다.
+
+데이터베이스를 관리할 경우 도구가 필요한데 로컬 PC에서 설치하여 바로
+사용할 수 있는 [SQLite](https://www.sqlite.org/),
+[`DuckDB`](https://duckdb.org/)가 많이 사용된다.
+
+### SQLite
+
+[SQLite 다운로드](https://www.sqlite.org/download.html) 웹사이트에서
+운영체제에 적합한 SQlite 소프트웨어를 설치한다.
+
+#### 윈도우즈
+
+예를 들어, 윈도우 10 환경에서 "Precompiled Binaries for Windows" →
+`sqlite-tools-win32-x86-3400000.zip` 파일을 다운로드 받는다.
+
+다음으로 압축을 풀어 로컬 컴퓨터에 설치하고 예를 들어, `C:\sqlite`
+디렉토리에 저장한 경우 환경변수에 경로를 등록하여 윈도우 쉘에서
+`sqlite3.exe`를 실행하게 되면 어디서든 불러 사용할 수 있도록 준비한다.
+
+![SQlite 실행과 종료](images/sqlite3_install.png){fig-align="center"
+width="360" height="300"}
+
+#### 맥 설치
+
+맥에서 Sqlite를 설치하는 방법은 매우 단순하다. [DB Browser for
+SQLite](https://sqlitebrowser.org/dl/) 웹사이트에서 맥버전(Intel or
+Apple Silicon) 버전을 다운로드 받아 설치하면 된다.
+
+![](images/sqlite_mac_install.png){fig-align="center" width="371"}
+
+```{r}
+#| eval: false
+
+ ~/swc/curriculum   main ±  sqlite3 --version
+3.37.0 2021-12-09 01:34:53 9ff244ce0739f8ee52a3e9671adb4ee54c83c640b02e3f9d185fd2f9a179aapl
+~/swc/curriculum   main  sqlite3
+SQLite version 3.37.0 2021-12-09 01:34:53
+Enter ".help" for usage hints.
+Connected to a transient in-memory database.
+Use ".open FILENAME" to reopen on a persistent database.
+sqlite> .quit
+ ~/swc/curriculum   main 
+```
+
+## 데이터베이스: `survey.db`
+
+소프트웨어 카페트리 학습용 `survey.db` 파일을 다운로드하여
+`data/survey.db`로 저장시킨다. 콘솔에서 데이터베이스 테이블을 확인하고
+테이블 중 한 테이블을 골라 SQL 쿼리를 보낸다.
+
+```{r}
+#| eval: false
+fs::dir_create("data")
+
+download.file(url = "https://github.com/swcarpentry/sql-novice-survey/raw/gh-pages/files/survey.db",
+              destfile = "data/survey.db")
+```
+
+``` bash
+trying URL 'https://github.com/swcarpentry/sql-novice-survey/raw/gh-pages/files/survey.db'
+Content type 'application/octet-stream' length 6144 bytes
+==================================================
+downloaded 6144 bytes
+```
+
+## SQL 쿼리
+
+### 명령라인
+
+`SQlite`가 설치되고 데이터베이스가 있다면 SQL 쿼리문을 작성하여 원하는
+결과를 얻을 수 있다. `sqlite` 콘솔에서 `.table`을 명령어를 `survey.db`에
+포함된 테이블을 확인한다. 이후 `survey.db` 데이터베이스 중 `Person`
+테이블에 담긴 정보를 `SELECT` 명령어로 확인한다.
+
+```{r}
+#| eval: false
+ ~/swc/curriculum   main ±  sqlite3 data/survey.db
+SQLite version 3.37.0 2021-12-09 01:34:53
+Enter ".help" for usage hints.
+sqlite> .table
+Person   Site     Survey   Visited
+sqlite> SELECT * from Person;
+dyer|William|Dyer
+pb|Frank|Pabodie
+lake|Anderson|Lake
+roe|Valentina|Roerich
+danforth|Frank|Danforth
+sqlite> .quit
+```
+
+### 쿼리도구
+
+동일한 사항을 `DB Browser for SQLite` 쿼리도구를 사용하면 직관적으로
+다양한 SQL 문을 데이터베이스에 던져 원하는 결과를 얻을 수 있다.
+
+![](images/sqlite_query_tool.png){fig-align="center" width="640"}
+
+## `DuckDB`
+
+DuckDB\footnote{[DuckDB: Quacking SQL, "Lost in Translation between R and Python
+8"](https://lorentzen.ch/index.php/2022/04/02/duckdb-quacking-sql/)}는
+"SQLite for Analytics" 별명을 갖고 있다. 과거 OLAP(OnLine Analytical
+Processing)이 OLTP(OnLine Transaction Processing)와 함께 회자되던 시절이
+있었고, 그 OLAP을 구현하는 것으로 이해할 수 있다.
+
+### 데이터셋
+
+[NYC Taxi Trip Data - Google Public
+Data](https://www.kaggle.com/datasets/neilclack/nyc-taxi-trip-data-google-public-data)
+데이터셋은 구글 빅쿼리(Bigquery) 공개 데이터셋중 일부로 뉴육택시 운행
+천만건을 담고 있다. 뉴욕 택시 데이터셋에 대한 자세한 정보는 캐글
+웹사이트에서 확인할 수 있다.
+
+### 데이터베이스
+
+`duckdb`패키지를 설치하여 `taxis.duckdb` 파일 데이터베이스로 생성하고
+연결시켜둔다.
+
+```{r}
+#| eval: false
+library(tidyverse)
+library(duckdb)
+library(DBI)
+library(vroom)
+library(tictoc)
+
+database_path <- paste0(here::here(), "/data/taxis.duckdb")
+file.remove(database_path)
+con <- dbConnect(duckdb(), dbdir = database_path)
+dbListTables(con) 
+```
+
+`data\` 디렉토리 아래 뉴욕 택시 운행 데이터와 `duckdb`가 하나 파일명으로
+`taxis.duckdb` 생성된 것이 확인된다.
+
+```{r}
+fs::dir_tree("data")
+```
+
+### 테이블 추가
+
+`duckdb` 데이터베이스에 뉴욕택시 데이터셋을 테이블로 추가한다.
+데이터프레임 형태를 갖는 `.csv` 파일은 그 자체로 데이터베이스 테이블로
+1:1 변환이 가능하다. `read_csv_auto()` 함수를 사용해서 `.csv` 파일을
+데이터베이스로 불러읽은 후 테이블 생성시킨다.
+
+```{r}
+#| eval: false
+taxis_path <- paste0(here::here(), "/data/original_cleaned_nyc_taxi_data_2018.csv")
+table_create_qry <- glue::glue(
+  "CREATE TABLE trips AS SELECT * FROM read_csv_auto ('{taxis_path}')"
+  )
+dbExecute(con, table_create_qry)
+```
+
+```         
+[1] 8319928
+```
+
+### 테이블 확인
+
+`dbListTables()` 명령어로 데이터베이스 내 테이블이 제대로 올라갔는지
+확인한다. 앞서 `trips`로 테이블명을 정의했기 때문에 `taxis.duckdb`
+데이터베이스 내 테이블로 동일한 명칭으로 확인된다.
+
+```{r}
+#| eval: false
+dbListTables(con)
+```
+
+```         
+[1] "trips"
+```
+
+### DB 연결 끊기
+
+데이터베이스는 기본적으로 다수 사용자가 사용하는 자원으로 데이터베이스
+연결한 후 자원을 반환하지 않는 경우 접속자수 제한으로 접속이 되지 않는
+피해자가 발생할 수 있고, 보안문제도 야기한다. 따라서, `con`으로 DB에
+연결을 했고, 목적을 달성한 후에 `dbDisconnect()` 명령어로 연결을
+해제시켜 자원을 반환하여 다른 사용자가 원활히 사용할 수 있도록 배려한다.
+
+```{r}
+#| eval: false
+dbDisconnect(con, shutdown=TRUE)
+```
+
+### SQL 쿼리
+
+지금까지 작업한 내용은 데이터베이스에 접근한 후 빈 데이터베이스에 `.csv`
+파일을 올려 테이블을 생성한 후 테이블이 정상적으로 존재함을 확인한 후에
+데이터베이스 연결을 해제했다. 데이터베이스에 접근하여 데이터 분석 작업을
+수행하는 일반적인 작업흐름은 다음과 같다.
+
+1.  파일 `duckDB` 데이터베이스를 생성한다.
+2.  데이터베이스에 `con` DB 핸들러를 통해 R/파이썬 연결한다.
+3.  CSV 파일을 테이블로 데이터베이스에 등록한다.
+4.  정상적으로 테이블이 데이터베이스에 등록되었는지를 확인한다.
+5.  쿼리문을 작성하여 데이터를 추출한 후 데이터 과학 분석작업을
+    수행한다.
+6.  DB 핸들러를 반납하고 데이터베이스 연결을 해제한다.
+
+![](images/duckdb_nyc_taxi.jpg){fig-align="center" width="533"}
+
+이제부터 본격적으로 OLAP 분석작업을 수행한다. 파일 "/data/taxis.duckdb"
+데이터베이스에 DB 핸들러를 연결시킨다. 그리고 나서 분석대상 테이블이
+존재하는지 `dbListTables()` 명령어로 확인한다.
+
+```{r}
+library(tidyverse)
+library(duckdb)
+library(DBI)
+library(vroom)
+library(tictoc)
+
+database_path <- paste0(here::here(), "/data/taxis.duckdb")
+
+con <-dbConnect(duckdb::duckdb(), dbdir = database_path, read_only=TRUE)
+
+dbListTables(con)
+```
+
+`tictok` 패키지를 통해 해당 쿼리가 수행되는데 실행된 시간을 측정한다.
+
+```{r}
+tic()
+
+fare_summary <- con |> 
+  tbl("trips") |> 
+  dplyr::select(payment_type, fare_amount, trip_distance) |> 
+  filter(trip_distance > 18) |> 
+  group_by(payment_type) |> 
+  summarise(average_fare = mean(fare_amount, na.rm = TRUE)) |> 
+  collect()
+
+toc()
+
+fare_summary
+```
+
+### `dplyr` → SQL 쿼리문
+
+`dplyr` 데이터 조작 문법이 매우 직관적이고 사용하기 편하지만, 대용량
+데이터를 조작하는 경우 속도가 중요하기 때문에 SQL 쿼리문으로 실행하는
+경우가 많다. 이와 같이 코딩의 편리함과 빠른 속도를 동시에 추구하는 경우
+`dplyr` 데이터 문법으로 작성된 코드를 SQL문으로 변환하게 되면 한 단계
+과정을 더 거쳐 문제를 해결할 수 있다. 향후, 안정화된 경우 이를
+스크립트로 작성하여 자동화하면 중간에 번거러운 과정도 깔끔하게 정리할 수
+있다. `dplyr` 데이터 문법을 SQL 쿼리문으로 작성하는 방법은
+`show_query()` 명령어로 내보내면 된다. 이제 동일한 SQL 문으로 작성되었기
+때문에 쿼리문을 실행시켜 분석작업을 수행하자.
+
+```{r}
+library(dbplyr)
+
+trips_db <- tbl(con, "trips")
+
+trips_sql_query <- trips_db %>% 
+  dplyr::select(payment_type, fare_amount, trip_distance) %>% 
+  filter(trip_distance > 18) %>% 
+  group_by(payment_type) %>% 
+  summarise(average_fare = mean(fare_amount, na.rm = TRUE)) %>% 
+  show_query()
+
+trips_sql_query
+```
+
+동일한 결과를 `dbGetQuery()`함수로 결과값을 얻을 수 있다.
+
+```{r}
+sql_query_from_dbplyr <- "SELECT payment_type, AVG(fare_amount) AS average_fare
+FROM (
+  SELECT payment_type, fare_amount, trip_distance
+  FROM trips
+) q01
+WHERE (trip_distance > 18.0)
+GROUP BY payment_type"
+
+# dbGetQuery(con, "SELECT * FROM trips LIMIT 5;")
+dbGetQuery(con, sql_query_from_dbplyr)
+```
+
+### DBeaver SQL 쿼리 도구
+
+[DBeaver Community - Free Universal Database
+Tool](https://dbeaver.io/download/) 도구를 다운로드 받고 앞서 구축한
+뉴욕 택시 데이터베이스를 연결한 후 SQL 쿼리문을 실행시키게 되면 동일한
+결과를 얻을 수 있다.
+
+먼저, [DBeaver Community - Free Universal Database
+Tool](https://dbeaver.io/download/) 웹사이트에서 운영체제에 맞는 SQL
+쿼리 도구를 설치한다.
+
+그리고 나서 앞서 [dbplyr](https://dbplyr.tidyverse.org/) `show_query()`
+함수를 사용해서 SQL 문을 복사하여 붙여넣기 하면 해당 결과를 얻을 수
+있다.
+
+![](images/dplyr_to_dbeaver.png){fig-align="center" width="640"}
+
+### 파일 크기와 속도
+
+뉴욕 택시 원본파일 크기를 살펴보자. 이를 위해서 `fs`패키지
+`file_info()`함수를 사용해서 확인한다.
+
+```{r}
+fs::file_info("data/original_cleaned_nyc_taxi_data_2018.csv") %>% 
+  select(path, type, size)
+```
+
+CSV 파일을 duckDB에서 가져왔을 때 데이터베이스 크기를 살펴보자.
+
+```{r}
+fs::file_info("data/taxis.duckdb") %>% 
+  select(path, type, size)
+```
+
+원본 `.csv` 파일 크기가 700 MB가 넘는데 `.duckdb`로 변환시키면 파일크가
+대략 250 MB로 대폭 줄어든 것이 확인된다. 주목할 점은 여러 데이터 조작
+기법이 적용된 제법 난이도 있는 쿼리문을 실행시간이 `0.11`초에 불과하다는
+점이다. 데이터 조작 쿼리를 정확하고 빠르게 작성하는 것 못지않게 빠른
+컴퓨팅 속도는 데이터 분석가나 데이터 엔지니어에게 꼭 필요하다. 왜냐하면
+그 어떤 것보다 시간은 소중하기 때문이다.
+
+## 데이터베이스와 쿼리도구
+
+데이터베이스 활용사례가 늘어나면서 그 목적에 특화된 데이터베이스로
+분화되었다. 각 데이터베이스와 궁합이 맞는 다양한 SQL 쿼리도구가 존재하여
+많이 사용되는 데이터베이스와 SQL 쿼리도구를 @tbl-rdbms-query 에
+정리하였다.
+
++----------------+--------------------+--------------------+
+| 순             | 데이터베이스       | SQL 쿼리도구       |
++:==============:+:==================:+:==================:+
+| 1              | SQLite DuckDB      | DBeaver            |
++----------------+--------------------+--------------------+
+| 2              | MySQL              | HeidiSQL           |
+|                |                    |                    |
+|                |                    | MySQL Workbench    |
++----------------+--------------------+--------------------+
+| 3              | postgreSQL         | pgAdmin            |
++----------------+--------------------+--------------------+
+
+: 관계형 데이터베이스와 SQL 쿼리도구 {#tbl-rdbms-query}

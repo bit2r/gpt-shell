@@ -1,3 +1,10 @@
+
+
+\begin{shadequote}[r]{존 튜키(John Tukey)}
+데이터 분석가는 단순한 그래프를 통해 다른 어떤 기기보다 많은 정보를 얻을 수 있다. (The simple graph has brought more information to the data analyst’s mind than any other device.)
+\end{shadequote}
+
+
 # 챗GPT 데이터 과학 {#cli-ds-gpt}
 
 ## 실습 데이터

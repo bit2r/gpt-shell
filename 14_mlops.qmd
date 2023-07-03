@@ -1,0 +1,18 @@
+
+\begin{shadequote}[r]{존 체임버스(John Chambers)}
+R은 통계가 전달되는 방식에 혁신적인 영향을 미쳤다.(R has had a revolutionary effect on the way statistics are communicated.)
+\end{shadequote}
+
+
+# MLOps
+
+
+
+
+
+\begin{Exercise}\label{Ex01}
+
+
+\end{Exercise}
+
+
