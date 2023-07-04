@@ -4,6 +4,9 @@
 문명은 생각하지 않고, 수행할 수 있는 중요한 작업의 수를 늘리면서 발전한다.(Civilization advances by extending the number of important operations which we can perform without thinking about them.)
 \end{shadequote}
 
+
+"챗GPT와 유닉스 쉘(Unix Shell)"은 전세계적으로 수천번의 워크샵과 국내에서도 수년동안 소프트웨어 카펜트리\index{Software Carpentry}\index{소프트웨어 카펜트리} 워크샵 경험을 정식 교재를 통해서 한글화하여 출판을 준비하면서 최근에 큰 반향을 일으키고 있는 챗GPT\index{챗GPT}\index{ChatGPT} 관련 내용도 담아내어 한번 학습하여 평생토록 활용할 수 있는 것에 방점을 두고 있다.\cite{greg_wilson_2019_3266823}
+
 # 쉘(Shell) 소개 {#shell}
 
 **유닉스 쉘(Unix Shell)**\index{유닉스 쉘}\index{Unix!Shell}은 대부분의 컴퓨터 사용자가 살아온 것보다 오래 동안 존재했다. 

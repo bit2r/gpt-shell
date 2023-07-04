@@ -4,7 +4,18 @@
 
 # 환경설정
 
-"챗GPT와 유닉스 쉘(Unix Shell)"은 전세계적으로 수천번의 워크샵과 국내에서도 수년동안 소프트웨어 카펜트리\index{Software Carpentry}\index{소프트웨어 카펜트리} 워크샵 경험을 정식 교재를 통해서 한글화하여 출판을 준비하면서 최근에 큰 반향을 일으키고 있는 챗GPT\index{챗GPT}\index{ChatGPT} 관련 내용도 담아내어 한번 학습하여 평생토록 활용할 수 있는 것에 방점을 두고 있다.\cite{greg_wilson_2019_3266823}
+챗GPT와 유닉스 쉘에서 필요한 도구와 실습에 필요한 데이터를 소개한다.
+컴퓨터를 활용할 수 있는 다양한 패러다임이 도입되고 이를 뒷받침하는 도구들이 
+개발되면서 동일한 작업을 효율적으로 더 빠르고 수월히 할 수 있게 되었다.
+
+먼저, 유닉스 쉘은 리눅스 혹은 맥OS 운영체제를 채택한 컴퓨터에는 기본 설치되어 있다.
+문제는 윈도우다. 윈도우에서 유닉스 운영체제를 사용하는 방법은 리눅스를 윈도우 스토어에서 
+통상 WSL(Windows Subsystem for Linux, 리눅스용 윈도우즈 하위시스템)로 알려진 앱처럼 설치하여 사용하는 방법이고, 다른 방식은 깃 배쉬(Git Bash)를 설치하여 에뮬레이터처럼 가볍게 사용하는 방식으로 `make`등 일부 기능은 기본기능으로 제공이 되는다.
+
+유닉스 쉘을 주로 데이터 과학업무 자동화를 통한 생산성 향상에 방점을 두고 집필이 이뤄지다보니 실습 예제 데이터가 필수적이다. 소프트웨어 카펜트리에서 수십년 동안 검증된 유닉스 쉘 워크샵 데이터를 사용하여 실습데이터도 준비한다.
+
+마지막으로 ChatGPT도 실습에 준비를 한다. 유닉스 쉘 취지에 맞춰 개발자가 복사하여 붙여넣는 방식은 지양하고 OpenAI ChatGPT API\footnote{API (Application Programming Interface)는 서로 다른 소프트웨어 간에 정보를 주고 받기 위한 규칙이나 표준을 정의한 것이다. 한 프로그램이 다른 프로그램의 기능을 사용하게 해주는 '다리'와 같은 역할을 한다.}를 사용한다. 한 걸음 더 나아가 ChatGPT가 생성한 유닉스 명령어도 복사하여 붙여넣는 방식을 지양하고 즉각 실행하여 결과를 확인할 수 있도록 ShellGPT를 ChatGPT와 유닉스 쉘을 연결하도록 설정한다.
+
 
 ```{r}
 #| echo: false
@@ -15,19 +26,22 @@ use_condaenv(condaenv = 'gpt-shell')
 
 ## 챗GPT 연동
 
+ChatGPT는 OpenAI에서 개발한 AI 대화 도구로, GPT (Generative Pre-training Transformer)라는 학습 모델을 바탕으로 한다. GPT는 '생성 전이 학습'이라는 방법을 사용하여 수많은 책, 웹페이지, 기사 등의 텍스트를 읽고 사람처럼 언어를 이해하고 사용하는 법을 학습한다. 이 과정을 통해, ChatGPT는 사람이 사용하는 다양한 표현법과 문법을 파악하고, 그것을 활용해 대화를 할 수 있게 되었고, 창의적 글쓰기부터 요약, 번역, 개체명 추출, 코딩 등의 기능성 작업에 이르기까지 다양한 종류의 글쓰기를 처리할 수 있다. 또한, 간단한 사실 확인에서 복잡한 주제에 대한 토론까지 다양한 질문에 대한 답변을 생성해낼 수 있다.
+
+
 OpenAI\index{OpenAI} GPT 제품은 파이썬이 주 개발언어로 되어 있어 
 파이썬을 기준으로 챗GPT 개발을 진행한다.
-일반적인 API를 활용한 파이썬 개발작업흐름은 
-먼저, 가상환경을 구축하고, API KEY를 발급받고
-해당 `openai`\index{openai} 패키지를 설치하고 헬로월드를 찍고 본격적인
-AI 제품 개발을 진행하는 방식으로 추진한다.
+
+API를 활용한 파이썬 개발작업흐름은 먼저, 1)가상환경을 구축하
+고, 2)API KEY를 발급받고 3)해당 `openai`\index{openai} 패키지를 설치하고 
+4)헬로월드를 찍고 5)본격적인 AI 제품 개발을 진행하는 방식으로 추진한다.
 
 
 ```{mermaid}
 graph LR
-  A["1. 가상환경<br>구축"] --> B["2. API KEY<br>발급받기"]
-  B --> C["3. API KEY<br>저장"]
-  C --> D["4. openai <br>패키지 설치"]
+  A["1. 가상환경<br>구축"] --> B["2. API KEY<br>발급/설정"]
+  B --> C["3. openai <br>패키지 설치"]
+  C --> D["4. 헬로월드"]
   
   style A fill:#f9d5e5,stroke:#333,stroke-width:2px
   style B fill:#eeac99,stroke:#333,stroke-width:2px
@@ -39,8 +53,9 @@ graph LR
 
 ### 가상환경 설정
 
-다양한 가상환경이 있어 필요한 패키지를 사용하여 파이썬 가상환경을 구축한다.
-파이썬 3.3 버전부터 내장된 `venv`\index{venv}, 많이 사용되는 `virtualenvwrapper`, `virtualenv` 등이 유명하다.
+파이썬의 가장 큰 장점이자 단점은 동일한 기능을 사용하는 수많은 패키지가 존재한다는 점이다.
+의존성을 낮추고 격리된 개발환경을 지향하는 가상환경도 예외는 아니다.
+파이썬 가상환 경중에 많이 알려진 가상환경 도구로 파이썬 3.3 버전부터 별도 설치없이 내장되어 제공되는 `venv`\index{venv}, 많이 사용되는 `virtualenvwrapper`, `virtualenv` 등이 잘 알려져 있다.
 본인 취향에 맞는 가상환경을 특정하여 업무에 사용한다. 다음은 `venv`를 사용해서 가상 개발환경을 구축하는 것을 예시로 보여주고 있다.
 
 ```bash
@@ -59,12 +74,12 @@ source myenv/bin/activate # 리눅스/맥
 deactivate
 ```
 
-### API KEY 얻기
+### API KEY 발급
 
 가상환경을 구축한 다음 OpenAI에서 제공하는 공식 API에 접근할 수 있는 API 키를 생성하는 것이다.
-https://openai.com/api/ [^openai-api] 로 이동하여 계정을 만듭니다.
+https://platform.openai.com/apps [^openai-api] 로 이동하여 계정을 만듭니다.
 
-[^openai-api]: <https://openai.com/api/>
+[^openai-api]: <https://platform.openai.com/apps>
 
 안내에 따라 계정을 생성한 다음 https://platform.openai.com/account/api-keys [^openai-api-key] 로 이동하여 API 키를 생성한다.
 
@@ -74,7 +89,7 @@ API 키는 조직에 속해야 하며, 조직을 생성하라는 메시지가 �
 하나의 조직에 속한 경우 조직 ID(Organization ID)를 별도 생성할 필요는 없다.
 OpenAI 계정을 통해서는 생성한 API KEY\index{API Key}는  다시 볼 수 없기 때문에 생성한 비밀 키를 안전하고 접근하기 쉬운 곳에 저장한다. 
 
-### API KEY 저장
+### API KEY 설정
 
 API KEY를 환경변수로 지정하여 호출하는 방식도 있고,
 작업 프로젝트 디렉토리에 로컬 파일에 저장하여 사용하는 방식도 있다.
@@ -83,10 +98,46 @@ API KEY를 환경변수로 지정하여 호출하는 방식도 있고,
 
 ![](images/openai_api_export.jpg)
 
-다른 방식은 `.env`\index{.evn}와 같은 파일을 프로젝트 디렉토리 아래 숨긴 파일에 지정하여 사용하는 방식이다.
-이런 경우 `.gitignore`\index{.gitignore} 파일에 버전제어 대상에서 제외시켜 두는 것을 필히 기억한다.
+혹은 윈도우즈 쉘 프로그램 `cmd`를 실행한 후 다음 명령어를 실행시키게 되면 `OPENAI_API_KEY`가
+환경변수로 등록되어 API 호출시 인증값으로 사용할 수 있다.
+
+
+```bash
+C:\Users\tidyverse> setx OPENAI_API_KEY “sk-hDxxxxxxxxxxxxxxxxxxxxx”
+```
+
+제대로 `OPENAI_API_KEY`에 값이 할당되었는지 확인은 `echo %OPENAI_API_KEY%` 명령어를 실행한다.
+
+```bash
+C:\Users\tidyverse> echo %OPENAI_API_KEY%
+sk-hDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+맥에서도 유사한 방식으로 설정할 수 있다. 앞서 학습한 유닉스 쉘 명령어를 사용하여 `.bashrc` 파일에 `OPENAI_API_KEY`를 추가한다. 그리고 `source` 명령어로 `OPENAI_API_KEY` 반영사항을 적용시킨다.
+제대로 환경설정이 되었는지 `echo` 명령어로 `OPENAI_API_KEY` 값을 확인한다.
+
+```bash
+$ echo "export OPENAI_API_KEY='sk-hDxxxxxxxxxxxxxxxxxxxx'" >> ~/.bashrc
+$ source ~/.bashrc
+$ echo $OPENAI_API_KEY
+sk-hDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+`OPENAI_API_KEY` 를 운영체제에 등록하는 방식은 운영체제가 달라짐에 따라 매번 변경을 해야하는 번거러운 점이 있다. 운영체제가 아닌 프로젝트 단위에서 API 호출 `OPENAI_API_KEY`를 사용하게 되면 문제를 해결할 수 있다. 하지만 프로젝트 단위에서 파일에 `OPENAI_API_KEY`를 관리하는 경우 주의가 요구된다.
+
+프로젝트 단위로 `OPENAI_API_KEY`를 관리하는 방식은 `.env`\index{.evn}와 같은 파일을 프로젝트 디렉토리 아래 숨긴 파일에 지정하여 사용하는 방식이다. `.env` 파일은 보통 프로젝트 루트 디렉토리에 파일형태로 저장시키는 것이 일반적이다.  특히 깃(Git) 혹은 다른 버전제어 도구와 함께 국내외 개발자와 협업하여 프로젝트를 진행하는 경우 외부에 노출되는 문제가 발생할 수 있다. 이런 경우 `.gitignore`\index{.gitignore} 파일에 버전제어 대상에서 제외시켜 두는 것을 필히 기억한다.
 
 ![](images/openai_api_file.jpg)
+
+
+### `openai` 설치
+
+`pip install` 명령어로 `openai` 파이썬 패키지를 설치한다.
+파이썬이 아닌 R의 경우도 `install.packages('openai')` 패키지를 사용하여 ChatGPT API를 등록된 `OPENAI_API_KEY`를 사용하여 활용이 가능하다.
+
+```bash
+$ pip install openai
+```
 
 
 ### 헬로월드
@@ -166,8 +217,9 @@ gpt_models_tbl %>%
 
 ## 윈도우 쉘 환경
 
-윈도우 운영체제에서 유닉스 쉘(Shell)을 사용하는 방법은 여러가지가 있다.
-윈도우 운영체제에 내장된 명령 프롬프트(`cmd.exe`)는 OS/2, 윈도우 임베디드, 윈도우 NT 5.0 이상 기반 시스템의 명령어 인터프리터로 친숙하고 최근에 파워쉘(PowerShell)은 마이크로소프트가 개발한, 확장 가능한 명령 줄 인터페이스 셸 및 스크립트 언어를 특징으로 하는 명령어 인터프리터다. 하지만, 이런 `cmd`\index{cmd}, `PowerShell`\index{PowerShell}은 윈도우 운영체제에서만 동작된다는 한계가 있다. 맥과 리눅스 특히, 클라우드를 지배하고 있는 유닉스 쉘을 윈도우에서도 무리없이 사용하게 된다면 모든 운영체제에서 공통작업을 수행하는데 큰 도움이 될 것이다. 이를 위해 WSL(Windows SubSystem for Linux)를 통해 다양한 리눅스 운영체제를 설치하는 경우와 [Git Bash](https://git-scm.com/downloads)를 설치하여 유닉스 쉘을 윈도우에서도 활용이 가능하다.
+
+윈도우 운영체제에서 유닉스 쉘(Shell)을 사용하는 방법은 여러 가지다. 윈도우 운영체제에 내장된 명령 프롬프트(`cmd.exe`)는 OS/2, 윈도우 임베디드, 윈도우 NT 5.0 이상 기반 시스템의 명령어 인터프리터로 잘 알려져 있다. 최근에는 마이크로소프트가 개발한 파워쉘(PowerShell)이라는, 확장 가능한 명령 줄 인터페이스 셸 및 스크립트 언어를 특징으로 하는 명령어 인터프리터도 주목받고 있다. 하지만, 이런 `cmd`\index{cmd}, `PowerShell`\index{PowerShell}은 윈도우 운영체제에서만 작동한다는 한계가 있다. 맥과 리눅스, 특히 클라우드를 지배하고 있는 유닉스 쉘을 윈도우에서도 무리없이 사용할 수 있다면, 모든 운영체제에서 공통 작업을 수행하는 데 큰 도움이 될 것이다. 이를 위해 WSL(Windows SubSystem for Linux)를 통해 다양한 리눅스 운영체제를 설치할 수 있으며, Git Bash\footnote{https://git-scm.com/downloads}를 설치하여 윈도우에서도 유닉스 쉘을 활용할 수 있다.
+
 
 ### WSL
 
@@ -181,7 +233,10 @@ $ wsl --install
 
 상기 명령을 실행하면 시스템이 WSL과 Linux 배포판(기본값은 우분투)을 설치하고 PC를 재시작한다.
 
-'가상 머신 플랫폼' 선택적 구성 요소를 활성화시킨다. 새 Linux 배포판을 설치하기 전에 '가상 머신 플랫폼' 구성 요소가 활성화되어 있는지 확인해야 하고, 관리자 권한으로 PowerShell을 다시 열고 실행한다.
+'가상 머신 플랫폼' 선택적 구성 요소를 활성화시킨다. 새 Linux 배포판을 설치하기 전
+에 '가상 머신 플랫폼' 구성 요소가 활성화되어 있는지 확인해야 하고, 관리자 권한으로
+PowerShell을 다시 열고 실행한다. 보통 화면 아래 왼쪽 구석에 있는 윈도우 아이콘 옆에 있는 돋보기 아이콘의 검색기능을 선택하고, "powershell"을 입력하여 찾는다. 그리고 관리자로 실행"을 찾아 선택한다.
+
 
 ```bash
 $ dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
@@ -200,7 +255,17 @@ $ wsl --set-default-version 2
 $ wsl --install -d Debian
 ```
 
-정상으로 WSL 데비안 배포판이 설치되었는지 확인한다.
+Debian을 설치하는 과정에서 아래 부분에 추가 입력이 필요하다.
+
+```bash
+Enter new UNIX username: 
+New password:
+Retype new password:
+```
+
+희망하는 사용자ID과 암호를 각각 입력한다.
+
+이후, 정상으로 WSL 데비안 배포판이 설치되었는지 확인하고자 프롬프트에 아래와 같이 입력하고 실행한다.
 
 ```bash
 $ cat /etc/os-release
@@ -215,15 +280,13 @@ SUPPORT_URL="https://www.debian.org/support"
 BUG_REPORT_URL="https://bugs.debian.org/"
 ```
 
-### ShellGPT
+## ShellGPT (쉘GPT)
 
-OpenAI의 ChatGPT(GPT-3.5)는 콘텐츠 생성에 주된 방점이 있지만 다양한 프로그래밍 코드도 작성함은 물론 유닉스 쉘 프로그램도 작성하여 CLI 생산성을 높이는데 사용될 수 있다. ChatGPT 기능을 활용하여 쉘 명령, 코드 스니펫, 주석, 문서 등을 생성할 수 있다. 즉, 데이터 과학자를 비롯한 개발자가 기존에 업무를 수행하던 방식이
-전혀 다르게 된다. 즉, 책, 매뉴얼, 비밀노트(Cheat Sheet), 인터넷 북마크, 구글링 같은 검색없이 바로 터미널에서 바로 정확한 답변을 얻어 귀중한 시간과 노력을 절약할 수 있다. 예를 들어 앞서 프로젝트를 할 때 해당 유닉스 쉘 명령어가 기억나지 않는다고 하면 ShellGPT를 사용하여 해당 작업을 신속하게 수행할 수 있다
+OpenAI의 ChatGPT(GPT-3.5)는 콘텐츠 생성에 주된 방점이 있지만 다양한 프로그래밍 코드도 작성함은 물론 유닉스 쉘 프로그램도 작성하여 CLI\footnote{CLI(Command Line Interface)는 사용자가 키보드에 텍스트를 입력하여 컴퓨터 명령을 내리는 통신방식이다.} 생산성을 높이는데 사용될 수 있다. ChatGPT 기능을 활용하여 쉘 명령, 코드 스니펫\footnote{스니펫(snippet)은 프로그래밍에서 재사용 가능한 작은 코드 조각으로, 코드 작성을 보다 빠르고 효과적으로 하기 위한 도구로, 특히 반복적으로 사용되는 코드 패턴이나 구조를 빠르게 삽입할 때 유용하다.}, 주석, 문서 등을 생성할 수 있다. 즉, 데이터 과학자를 비롯한 개발자가 기존에 업무를 수행하던 방식이 전혀 다르게 된다. 즉, 책, 매뉴얼, 비밀노트(Cheat Sheet), 인터넷 북마크, 구글링 같은 검색없이 바로 터미널에서 바로 정확한 답변을 얻어 귀중한 시간과 노력을 절약할 수 있다. 예를 들어 앞서 프로젝트를 할 때 해당 유닉스 쉘 명령어가 기억나지 않는다고 하면 ShellGPT를 사용하여 해당 작업을 신속하게 수행할 수 있다
 
-[ShellGPT](https://github.com/TheR1D/shell_gpt)\index{ShellGPT}\index{쉘GPT}를 사용하기 위한 설정은 다음과 같다.
-[ShellGPT](https://github.com/TheR1D/shell_gpt)가 파이썬으로 개발되어 WSL 데비안 혹은 우분투로 설치한 경우 다음 순서대로 설치를 해야한다.
+[ShellGPT](https://github.com/TheR1D/shell_gpt)\index{ShellGPT}\index{쉘GPT}를 사용하기 위한 환경설정 작업을 해야 한다. [ShellGPT](https://github.com/TheR1D/shell_gpt)가 파이썬으로 개발되어 WSL 데비안 혹은 우분투로 설치한 경우 다음 순서대로 설치를 진행한다.
 
-cURL\index{curl}은 다양한 통신 프로토콜을 이용하여 데이터를 전송하기 위한 라이브러리와 명령 줄 도구를 제공하는 컴퓨터 소프트웨어로 쉘에서 설치하는데 파이썬 설치파일을 전송받는데 필요하다.
+curl\index{curl}은 다양한 통신 프로토콜을 이용하여 데이터를 전송하기 위한 라이브러리와 명령 줄 도구를 제공하는 컴퓨터 소프트웨어로 쉘에서 설치하는데 파이썬 설치파일을 전송받는데 필요하다.
 
 ```bash
 $ sudo apt install curl
@@ -264,10 +327,10 @@ $ python --version
 Python 3.9.2
 ```
 
-[ShellGPT](https://github.com/TheR1D/shell_gpt)를 설치한다.
+[ShellGPT](https://github.com/TheR1D/shell_gpt) 웹사이트를 참고하고 `sudo pip install shell-gpt`와 같이 버전을 특정하지 않는 경우 가장 최신 버전이 설치되고, 특정 버젼을 지정하고자 하는 경우,`shell-gpt==0.9.3`와 같이 특정한다. 서로 장단점이 있으니 독자입장에서 유익한 방향으로 설치를 권장한다.
 
 ```bash
-$ sudo pip install shell-gpt==0.9.2
+$ sudo pip install shell-gpt==0.9.3
 ```
 
 `sgpt`\index{sgpt}를 처음 실행하게 되면 OpenAI API Key를 입력해야 한다. [OpenAI](https://platform.openai.com/account/api-keys)에서 `API Keys`를 생성하여 붙여넣기 하면 `~/.config/shell_gpt/.sgptrc` 파일에 저장되어 `ShellGPT`를 사용하게 된다.
@@ -633,7 +696,7 @@ cat(glue::glue("1. {py$todo_text}"))
 이제 데이터 과학업무 생산성의 주요한 도구인 유닉스 쉘(Unix Shell)을  챗GPT로 
 또 다른 데이터 과학의 세계로 나아가자.
 
-
+\newpage
 
 ```{=tex}
 \begin{Exercise}\label{Ex00}
@@ -675,7 +738,7 @@ cat(glue::glue("1. {py$todo_text}"))
 \noindent 6. 소프트웨어 카펜트리 유닉스 쉘에 사용되는 실습데이터를 `curl` 명령어로 다운로드 받아 압축을 풀어 `curl` 명령어로 저장을 한 후에 압축을 풀고 전체 디렉토리 구조를 일별합니다. 실습데이터는 소프트웨어 카펜트리 유닉스 쉘 학습 페이지에서 직접 다운로드 받을 수 있다. \footnote{https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip}
 `shell-lesson-data.zip` 압축을 풀고 폴더명은 shell-data 으로 지정합니다. 마지막으로, shell-data 아래 전체 디렉토리 구조만 나무형식으로 파일은 제외하고 보여주세요.
 
-\noindent 1. 챗GPT를 사용하면 어떤 작업을 수행할 수 있을까요?
+\noindent 7. 챗GPT를 사용하면 어떤 작업을 수행할 수 있을까요?
 
 \begin{tasks}[label=(\arabic*)](1)
   \task 강화 학습 모델 훈련
@@ -684,7 +747,7 @@ cat(glue::glue("1. {py$todo_text}"))
   \task 이미지 분류 알고리즘 개발
 \end{tasks}
 
-\noindent 2. 다음 중 GPT-4를 사용하여 자연어 처리에 어떻게 활용할 수 있는지 가장 적합하지 않은 예는 무엇일까요?
+\noindent 8. 다음 중 GPT-4를 사용하여 자연어 처리에 어떻게 활용할 수 있는지 가장 적합하지 않은 예는 무엇일까요?
 
 \begin{tasks}[label=(\arabic*)](1)
   \task  감성 분석
@@ -693,7 +756,7 @@ cat(glue::glue("1. {py$todo_text}"))
   \task  문장 생성
 \end{tasks}
 
-\noindent 3. 챗GPT를 이용하여 불가능한 자연어 처리 작업은 무엇일까요?
+\noindent 9. 챗GPT를 이용하여 불가능한 자연어 처리 작업은 무엇일까요?
 
 \begin{tasks}[label=(\arabic*)](1)
   \task  텍스트 요약
@@ -702,7 +765,7 @@ cat(glue::glue("1. {py$todo_text}"))
   \task  실시간 비디오 분석
 \end{tasks}
 
-\noindent 4. 챗GPT가 할 수 없는 자연어 처리 작업은 무엇일까요?
+\noindent 10. 챗GPT가 할 수 없는 자연어 처리 작업은 무엇일까요?
 
 \begin{tasks}[label=(\arabic*)](1)
   \task  문장 교정
@@ -711,7 +774,7 @@ cat(glue::glue("1. {py$todo_text}"))
   \task  특정 개인의 미래 행동 예측
 \end{tasks}
 
-\noindent 5. 다음 중 챗GPT를 활용한 챗봇 개발이 아닌 작업은 무엇일까요?
+\noindent 11. 다음 중 챗GPT를 활용한 챗봇 개발이 아닌 작업은 무엇일까요?
 
 \begin{tasks}[label=(\arabic*)](1)
   \task  고객 지원 서비스 개발
