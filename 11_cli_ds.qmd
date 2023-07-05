@@ -1,9 +1,14 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
 
+```{=tex}
 \begin{shadequote}[r]{해들리 위컴(Hadley Wickham)}
 (톨스토이) 행복한 가정은 모두 비슷하지만 불행한 가정은 모두 나름의 방식으로 불행하다. 정돈된 데이터(Tidy data)는 모두 비슷하지만, 정돈되지 않은 데이터는 모두 나름의 방식으로 정돈되지 않는다. 
 \end{shadequote}
-
-
+```
 # CLI 데이터 과학 {#cli-ds}
 
 ```{r}
@@ -13,26 +18,127 @@ library(reticulate)
 use_condaenv(condaenv = 'gpt-shell')
 ```
 
+데이터 과학은 데이터 마이닝(Data Mining)과 유사하게 정형, 비정형 형태를
+포함한 다양한 데이터로부터 지식과 인사이트를 추출하는데 과학적 방법론,
+프로세스, 알고리즘, 시스템을 동원하는 융합분야다. 데이터 과학은 데이터를
+통해 실제 현상을 이해하고 분석하는데 통계학, 데이터 분석, 기계학습과
+연관된 방법론을 통합하는 개념으로 정의된다. 튜링상을 수상한 짐그레이(Jim
+Gray) 박사는 데이터 과학은 과학의 네번째 패러다임으로 정의하고
+과학(경험, 이론, 계산, 그리고 이제 데이터)에 관한 모든 것이 바뀌고
+있는데 이유는 정보기술과 데이터 범람(data deluge)때문이라고
+주장했다.[@tolle2011fourth] 즉 다양한 데이터 예를 들면, 텍스트 데이터,
+직사각형 데이터, 시각 데이터, 네트워크 데이터, 공간정보 지도데이터, 문서
+데이터 등 다양한 형태의 데이터를 이용할 수 있게 되었고, 빅데이터, 고성능
+컴퓨팅(HPC), 클라우드 컴퓨팅, 병렬 프로그래밍 등을 활용하여 정형, 비정형
+데이터를 저장하고 쉽게 접근하여 가치를 창출하게 됨으로써 CLI 데이터
+과학에 대한 재조명이 이뤄지고 있다.
 
-`dir.create()` 함수로 `data` 디렉토리를 생성하고 `download.file()` 함수로 `penguins.csv` 파일을 웹사이트에서 가져와서 "data/penguins.csv" 위치에 저장시킨다.
+## 펭귄 데이터셋
 
-데이터가 준비되면 펭귄 데이터 `.csv` 정형데이터에서 범주형 펭귄 종(`species`) 칼럼을 추출하여 빈도수를 계산해보자.
+### 펭귄 데이터 출현
+
+미국에서 "George Floyd"가 경찰에 의해 살해되면서 촉발된 ["Black Lives
+Matter"](https://ko.wikipedia.org/wiki/Black_Lives_Matter) 운동은
+아프리카계 미국인을 향한 폭력과 제도적 인종주의에 반대하는 사회운동이다.
+한국에서도 소수 정당인 정의당에서 기사로 낼 정도로 적극적으로 나서고
+있다.[^11_cli_ds-1]
+
+[^11_cli_ds-1]: [정환봉 기자 (2020-06-15), "여당 의원 176명 중
+    누가?...차별금지법 발의할 '의인'을 구합니다", 한겨레
+    신문](http://www.hani.co.kr/arti/politics/assembly/949422.html)
+
+데이터 과학에서 최근 R.A. Fisher의 과거 저술한 "The genetical theory of
+natural selection" [@edwards2000genetical] 우생학(Eugenics) 대한 관점이
+논란이 되면서 R 데이터 과학의 첫 데이터셋으로 붓꽃 `iris` 데이터를 다른
+데이터, 즉 펭귄 데이터로 대체하는 움직임이 활발히 전개되고 있다.
+[`palmerpenguins`](https://github.com/allisonhorst/palmerpenguins)
+[@penguin2020] 데이터셋이 대안으로 많은 호응을 얻고 있다.
+[@AbdulMajedRaja2020], [@Levy2019] \index{R.A. Fisher}
+\index{붓꽃 데이터셋} \index{펭귄 데이터셋}
+
+### 펭귄 공부 {#penguins-study}
+
+팔머(Palmer) 펭귄은 3종이 있으며 자세한 내용은 다음 나무위키를 참조한다.
+[^11_cli_ds-2]
+
+[^11_cli_ds-2]: [신발끈 여행사,
+    관광안내자료](http://www.shoestring.kr/shoecast/aaa/sp_01_peninsula/peninsula.html)
+
+-   [젠투 펭귄(Gentoo Penguin)](https://namu.wiki/w/젠투펭귄): 머리에
+    모자처럼 둘러져 있는 하얀 털 때문에 알아보기가 쉽다. 암컷이 회색이
+    뒤에, 흰색이 앞에 있다. 펭귄들 중에 가장 빠른 시속 36km의 수영
+    실력을 자랑하며, 짝짓기 할 준비가 된 펭귄은 75-90cm까지도 자란다.
+-   [아델리 펭귄(Adelie Penguin)](https://namu.wiki/w/아델리펭귄):
+    프랑스 탐험가인 뒤몽 뒤르빌(Dumont D'Urville) 부인의 이름을 따서
+    '아델리'라 불리게 되었다. 각진 머리와 작은 부리 때문에 알아보기
+    쉽고, 다른 펭귄들과 마찬가지로 암수가 비슷하게 생겼지만 암컷이 조금
+    더 작다.
+-   [턱끈 펭귄(Chinstrap Penguin)](https://namu.wiki/w/턱끈펭귄): 언뜻
+    보면 아델리 펭귄과 매우 비슷하지만, 몸집이 조금 더 작고, 목에서 머리
+    쪽으로 이어지는 검은 털이 눈에 띈다. 어린 고삐 펭귄들은 회갈색 빛을
+    띄는 털을 가지고 있으며, 목 아래 부분은 더 하얗다. 무리를 지어
+    살아가며 일부일처제를 지키기 때문에 짝짓기 이후에도 부부로써
+    오랫동안 함께 살아간다.
 
 ```{r}
+#| eval: false
+library(webshot2)
+
+webshot(url="https://allisonhorst.github.io/palmerpenguins/", selector = "#meet-the-palmer-penguins > p > img", "images/penguin-species.png")
+```
+
+![파머 펭귄 3종 세트](images/penguin-species.png){fig-align="center"
+width="503"}
+
+다음으로 `iris` 데이터와 마찬가지로 펭귄 3종을 구분하기 위한 변수로
+조류의 부리에 있는 중앙 세로선의 융기를 지칭하는 능선(`culmen`)
+길이(culmen length)와 깊이(culmen depth)를 비롯하여 체질량, 서식섬,
+조사년도, 성별, 물갈퀴 길이가 포함되어 있고 결측값도 일부 변수에
+포함되어 있어 붓꽃 데이터를 대체하여 최근 많이 사용되고 있다.
+
+```{r}
+#| eval: false
+library(webshot)
+
+webshot(url="https://allisonhorst.github.io/palmerpenguins/", selector = "#what-are-culmen-length--depth > p:nth-child(4) > img", "fig/penguin-species-variable.png")
+```
+
+![팔머 펭귄 능선
+변수](images/penguin-species-variable.png){fig-align="center"
+width="466"}
+
+## R/파이썬
+
+데이터 과학 분야에서는 일반적으로 R 혹은 파이썬을 사용해서 분석을 한다.
+특히 tidyverse 문법에 익숙하면 직관적으로 파이프를 연결하여 의식의
+흐름에 맞춰 직관적인 코드를 작성할 수 있다. 파이썬 `pandas`를 사용해도
+동일한 결과를 얻을 수 있다. 이유는 초기 pandas가 R 데이터프레임을
+참고하여 개발이 되었기 때문에 구문을 비롯하여 공통점이 다수 존재한다.\
+따라서, 동일한 개념을 R 혹은 파이썬 구문을 달리하여 표현하는 것에
+불과하기 때문에, R 혹은 파이썬으로 동작하는 코드를 빠르게 작성하고
+동작여부를 확인한 후에 챗GPT에 유닉스 쉘 코드 변환 지시명령어를 전달하면
+손쉽게 쉘 스크립트를 얻게 되고 이를 CLI 환경에서 실행함으로써 대용량
+데이터도 빠르게 고급 분석기능을 넣어 실행에 옮길 수 있다.
+
+### R 코드 {.unnumbered}
+
+펭귄 데이터는 R 데이터 패키지(palmerpenguins)로
+`install.packages("palmerpenguins")` 명령어로 R에서 설치가 가능하다.
+하지만, 유닉스 쉘 CLI 환경에서 실습을 위해서 csv 원자료 파일형태로
+다운로드 받는 방법을 살펴보자. `dir.create()` 함수로 `data` 디렉토리를
+생성하고 `download.file()` 함수로 `penguins.csv` 파일을 웹사이트에서
+가져와서 "data/penguins.csv" 위치에 저장시킨다. \index{palmerpenguins}
+\index{판다스} \index{pandas}
+
+데이터가 준비되면 펭귄 데이터 `.csv` 정형데이터에서 범주형 펭귄
+종(`species`) 칼럼을 추출하여 빈도수를 계산해보자.
+
+```{r}
+#| eval: false
 dir.create("data")
 
 download.file("https://gist.githubusercontent.com/slopp/ce3b90b9168f2f921784de84fa445651/raw/4ecf3041f0ed4913e7c230758733948bc561f434/penguins.csv", destfile = "data/penguins.csv")
 ```
-
-## R/파이썬
-
-전통적으로 데이터 사이언스에서 R 혹은 파이썬을 사용해서 빈도수를 구할 수 있다.
-`tidyverse` 문법에 익숙하면 직관적으로 파이프를 연결하여 의식의 흐름에 맞춰 직관적인 코드를 작성한다.
-코드가 길지 않아 파이썬 `pandas`를 사용해서 동일한 결과를 얻을 수 있다.
-즉, R 혹은 파이썬으로 동작하는 코드를 작성하게 되면 이를 챗GPT에 코드 변환 지시명령어로 해당 코드를
-생성할 수 있게 된다.
-
-### R 코드 {.unnumbered}
 
 ```{r}
 library(tidyverse)
@@ -46,6 +152,10 @@ penguins %>%
 
 ### 파이썬 코드 {.unnumbered}
 
+R 환경에서 `data` 디렉토리를 생성하고 `penguins.csv` 파일 다운로드 받아
+로컬 디렉토리에 펭귄 csv 파일이 존재하기 때문에 이를 판다스 `read_csv()`
+함수로 가져온 후 판다스 문법에 맞춰 분석 작업을 동일하게 수행한다.
+
 ```{python}
 import pandas as pd
 
@@ -58,49 +168,100 @@ species_count = species_count.sort_values(by="n", ascending=False)
 print(species_count)
 ```
 
+R tidyverse 문법과 판다스 문법을 보면 동일한 기능을 데이터프레임에 대해
+수행하지만, 가독성과 중복 코드의 길이를 보게 되면 차이가 확연히
+느껴진다. 이러한 차이가 발생된 원인은 R tidyverse 문법체계가 나중에
+정립되었기 때문에 발생된 것이고 파이썬에도 `siuba` 패키지가 개발되어
+판다스의 모든 기능을 구현하지는 못하지만 자주 사용되는 기능은 제공하고
+있다.\footnote{siuba: https://github.com/machow/siuba} \index{siuba}
+\index{tidyverse}
 
 ## 쉘 스크립트
 
-R 혹은 파이썬 언어를 설치하고 연관된 패키지를 설치하고 통합개발환경(VS코드, RStudio, 파이참 등)도 준비한 다음 R/파이썬 코드를 작성하여 펭귄 종별 개체수를 구하는 것도 가능하지만 기본적으로 운영체제에서 제공되는 기능을 사용하여 동일한 결과를 얻을 수 있다는 점에서 명령라인 데이터 과학은 큰 장점이 있다.
+펭귄 종별 개체수를 구하는 단순한 작업을 R 혹은 파이썬으로 구현하려면, 1)
+R 혹은 파이썬을 설치하고, 2) 연관된 패키지를 설치하고, 3)
+통합개발환경(VS코드, RStudio, 파이참 등)도 준비한 다음, 4) R/파이썬
+코드를 작성하여 버그를 제거한 후 결과값을 얻게 된다. 하지만,
+운영체제에서 기본 제공되는 도구를 활용하여 동일한 결과를 얻을 수 있는
+방법이 존재한다면, 다른 도구를 설치하지 않아 공간도 절약하고 속도도
+빠르다면 큰 장점이 된다. 유닉스 쉘 기반 CLI 데이터 과학이 사라지지 않고
+현재도 굳건히 자리를 지키는 이유기도 하다. 유닉스 쉘에서 R 혹은 파이썬
+데이터 과학업무를 대신하려면 코드가 길어지고 가독성도 떨어진다. 이를
+보완하기 위해 개발된 [`csvkit`](https://pypi.org/project/csvkit/) 유닉스
+도구를 설치한다. \index{csvkit}
 
-이를 위해 [`csvkit`](https://pypi.org/project/csvkit/)을 설치한다.
+R이나 파이썬이 (비)정형 데이터를 자유로이 처리하는 배경에는 다양한
+패키지의 도움이 필수적이다. 어떤 문제를 풀기 위해 도서관에서 책을
+대여하여 책상에 펼쳐놓고 수차례 시도와 교정작업을 통해 최종 문서를
+완성하는 것처럼 R에서는 도서관에 새로운 도서를 비치하는 작업이
+`install.packages()`이고 모든 도서가 작업에 필요한 것은 아니고 특정
+업무에 필요한 도서를 가져오는 작업이 `library()`라고 할 수 있다.
+파이썬도 동일한 개념을 `pip`를 통해 패키지를 설치하고 `import` 명령어로
+패키지를 불러와서 작업을 수행한다. 유닉스 쉘에서 `.csv` 파일을
+처리하는데 필요한 패키지(`csvkit`)를 `pip` 명령어로 설치한다.
+\index{pip!install} \index{install.packages()}
 
-```bash
+``` bash
 $ pip install csvkit
 ```
 
-다음 챗GPT에 상기 코드를 쉘 스크립트(unix code)로 작성요청을 하게 되면 난이도가 높지 않고 직관적인 쉘 스크립트를 작성해준다. `data/penguins.csv` 파일에서 `species`에 해당되는 칼럼을 찾아낸 다음 정렬하고 앞서 학습한 `uniq` 명령어를 사용하여 빈도수를 계산하고 보기 좋은 형태로 정렬하게 만들면 된다. 작성한 `code/count_species.sh` 쉘 스크립트는 다음과 같다.
+다음 챗GPT에 앞에서 작성한 R 혹은 파이썬 코드를 쉘 스크립트(unix code)로
+재작성요청을 보내면, 난이도가 높지 않고 직관적인 쉘 스크립트를
+작성해준다. `data/penguins.csv` 파일에서 `species`에 해당되는 칼럼을
+찾아낸 다음 정렬하고 앞서 학습한 `uniq` 명령어를 사용하여 빈도수를
+계산하고 보기 좋은 형태로 정렬하게 만들면 된다. 작성한
+`code/count_species.sh` 쉘 스크립트는 다음과 같다.
 
-```{.bash include="code/count_species.sh"}
+``` bash
+#!/bin/bash
+
+# `species` 칼럼 번호 찾기
+species_col=$(csvcut -n data/penguins.csv | grep -w "species" | cut -d: -f1)
+
+# CSV 파일 변수명 제거하고 각 종별로 빈도수를 계산한 후 내림차순으로 정렬하여 보기 좋게 출력
+csvcut -c "$species_col" data/penguins.csv | tail -n +2 | sort | uniq -c |  sort -rn | awk '{ print $2 "," $1 }'
 ```
 
-수행결과 다음과 같은 결과를 얻게 된다.
+`count_species.sh` 쉘 스크립트를 실행하게 되면 다음과 같은 결과를 얻게
+된다. R과 파이썬에서 분석한 것과 정확하게 동일한 결과를 얻지만
+구현방법에서 차이가 난다.
 
-```bash
+``` bash
 bash code/count_species.sh
 Adelie,152
 Gentoo,124
 Chinstrap,68
 ```
 
-
 ## 윈도우 파일 변환
 
-윈도우 환경에서 저장한 텍스트 파일을 우분투와 같은 환경에서 배쉬(`.sh`) 확장자로 실행할 경우 다음과 같은 오류가 발생된다.
+쉘 스크립트와 csv 파일을 비롯한 텍스트 파일은 운영체제에 관계없이 호환이
+가능하다. 하지만 사람눈에 보이지 않는 공백문자에서 운영체제를 처리하는
+방식에 차이가 있다. 기본적으로 대부분의 코딩 및 데이터 분석 환경에서는
+줄 바꿈을 나타내는 줄 바꿈으로 UNIX 스타일 줄 바꿈(ASCII LF 문자)이
+사용된다. 하지만, Windows에서는 텔레타이프 기반 시스템과의 레거시
+호환성을 위해 기본설정으로 대체 줄 끝 기호(ASCII CR LF 문자)가 사용된다.
+이러한 이유로 윈도우 환경에서 저장한 텍스트 파일을 우분투와 같은
+환경에서 배쉬(`.sh`) 확장자로 실행할 경우 다음과 같은 오류가 발생된다.
+\index{줄 바꿈}
 
-```bash
+``` bash
 line 2: $'\r': command not found
 ```
 
-이런 오류를 해결하기 위해서 `dos2unix` 유틸리티를 설치한 후 유닉스 환경에 실행가능한 파일 형태로 변환 시킨 후 작업을 수행한다.
+이런 오류를 해결하기 위해서 `dos2unix` 유틸리티를 설치한 후 유닉스
+환경에 실행가능한 파일 형태로 변환 시킨 후 작업을 수행한다.
+\index{dos2unix}
 
-```bash
+``` bash
 $ pip install dos2unix
 ```
 
-`dos2unix` 유틸리티을 설치한 후 작성한 쉘 스크립트 파일이 윈도우에서 작성되었다면 리눅스에서 실행할 수 있도록 `dos2unix` 명령어를 사용해서 변환작업을 수행한다.
+`dos2unix` 유틸리티을 설치한 후 작성한 쉘 스크립트 파일이 윈도우에서
+작성되었다면 리눅스에서 실행할 수 있도록 `dos2unix` 명령어를 사용해서
+변환작업을 수행한다.
 
-```bash
+``` bash
 $ dos2unix code/count_species.sh
 dos2unix: converting file code/count_species.sh to Unix format...
 $ bash code/count_species.sh
@@ -109,22 +270,24 @@ $ bash code/count_species.sh
 ## 파일 살펴보기
 
 CLI 데이터 분석을 위해서 분석 대상이 되는 파일을 살펴볼 필요가 있다.
-이를 위해서 `cat` 명령어를 통해 분석 대상 파일 `data` 디렉토리 아래 `penguins.csv` 파일을 열어본다.
-하지만 너무 길어 한정된 화면에서 파이프 `|` 로 연결하여 첫 5줄만 `head` 명령어로 확인한다.
+이를 위해서 `cat` 명령어를 통해 분석 대상 파일 `data` 디렉토리 아래
+`penguins.csv` 파일을 열어본다. 하지만 너무 길어 한정된 화면에서 파이프
+`|` 로 연결하여 첫 5줄만 `head` 명령어로 확인한다.
 
-```bash
+``` bash
 $ cat data/penguins.csv | head -n 5
-"rowid","species","island","bill_length_mm","bill_depth_mm","flipper_length_mm","body_mass_g","sex","year"
+"rowid", "species", "island", "bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g", "sex", "year"
 "1","Adelie","Torgersen",39.1,18.7,181,3750,"male",2007
 "2","Adelie","Torgersen",39.5,17.4,186,3800,"female",2007
 "3","Adelie","Torgersen",40.3,18,195,3250,"female",2007
 "4","Adelie","Torgersen",NA,NA,NA,NA,NA,2007
 ```
 
-`csvkit` 패키지를 설치해서 `csvlook` 명령어로 좀더 가시성을 높혀 확인도 가능하다.
-파일 마지막부분을 확인하고자 한다면 `tail -n 5`와 같이 살펴보면 된다.
+`csvkit` 패키지를 설치해서 `csvlook` 명령어로 좀더 가시성을 높혀 확인도
+가능하다. 파일 마지막 부분을 확인하고자 한다면 `tail -n 5`와 같이
+살펴보면 된다.\index{csvkit!csvlook}
 
-```bash
+``` bash
 $ csvlook data/penguins.csv  | head -n 5
 | rowid | species   | island    | bill_length_mm | bill_depth_mm | flipper_length_mm | body_mass_g | sex    |  year |
 | ----- | --------- | --------- | -------------- | ------------- | ----------------- | ----------- | ------ | ----- |
@@ -133,13 +296,15 @@ $ csvlook data/penguins.csv  | head -n 5
 |     3 | Adelie    | Torgersen |           40.3 |          18.0 |               195 |       3,250 | female | 2,007 |
 ```
 
-
 ## 파일 구조
 
-`.csv` 파일을 확인했다면 다음 단계로 자료형을 파악한다.
-이를 위해서 `csvkit`에 내장된 `csvsql` 명령어를 통해서 변수가 범주형인지 숫자형인지 파악한다.
+데이터 분석대상 `.csv` 파일을 확인했다면 다음 단계로 자료형을 파악한다.
+이를 위해서 `csvkit`에 내장된 `csvsql` 명령어를 통해서 변수가 범주형인지
+숫자형인지 파악한다. 펭귄 데이터에는 조사연도(`year`) 칼럼이 포함되어
+있다. 이를 날짜형으로 볼 수도 있고 여기서처럼 숫자형으로 처리가
+가능하다.\index{csvkit!csvsql}
 
-```bash
+``` bash
 $ csvsql data/penguins.csv
 CREATE TABLE penguins (
         rowid DECIMAL NOT NULL,
@@ -154,23 +319,30 @@ CREATE TABLE penguins (
 );
 ```
 
-`penguins.csv` 파일에서 변수의 숫자와 관측점의 숫자를 파악하는 것은 탐색적 데이터 분석을 시작하기 전에 필수적으로 수행해야하는 작업이다. 다양한 방법이 있지만 다음 명령어로 행수와 칼럼수를 계산할 수 있다.
+`penguins.csv` 파일에서 변수의 숫자와 관측점의 숫자를 파악하는 것은
+탐색적 데이터 분석을 시작하기 전에 필수적으로 수행해야하는 작업이다.
+다양한 방법이 있지만 다음 명령어로 행수와 칼럼수를 계산할 수 있다.
 
-- `csvcut -n` 명령어는 `penguins.csv` 파일 변수명만 추출한다. 그다음 `wc -l` 명령어는 변수명의 행수를 세어 변수갯수를 파악한다.
-- `csvstat --count` 명령어를 통해 행의 갯수도 산출할 수 있다.
+-   `csvcut -n` 명령어는 `penguins.csv` 파일 변수명만 추출한다. 그다음
+    `wc -l` 명령어는 변수명의 행수를 세어 변수갯수를 파악한다.
+-   `csvstat --count` 명령어를 통해 행의 갯수도 산출할 수 있다.
 
 즉, `penguins.csv` 데이터셋은 $344 \times 9$ 크기를 갖는 정형데이터다.
 
-```bash
+``` bash
 $ csvcut -n data/penguins.csv | wc -l
 9
 $ csvstat --count data/penguins.csv
 344
 ```
 
-다음 단계로 각 변수별로 유일무이한 값(unique)의 갯수를 파악하는 것도 데이터셋을 이해하고 후속 분석 방향을 잡는데 큰 도움이 된다. 예를 들어, 펭귄 종수(`species`)가 3개로 나타나는데 이는 파머 관측소에서 관측한 펭귄 종수와 일치하고 `island` 섬도 마찬가지다. 하지만 `sex` 암수 범주는 3으로 뭔가 잘못된 것을 직관적으로 파악할 수 있다.
+다음 단계로 각 변수별로 유일무이한 값(unique)의 갯수를 파악하는 것도
+데이터셋을 이해하고 후속 분석 방향을 잡는데 큰 도움이 된다. 예를 들어,
+펭귄 종수(`species`)가 3개로 나타나는데 이는 파머 관측소에서 관측한 펭귄
+종수와 일치하고 `island` 섬도 마찬가지다. 하지만 `sex` 암수 범주는 3으로
+되어 있어서, 추가 점검을 해야함을 직감적으로 느낄 수 있다.
 
-```bash
+``` bash
 $ csvstat data/penguins.csv --unique
   1. rowid: 344
   2. species: 3
@@ -183,9 +355,13 @@ $ csvstat data/penguins.csv --unique
   9. year: 3
 ```
 
-결측값(missing value)은 간단한 기술통계를 비롯하여 기계학습 알고리즘이나 시각화 등 후속 업무에 큰 장애가 되기 때문에 조기에 이를 파악하여 제거하든가 아니면 적절한 값으로 추정하여 치환하여 온전한 데이터셋(complete dataset)으로 만들어야 된다. `csvstat --nulls`를 통해 변수에 결측값 유무를 파악할 수 있다.
+결측값(missing value)은 간단한 기술통계를 비롯하여 기계학습 알고리즘이나
+시각화 등 후속 업무에 큰 장애가 되기 때문에 조기에 이를 파악하여
+제거하든가 아니면 적절한 값으로 추정하여 치환하여 온전한
+데이터셋(complete dataset)으로 만들어야 된다. `csvstat --nulls`를 통해
+변수에 결측값 유무를 파악할 수 있다.
 
-```bash
+``` bash
 $ csvstat data/penguins.csv --nulls
   1. rowid: False
   2. species: False
@@ -200,9 +376,14 @@ $ csvstat data/penguins.csv --nulls
 
 ## 기술통계량
 
-`csvstat` 명령어를 통해서 각 칼럼별로 요약통계량을 상세히 뽑아주고 있다. 
+컴퓨터 과학과 통계학의 차이를 뚜렷하게 파악할 수 있는 지점이
+기술통계량이다. 자료구조와 자료형이 충족된 것을 확인하면 컴퓨터 과학에서
+많은 작업이 완료되었지만, 데이터 과학은 이제 본격적인 작업을 위한 초석을
+다진 것이다. `csvstat` 명령어를 통해서 각 칼럼별로 요약통계량을 상세히
+뽑아볼 수 있다. 자료형이 범주형과 숫자형에 따라 출력되는 요약통계량이
+다른 점에 주목한다. \index{csvkit!csvstat}
 
-```bash
+``` bash
 $ csvstat data/penguins.csv | head -n 27
   1. "rowid"
 
@@ -232,10 +413,10 @@ $ csvstat data/penguins.csv | head -n 27
                                Chinstrap (68x)
 ```
 
-만약, 특정 변수를 선택하여 기술통계량을 뽑아보고자 한다면,
-`csvstat` 명령어에 `-c 5,sex`와 같이 칼럼 번호와 칼럼명을 지정하면 된다.
+만약, 특정 변수를 선택하여 기술통계량을 뽑아보고자 한다면, `csvstat`
+명령어에 `-c 5,sex`와 같이 칼럼 번호와 칼럼명을 지정하면 된다.
 
-```bash
+``` bash
 $ csvstat data/penguins.csv -c 5,sex
   5. "bill_depth_mm"
 
@@ -266,4 +447,3 @@ $ csvstat data/penguins.csv -c 5,sex
 
 Row count: 344
 ```
-

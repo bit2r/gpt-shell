@@ -30,8 +30,8 @@ book:
     #     - 07-shell-find.qmd
     - part: "GPT 데이터 과학"
       chapters:
-        - 10_setup.qmd
-        # - 11_cli_ds.qmd
+        # - 10_setup.qmd
+        - 11_cli_ds.qmd
         # - 12_cli_ds_gpt.qmd
         # - 13_cli_bigdata.qmd
         # - 14_mlops.qmd
