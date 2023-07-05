@@ -696,6 +696,7 @@ cat(glue::glue("1. {py$todo_text}"))
 이제 데이터 과학업무 생산성의 주요한 도구인 유닉스 쉘(Unix Shell)을  챗GPT로 
 또 다른 데이터 과학의 세계로 나아가자.
 
+
 \newpage
 
 ```{=tex}

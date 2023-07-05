@@ -4,15 +4,3 @@ R은 통계가 전달되는 방식에 혁신적인 영향을 미쳤다.(R has ha
 \end{shadequote}
 
 
-# MLOps
-
-
-
-
-
-\begin{Exercise}\label{Ex01}
-
-
-\end{Exercise}
-
-
