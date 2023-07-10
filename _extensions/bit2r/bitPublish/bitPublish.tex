@@ -1,4 +1,15 @@
 %%==============================================================================
+%% 워터마크 초안
+%%==============================================================================
+
+% \usepackage{draftwatermark}
+%
+% \SetWatermarkText{DRAFT}
+% \SetWatermarkScale{1}
+% \SetWatermarkColor[gray]{0.5}
+
+
+%%==============================================================================
 %% load packages
 %%==============================================================================
 \usepackage{diagbox}                        % 테이블 셀에 대각선 표시를 위해
@@ -333,6 +344,7 @@
 \renewcounter{Exercise}[chapter]
 \newcommand{\QuestionNB}{\bfseries\arabic{Question}.\ }
 \renewcommand{\ExerciseName}{\sffamily연습문제}
+\renewcommand{\ExerciseHeaderNB}{\thechapter 장. }
 \renewcommand{\ExerciseHeader}{\noindent\def\stackalignment{l}% code from https://tex.stackexchange.com/a/195118/101651
     \stackunder[0pt]{\colorbox{cornflowerblue}{\textcolor{white}{\textbf{\sffamily\LARGE\ExerciseHeaderNB\;\large\ExerciseName}}}}{\textcolor{cornflowerblue}{\rule{\linewidth}{2pt}}}\medskip}
 \renewcommand{\AnswerName}{연습문제 풀이}
@@ -342,6 +354,8 @@
                 \pageref{\AnswerRef}}}\smallskip}
     {\noindent\bfseries\emph{\textcolor{cornflowerblue}{\AnswerName\ \ExerciseHeaderNB, page \pageref{\AnswerRef}}}\smallskip}}
 \setlength{\QuestionIndent}{16pt}
+
+% 2.1. 연습문제 2장. 연습문제
 
 
 %%==============================================================================
