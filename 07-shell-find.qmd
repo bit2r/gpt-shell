@@ -179,7 +179,7 @@ Miscellaneous:
 ::: {#exr-grep-find}
 ### `grep` 사용
 
-다음중 어떤 명령어가 다음 결과를 만들어낼까요?
+다음 중 어떤 명령어가 다음 결과를 만들어낼까요?
 
 ``` bash
 and the presence of absence:
@@ -203,7 +203,7 @@ and the presence of absence:
 
 `grep`의 진정한 힘은 옵션에서 나오지 않고; 패턴에 와일드카드를 포함할 수 있다는 사실에서 나온다.
 (기술적 명칭은 **정규 표현식(regular expressions)**이고, "grep" 명령어의 "re"가 정규표현식을 나타낸다.) 정규 표현식은 복잡하기도 하지만 강력하기도 하다.
-복잡한 검색을 하고자 한다면, 소프트웨어 카펜트리 웹사이트에서 [수업내용](http://software-carpentry.org/v4/regexp/index.html)을 볼 수 있다.
+복잡한 검색을 하고자 한다면, 소프트웨어 카펜트리 웹사이트에서 [정규표현식](https://carpentries-incubator.github.io/regex-novice-biology/)을 참고한다.
 맛보기로, 다음과 같이 두번째 위치에 'o'를 포함한 행을 찾을 수 있다:
 
 ``` bash
@@ -271,7 +271,7 @@ $ bash count-species.sh bear .
 :::
 
 ::: {exr-little-women}
-### 작은 아낙네(Little Women)
+### 작은 아낙네
 
 Louisa May Alcott가 지은 *작은 아낙네(Little Women)*를 친구과 함께 읽고 논쟁중이다.
 책에는 Jo, Meg, Beth, Amy 네자매가 나온다.
@@ -281,7 +281,7 @@ Louisa May Alcott가 지은 *작은 아낙네(Little Women)*를 친구과 함께
 `for` 루프를 사용해서, 네자매 각각이 얼마나 언급되었는지 횟수를 개수할 수 있을까?
 
 힌트: 한가지 해결책은 `grep`, `wc`, `|` 명령어를 동원하는 것이지만, 다른 해결책으로 `grep` 옵션을 활용하는 것도 있다.
-There is often more than one way to solve a programming task, so a particular solution is usually chosen based on a combination of yielding the correct result, elegance, readability, and speed.
+
 프로그래밍 문제를 푸는 방식은 한가지 이상 존재한다.
 따라서, 올바른 결과를 도출해야 하고, 우아하고(elegance), 가독성이 좋고(readability), 속도를 다 함께 고려하여 선택한다.
 
@@ -412,7 +412,7 @@ $ find . -name '*.txt'
 :::
 
 앞에서 언급했듯이, 명령-라인(command-line)의 힘은 도구를 조합하는데 있다.
-파이프로 어떻게 조합하는지를 살펴봤고; 또 다른 기술을 살펴보자.
+파이프로 어떻게 조합하는지를 살펴봤으니, 또 다른 기술을 찾아보자.
 방금 보았듯이, `find . -name '*.txt'` 명령어는 현재 디렉토리 및 하위 디렉토리에 있는 모든 텍스트 파일 목록을 보여준다.
 어떻게 하면 `wc -l`\index{wc} 명령어와 조합해서 모든 파일의 행을 개수할 수 있을까?
 

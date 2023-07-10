@@ -450,16 +450,16 @@ Row count: 344
 
 ## 대용량 데이터 처리 전략
 
-수 GB가 넘어가는 대용량 데이터를 데이터 분석에 앞서 적절한 크기로 줄이는
-것이 필요하다. 특히, 빠른 데이터 분석을 위해서 대용량 데이터에서 정보를
+몇 기가바이트(GB) 규모의 대용량 데이터를 데이터 분석에 앞서 적절한 크기로 줄이는 것이 필요하기도 하다.
+특히, 빠른 데이터 분석을 위해서 대용량 데이터에서 정보를
 잃지 않으면서 일부를 표본추출하여 적절한 크기로 줄인 후에 이를 R/파이썬
 등 전문 데이터 분석 언어로 코딩을 하는 것도 유닉스 쉘과 좋은 성과를 내는
 전략 중 하나가 된다.\index{대용량 데이터} \index{빅데이터}
 
 ### 압축파일 풀기
 
-데이터분석을 위해 정형 데이터가 아닌 비정형 데이터를 마추치게 되면 통상
-압축화일 형태로 전달이 된다. 기본적인 소용량 압축파일은 쉽게 풀리나
+데이터분석을 위해 정형 데이터가 아닌 비정형 데이터를 마주치게 되면 통상 압축파일
+형태로 전달이 된다. 기본적인 소용량 압축파일은 쉽게 풀리나
 대용량 압축파일(GB가 넘어감)은 전용 압축/압축해제 프로그램을 사용한다.
 
 맥 기준으로 설명하면 `p7zip` 전용 프로그램을 통해 대용량 압축 파일을
@@ -496,16 +496,14 @@ $ wc -l players_result.txt
 통해서 1.7억줄이 있는 것이 확인된다. 이를 바탕으로 1% 임의추출할 경우 약
 170만줄을 임의추출하면 된다.
 
-### 표본추출 툴설치 [^11_cli_ds-3]
-
-[^11_cli_ds-3]: [How can I shuffle the lines of a text file on the Unix
-    command line or in a shell
-    script?](http://stackoverflow.com/questions/2153882/how-can-i-shuffle-the-lines-of-a-text-file-on-the-unix-command-line-or-in-a-shel)
+### 표본추출 툴설치 
 
 표본추출을 위해 설치해야 되는 도구는 기본적으로 `sort`, `shuf`,
 `gshuf`가 있다. 기능적인 면을 떠나 대용량 파일의 경우 성능 속도가 도구를
 선택하는 중요한 요인이다.\index{sort} \index{shuf} \index{gshuf}
-\index{coreutils}
+\index{coreutils} [^11_cli_ds-3]
+
+[^11_cli_ds-3]: http://stackoverflow.com/questions/2153882/how-can-i-shuffle-the-lines-of-a-text-file-on-the-unix-command-line-or-in-a-shel
 
 백만줄을 `seq -f 'line %.0f' 1000000` 명령어로 생성하여 표집한 경우
 성능이 가장 좋은 것은 다음과 같은 순으로 정렬된다.
