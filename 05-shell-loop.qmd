@@ -389,7 +389,7 @@ cp unicorn.dat original-unicorn.dat
 다음 도표를 통해서 스크립트가 동작할 때 어떤 작업이 수행하고 있는지 상술하고 있다.
 또한 `echo` 명령어를 사려깊이 사용하는 것이 어떻게 훌륭한 디버깅 기술이 되는지도 보여주고 있다.
 
-![For Loop in Action](images/shell_script_for_loop_flow_chart.svg){width=100%}
+![For 루프 실행흐름](images/shell_script_for_loop_flow_chart.svg){width=100%}
 
 
 ::: {callout-caution}
@@ -566,6 +566,7 @@ $ for species in cubane ethane methane
 화학물과 온도를 조합한 새로운 디렉토리가 쭉 생성된다.
 
 직접 코드를 실행해서 어떤 디렉토리가 생성되는지 확인한다!
+:::
 
 :::::
 
@@ -726,3 +727,73 @@ NENE01736A.txt
 
 \end{Exercise}
 ```
+
+```{=tex}
+\titlebox{챗GPT 유닉스 쉘}{Cbluejeans}{DRY는 "Don't Repeat Yourself"의 약자로, 프로그래밍과 소프트웨어 개발에서 중요한 원칙 중 하나다. 이 원칙은 기본적으로 코드의 중복을 최소화를 의미하며 유지보수, 효율성, 가독성, 검증성, 신뢰성을 향상시킨다.}
+```
+
+
+
+### 모든 파일 앞부분 살펴보기 {-}
+
+`shell-lesson-data/exercise-data/creatures` 디렉토리에 유니콘, 미노타우르, 바시리스크 괴물 3종 유전자 정보가 담겨있다. 괴물 3종이라 다행이지 수십 수백 괴물의 유전자 정보가 담겨있다면 야근을 해도 끝나지 못할 엄청난 파일 정보가 디렉토리에 담긴 것이다. 해당 디렉토리에 있는 각 파일 5줄만 출력하는 프로그램을 작성해보자.
+
+> 프롬프트: shell-lesson-data/exercise-data/creatures 디렉토리로 이동한 후 for 문을 사용해서 확장자가 .dat인 모든 파일을 대상으로 각 파일별로 첫 5줄만 출력하세요.
+
+``` bash
+$ sgpt -s "shell-lesson-data/exercise-data/creatures 디렉토리로 이동한 후 for 문을 사용해서 확장자가 .dat인 모든 파일을 대상으로 각 파일별로 첫 5줄만 출력하세요."
+cd shell-lesson-data/exercise-data/creatures && for file in *.dat; do head -n 5 "$file"; done
+[E]xecute, [D]escribe, [A]bort: D
+This shell command changes the directory to "shell-lesson-data/exercise-data/creatures" and then prints the first 5 lines of each file with the extension ".dat" in that directory.
+[E]xecute, [D]escribe, [A]bort: E
+COMMON NAME: basilisk
+CLASSIFICATION: basiliscus vulgaris
+UPDATED: 1745-05-02
+CCCCAACGAG
+GAAACAGATC
+COMMON NAME: minotaur
+CLASSIFICATION: bos hominus
+UPDATED: 1765-02-17
+CCCGAAGGAC
+CGACATCTCT
+COMMON NAME: unicorn
+CLASSIFICATION: equus monoceros
+UPDATED: 1738-11-24
+AGCCGGGTCG
+CTTTACCTTA
+```
+
+챗GPT가 프롬프트로 작성한 유닉스 쉘 명령어를 해석하면 다음과 같다.
+
+> 현재 디렉터리를 "shell-lesson-data/exercise-data/creatures"로 변경한 다음 해당 디렉터리에 있는 확장자가 ".dat"인 각 파일의 처음 5줄을 인쇄합니다.
+
+바로 실행시키게 되면 괴물 유전자 정보를 담고 있는 각 파일을 `head -n 5` 명령어로 실행하여 괴물 3종 유전자 정보를 5줄만 화면에 출력한다.
+
+
+### 모든 파일 확장자 변경 {-}
+
+`shell-lesson-data/exercise-data/creatures` 디렉토리에 담긴 파일 확장자는 `*.dat`다 이를 `*.mon` 확장자로 바꿔보자.
+
+> 프롬프트: shell-lesson-data/exercise-data/creatures 디렉토리로 이동한 후 for 문을 사용해서 확장자가 .dat인 모든 파일을 대상으로 각 파일별 확장자를 .mon으로 변경하세요.
+
+``` bash
+$ sgpt -s "shell-lesson-data/exercise-data/creatures 디렉토리로 이동한 후 for 문을 사용해서 확장자가 .dat인 모든 파일을 대상으로 각 파일별 확장자를 .mon으로 변경하세요."
+cd shell-lesson-data/exercise-data/creatures && for file in *.dat; do mv "$file" "${file%.dat}.mon"; done
+[E]xecute, [D]escribe, [A]bort: D
+This shell command changes the file extension of all files in the "creatures" directory from ".dat" to ".mon".
+[E]xecute, [D]escribe, [A]bort: E
+$ ls shell-lesson-data/exercise-data/creatures/
+basilisk.mon  minotaur.mon  unicorn.mon
+```
+
+챗GPT가 프롬프트로 작성한 유닉스 쉘 명령어를 해석하면 다음과 같다.
+
+> "creatures" 디렉터리에 있는 모든 파일의 파일 확장자를 ".dat"에서 ".mon"으로 변경한다.
+
+바로 실행시키게 되면 `.dat` 확장자를 갖는 괴물 유전자 파일 확장자가 `.mon`으로 변경되고 `ls` 명령어를 통해 확장자 변경을 확인한다.
+
+
+
+
+
+

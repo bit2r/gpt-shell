@@ -23,10 +23,10 @@ book:
         - 00-shell.qmd
         # - 01-shell-intro.qmd
         # - 02-shell-filedir.qmd
-        - 03-shell-create.qmd
-    #     - 04-shell-pipefilter.qmd
-    #     - 05-shell-loop.qmd
-    #     - 06-shell-script.qmd
+        # - 03-shell-create.qmd     # GPT done
+        # - 04-shell-pipefilter.qmd # GPT done
+        # - 05-shell-loop.qmd       # GPT done
+        - 06-shell-script.qmd     # GPT done
     #     - 07-shell-find.qmd
     # - part: "GPT 데이터 과학"
     #   chapters:
