@@ -5,8 +5,6 @@
 
 
 
-
-
 ## 배경
 
 사람과 컴퓨터는 일반적으로 키보드와 마우스, 터치스크린 인터페이스, 음성 인식 시스템 등 다양한 방식으로 의사소통한다.
@@ -223,3 +221,27 @@ REPL(읽기-평가-출력-루프, Read-Evaluate-Print-Loop)를 좀더 살펴보�
 
 
 
+```{=tex}
+\titlebox{챗GPT 유닉스 쉘}{Cbluejeans}{챗GPT는 자연어인 프롬프트를 유닉스 실행 명령어로 통역을 해준다. 유닉스 쉘에 대한 기본 지식만 있다면 챗GPT를 통해 유창한 대화가 가능하다. }
+```
+
+### 파일과 디렉토리 출력 {-}
+
+`sgpt -s` 다음에 자연어로 해당 디렉토리에 포함된 파일과 디렉토리를 구별하여 출력하는 유닉스 명령어를 확인하고 실행을 통해 결과를 확인한다.
+
+> 프롬프트: 현재 디렉토리에서 파일과 디렉토리 내용을 구분하여 출력해주세요
+
+``` bash
+$ sgpt -s "현재 디렉토리에서 파일과 디렉토리 내용을 구분하여 출력해주세요"
+ls -F
+[E]xecute, [D]escribe, [A]bort: D
+The "ls -F" command lists the files and directories in the current directory, and appends a symbol to each entry indicating its type (e.g., "/" for directories, "*" for executables).
+[E]xecute, [D]escribe, [A]bort: E
+exercise-data/  north-pacific-gyre/
+```
+
+챗GPT가 프롬프트로 작성한 유닉스 쉘 명령어를 해석하면 다음과 같다.
+
+> "ls -F" 명령은 현재 디렉터리에 있는 파일과 디렉터리를 나열하고 각 항목에 해당 유형을 나타내는 기호(예: 디렉터리의 경우 "/", 실행 파일의 경우 "*")를 추가한다.
+
+얻어진 유닉스 쉘 명령어를 실행하게 되면 현재 디렉토리 아래 디렉토리 두개를 출력한다.

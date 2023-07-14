@@ -510,7 +510,7 @@ $ grep "FE" $(find .. -name '*.pdb')
 
 다음 쉘 스크립트에 대해서 어떤 작업을 수행하는지 짧은 설명문을 작성하세요. 
 
-```bash
+``` bash
 $ wc -l $(find . -name '*.dat') | sort -n}
 ```
 
@@ -587,4 +587,66 @@ $ find ./ -type f -mtime -1 -user ahmed
 
 \end{Exercise}
 ```
+
+
+```{=tex}
+\titlebox{챗GPT 유닉스 쉘}{Cbluejeans}{데이터를 GUI가 아닌 프로그래밍을 통해 주로 작업을 하게 되면 데이터 뿐만 아니라 데이터 처리 및 분석 코드도 파일로 다룰 수 있다는 점이다. 자연어를 사용하여 원하는 파일을 찾고 파일 내 텍스트를 검색할 수 있다는 것은 챗GPT가 연 새로운 세상이다.}
+```
+
+
+### 텍스트 파일 행수 계산 {-}
+
+`shell-lesson-data/exercise-data` 디렉토리에 포함된 텍스트 파일 (`.txt`)를 찾아 파일의 크기를 추정할 수 있는 행수를 계산하는 쉘 스크립트를 작성해보자.
+
+> 프롬프트: shell-lesson-data/exercise-data 디렉토리로 이동한 후 텍스트 파일 (.txt)을 찾아 행수를 계산하고 파일별 행수를 내림차순으로 정렬해 주세요.
+
+``` bash
+$ sgpt -s "shell-lesson-data/exercise-data 디렉토리로 이동한 후 텍스트 파일 (.txt)을 찾아 행수를 계산하고 파일별 행수를 내림차순으로 정렬해 주세요."
+cd shell-lesson-data/exercise-data && find . -name "*.txt" | xargs wc -l | sort -nr
+[E]xecute, [D]escribe, [A]bort: D
+This command changes the current directory to "shell-lesson-data/exercise-data", finds all files with the extension ".txt", counts the number of lines in each file, and sorts the results in descending order.
+[E]xecute, [D]escribe, [A]bort: E
+  21038 total
+  21022 ./writing/LittleWomen.txt
+     11 ./writing/haiku.txt
+      5 ./numbers.txt
+      0 ./writing/thesis.txt
+      0 ./writing/thesis/thesis.txt
+      0 ./writing/backup/thesis.txt
+```
+
+챗GPT가 프롬프트로 작성한 유닉스 쉘 명령어를 해석하면 다음과 같다.
+
+> 현재 디렉터리를 "shell-lesson-data/exercise-data"로 변경하고, 확장자가 ".txt"인 모든 파일을 찾고, 각 파일의 줄 수를 세고, 결과를 내림차순으로 정렬한다.
+
+바로 실행시키게 되면 `find` 명령어로 `.txt` 확장자를 갖는 파일을 모두 찾고 이를 `xgars` 입력을 받아 파일별 행수를 계산하고 `sort` 명령어로 내림차순 정렬한다.
+
+
+### 파일 내부 매칭되는 텍스트 추출 {-}
+
+`shell-lesson-data/exercise-data/alkanes` 디렉토리에 담긴 파일 확장자는 `*.pdb`로 단백질 데이터 정보가 디지털로 담겨있다. 이 중 `methane` 텍스트가 존재하는 파일과 해당 줄을 출력한다.
+
+> 프롬프트: shell-lesson-data/exercise-data/alkanes 디렉토리로 이동한 후 단백질 데이터 파일 (.pdb)에서 대소문자 구분하지 말고 methane 단어가 포함된 파일과 해당 행을 출력해주세요
+
+``` bash
+$ sgpt -s "shell-lesson-data/exercise-data/alkanes 디렉토리로 이동한 후 단백질 데이터 파일 (.pdb)에서 대소문자 구분하지 말고 methane 단어가 포함된 파일과 해당 행을 출력해주세요"
+cd shell-lesson-data/exercise-data/alkanes && grep -i "methane" *.pdb
+[E]xecute, [D]escribe, [A]bort: D
+This command changes the directory to "shell-lesson-data/exercise-data/alkanes" and searches for the word "methane" in all files with the .pdb extension.
+[E]xecute, [D]escribe, [A]bort: E
+methane.pdb:COMPND      METHANE
+```
+
+챗GPT가 프롬프트로 작성한 유닉스 쉘 명령어를 해석하면 다음과 같다.
+
+>  "shell-lesson-data/exercise-data/alkanes"로 변경하고 확장자가 .pdb인 모든 파일에서 "methane"이라는 단어를 검색한다.
+
+바로 실행시키게 되면 `.pdb` 확장자를 갖는 단백질 파일을 찾고 `grep` 명령어로 "methane" 텍스트가 담긴 파일과 행을 찾아 화면에 출력한다.
+
+
+
+
+
+
+
 

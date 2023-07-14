@@ -897,72 +897,56 @@ $ mkdir raw processed
 
 
 ```{=tex}
-\titlebox{챗GPT 유닉스 쉘}{Cbluejeans}{파일과 디렉토리 넘나드는 유니스 명령어를 챗GPT 자연어를 사용하여 유닉스 코드를 제작한다.}
+\titlebox{챗GPT 유닉스 쉘}{Cbluejeans}{파일과 디렉토리를 조회하고 찾아가는 것을 넘어 생성하고 삭제하고 이름을 변경하는 유니스 쉘 명령어를 챗GPT 자연어를 사용하여 제작한다.}
 ```
 
-### 파일과 디렉토리 출력 {-}
+### 파일명 변경 {-}
 
-`sgpt -s` 다음에 자연어로 해당 디렉토리에 포함된 파일과 디렉토리를 구별하여 출력하는 유닉스 명령어를 확인하고 실행을 통해 결과를 확인한다.
+`thesis\` 디렉토리에 위치한 `draft.txt` 파일명을 `thesis.txt` 파일로 파일명을 변경해보자.
+
+> 프롬프트: shell-lesson-data/exercise-data/writing/thesis 디렉토리로 이동한 후 touch 명령어로 draft.txt 파일을 생성한 후 파일명을 thesis.txt 파일로 변경하세요.
 
 ``` bash
-$ sgpt -s "현재 디렉토리에서 파일과 디렉토리 내용을 구분하여 출력해주세요"
-ls -F
+$ sgpt -s "shell-lesson-data/exercise-data/writing/thesis 디렉토리로 이동한 후 touch 명령어로 draft.txt 파일을 생성한 후 파일명을 thesis.txt 파일로 변경하세요."
+cd shell-lesson-data/exercise-data/writing/thesis && touch draft.txt && mv draft.txt thesis.txt
 [E]xecute, [D]escribe, [A]bort: D
-The "ls -F" command lists the files and directories in the current directory, and appends a symbol to each entry indicating its type (e.g., "/" for directories, "*" for executables).
+This command changes the current directory to "shell-lesson-data/exercise-data/writing/thesis",E creates a new file called "draft.txt", and then renames the file to "thesis.txt".
 [E]xecute, [D]escribe, [A]bort: E
-exercise-data/  north-pacific-gyre/
+$ ls shell-lesson-data/exercise-data/writing/thesis
+thesis.txt
 ```
 
-### 도움말 {-}
+챗GPT가 프롬프트로 작성한 유닉스 쉘 명령어를 해석하면 다음과 같다.
 
-유닉스 쉘 명령어를 처음 접하게 되면 암호스럽게 느껴진다. 이런 경우 해당 작업을 하는 명령어를 챗GPT를 활용하여 도움말을 얻을 수 있고 더 나아가 바로 실행도 가능하다. 실행명령어로 `E`를 누르게 되면 영어로 작성된 `ls` 명령에 대한 도움말이 여러 페이지에 걸쳐 화면에 전개된다. 빠져나오고자 하는 경우 키보드 `q` 를 눌러 도움말 보기를 중단한다.
+> 디렉터리를 "shell-lesson-data/exercise-data/writing/thesis"로 변경하고, E는 "draft.txt"라는 새 파일을 생성한 다음 파일 이름을 "thesis.txt"로 변경한다.
+
+`sgpt` 프롬프트를 실행하게 되면 `draft.txt` 파일이 `touch` 명령어로 생성되고 `mv` 명령어로 `thesis.txt` 파일로 파일명이 변경된다.
+
+
+
+### 데이터 사이언스 프로젝트 백업 {-}
+
+데이터 과학 프로젝트는 데이터 가져오기, 정제, EDA, 보고서 작성 등 각 단계별로 세분화되어 있다. 
+그리고 프로젝트가 종료되면 백업하여 혹시 모른 사태에 대비하거나 후속 프로젝트에 활용할 수 있도록 관리를 한다.
+
+> 프롬프트: shell-lesson-data/exercise-data/writing/thesis 디렉토리로 이동한 후 touch 명령어로 data.sql, clean.py, EDA.R, report.qmd 파일을 생성한 후 thesis/ 디렉토리에 있는 모든 파일을 상
+위 디렉토리에 backup/ 디렉토리를 생성하고 복사하여 백업하세요.
 
 ``` bash
-$ sgpt -s "ls 명령어에 대한 도움말을 얻고 싶습니다."
-man ls
+$ sgpt -s "shell-lesson-data/exercise-data/writing/thesis 디렉토리로 이동한 후 touch 명령어로 data.sql, clean.py, EDA.R, report.qmd 파일을 생성한 후 thesis/ 디렉토리에 있는 모든 파일을 상
+위 디렉토리에 backup/ 디렉토리를 생성하고 복사하여 백업하세요."
+cd shell-lesson-data/exercise-data/writing/thesis && touch data.sql clean.py EDA.R report.qmd && mkdir ../backup && cp * ../backup
 [E]xecute, [D]escribe, [A]bort: D
-The "ls" command is used to list the files and directories in a specified directory.
+This command changes the current directory to "shell-lesson-data/exercise-data/writing/thesis", creates four files named "data.sql", "clean.py", "EDA.R", and "report.qmd" in that directory, creates a new directory named "backup" in the parent directory, and copies all the files in the current directory to the "backup" directory.
 [E]xecute, [D]escribe, [A]bort: E
+statkclee@dl:/mnt/c/Users/statkclee/OneDrive/Desktop$ ls shell-lesson-data/exercise-data/writing/backup/
+clean.py  data.sql  EDA.R  report.qmd  thesis.txt
 ```
 
-:::{.callout-warn}
-### `wsl -bash: man: command not found ` {-}
+챗GPT가 프롬프트로 작성한 유닉스 쉘 명령어를 해석하면 다음과 같다.
 
-`man` 유닉스 명령어를 실행할 수 없는 경우가 종종 있다. 이런 경우  `man-db` 패키지를 설치하면 된다.
+> 렉터리를 "shell-lesson-data/exercise-data/writing/thesis"로 변경하고, 해당 디렉터리에 "data.sql", "clean.py", "EDA.R" 및 "report.qmd"라는 4개의 파일을 생성하고, 상위 디렉터리에 "backup"이라는 새 디렉터리를 생성한 후 현재 디렉터리의 모든 파일을 "backup" 디렉터리로 복사한다.
 
-``` bash
-$ sudo apt-get update
-$ sudo apt-get install man-db
-```
-
-:::
+실행하게 되면 `backup` 디렉토리가 생성되고 데이터 사이언스 관련 모든 파일이 복사된 것이 확인된다.
 
 
-### 다른 디렉토리 탐색 {-}
-
-현재 디렉토리가 아닌 그 하위 디렉토리에 어떤 파일과 디렉토리가 담겨있는지 궁금한 경우가 있다. 이런 경우도 자연어로 디렉토리 명칭을 지정하면 챗GPT가 유닉스 명령어를 
-생성해주고 즉시 실행시킬 수 있다.
-
-``` bash
-$ sgpt -s "north-pacific-gyre 디렉토리 아래 파일과 디렉토리 내용을 보고 싶습니다."
-ls north-pacific-gyre
-[E]xecute, [D]escribe, [A]bort: E
-goodiff.sh      NENE01729B.txt  NENE01751B.txt  NENE01843B.txt  NENE01978B.txt  NENE02040B.txt  NENE02043B.txt
-goostats.sh     NENE01736A.txt  NENE01812A.txt  NENE01971Z.txt  NENE02018B.txt  NENE02040Z.txt
-NENE01729A.txt  NENE01751A.txt  NENE01843A.txt  NENE01978A.txt  NENE02040A.txt  NENE02043A.txt
-```
-
-
-### 현재 디렉토리 위치 확인 {-}
-
-유닉스 운영체제는 파일과 디렉토리로 구성되어 있다. 한참 작업을 하다보면 작업하는 
-파일과 디렉토리가 혼동되는 경우가 종종 있다. 이런 경우 현재 자신의 위치를 
-파악하는 것이 중요하다. 이런 경우에 유닉스 쉘 명령어가 기억나지 않는다면 `sgpt -s` 
-를 통해 유닉스 명령어를 찾고 즉시 실행시켜 현재 디렉토리 위치를 파악할 수 있다.
-
-``` bash
-$ sgpt -s "현재 위치가 어디인지 알고 싶습니다."
-pwd
-[E]xecute, [D]escribe, [A]bort: E
-/mnt/c/Users/statkclee/Desktop/shell-lesson-data
-```
