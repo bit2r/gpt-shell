@@ -11,14 +11,16 @@
 다양한 사용자 인터페이스(User Interface)가 적용되었다.
 스티브 잡스의 애플사는 매킨토시 GUI에 이어 아이폰 모바일 인터페이스를 
 일반화시켰다면, 최근 챗GPT는 언어 사용자 인터페이스(LUI)를 통해
-각 분야에 혁신을 예고하고 있다. 챗GPT 데이터 과학도 사용자 관점에서 본다면
-기존 R, 파이썬, SQL, 엑셀 등 데이터 과학 구문을 머리속에 암기하고 있거나
-구글이나 네이버를 통해 중요 키워드를 통해 문제를 해결해야 했지만, 이제 챗GPT가
-자연어를 이해하기 때문에 데이터 전처리, 통계 작업, 데이터 분석, 시각화, 모형개발 등 
+각 분야에 혁신을 예고하고 있다. 챗GPT 데이터 과학도 사용자 관점에서 보자. 
+기존 R, 파이썬, SQL, 엑셀 등 데이터 과학 구문을 머리속에 암기하고 있거나 구글이나 
+네이버를 통해 중요 키워드를 통해 문제를 해결해야 했었다. 하지만, 이제 챗GPT가 자연어를 이해하기 때문에 데이터 전처리, 통계 작업, 데이터 분석, 시각화, 모형개발 등 
 데이터 과학 전반에 변화는 필연적이다.\index{User Inferface!CLI}\index{User Inferface!GUI}\index{User Inferface!WUI}\index{User Inferface!MUI}
 \index{User Inferface!LUI}\index{사용자 인터페이스}
 
 ```{mermaid}
+%%| label: fig-ui-evolution
+%%| fig-cap: 사용자 인터페이스 진화
+
 flowchart TB
     
     subgraph A["사용자 인터페이스"]
@@ -50,8 +52,7 @@ classDef A font-size:16px;
 :::
 
 GPT-4 모형엔진을 사용하면 다음에 저자가 직접 작성한 코드와 유사한 R 코드를 작성해준다.
-`data/` 디렉토리 아래 `penguin_adelie.csv`, `penguin_chinstrap.csv`, `data/penguin_gentoo.csv` 
-파일 세개로 나눠진 것을 `fs` 패키지 `dir_ls()` 함수를 통해 확인된다.
+`data/` 디렉토리 아래 `penguin_adelie.csv`, `penguin_chinstrap.csv`, `data/penguin_gentoo.csv` 파일 세개로 나눠진 것을 `fs` 패키지 `dir_ls()` 함수를 통해 확인된다. \footnote{`fs` 패키지는 파일 시스템 라이브러리로, 파일과 디렉토리(폴더)의 생성, 복사, 이동, 삭제 등의 기능을 제공한다. 특히, 사용하기 쉽고 일관성 있는 API를 제공하며, 모든 운영 체제와 호환성이 높다.}
 
 ```{r}
 # *. 패키지 --------------------------------------------------------------
@@ -81,7 +82,7 @@ fs::dir_ls(path = "data/", glob="data/penguin_*.csv")
 
 펭귄 종별로 `.csv` 파일을 나눈 이유는 실제 현장에서 다양하게 쪼개진 데이터를 
 하나로 묶어 분석을 수행하는 경우가 많은 일일이 데이터를 열어 분석가가 직접
-분석하는 것은 손이 많이 가고 경우에 따라서는 실수가 들어가기 때문에 이를 방지할 필요가 있다.\index{sgpt}
+분석하는 것은 손이 많이 가고 경우에 따라서는 실수로 오류가 발생하기 때문에 이를 방지할 필요가 있다.\index{sgpt}
 
 펭귄 종별 개체수 빈도수를 계산하는 유닉스 쉘 프로그램을 작성해보자.
 
@@ -171,11 +172,11 @@ species 2
 ### 코드해석 프롬프트 
 
 > 다음 유닉스 쉘 코드를 해석해주세요.
-> awk -F"," 'NR>1{a[$1]++} END{for(i in a) print i,a[i]}' data/penguin_adelie.csv data/penguin_chinstrap.csv data/penguin_gentoo.csv
+> awk -F',' 'NR>1{a[$1]++} END{for(i in a) print i,a[i]}' data/penguin_adelie.csv data/penguin_chinstrap.csv data/penguin_gentoo.csv
 
 \rule{7cm}{0.3mm}
 
-주어진 awk 명령은 3개의 CSV 파일(penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv)에 대해 동작하는데, 이 파일들의 각 줄을 처리합니다. -F","는 각 라인이 쉼표(,)로 구분된 필드로 구성된 CSV 형식임을 의미합니다.
+주어진 awk 명령은 3개의 CSV 파일(penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv)에 대해 동작하는데, 이 파일들의 각 줄을 처리합니다. -F','는 각 라인이 쉼표(,)로 구분된 필드로 구성된 CSV 형식임을 의미합니다.
 
 - awk 스크립트의 각 부분을 분석하면 다음과 같습니다:
 
@@ -220,7 +221,7 @@ Chinstrap 68
 Adelie 152
 ```
 
-R 코드를 통해 세개로 쪼개진 `.csv` 파일이 목표를 달성했는지 검산해보자. 
+R 코드를 통해 세개로 쪼개진 `.csv` 파일이 목표를 달성했는지 검사해보자.
 펭귄 종 순서는 다르지만 정확하게 펭귄종별 관측 빈도수가 일치함을 확인할 수 있다.
 
 ```{r}

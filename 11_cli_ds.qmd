@@ -49,8 +49,8 @@ Matter"](https://ko.wikipedia.org/wiki/Black_Lives_Matter) 운동은
 
 데이터 과학에서 최근 R.A. Fisher의 과거 저술한 "The genetical theory of
 natural selection" [@edwards2000genetical] 우생학(Eugenics) 대한 관점이
-논란이 되면서 R 데이터 과학의 첫 데이터셋으로 붓꽃 `iris` 데이터를 다른
-데이터, 즉 펭귄 데이터로 대체하는 움직임이 활발히 전개되고 있다.
+논란이 되면서 R 데이터 과학의 첫 데이터셋으로 그가 만들었다고 하는 붓꽃
+`iris` 데이터를 대안적 데이터, 즉 펭귄 데이터로 대체하는 움직임이 활발히 전개되고 있다.
 [`palmerpenguins`](https://github.com/allisonhorst/palmerpenguins)
 [@penguin2020] 데이터셋이 대안으로 많은 호응을 얻고 있다.
 [@AbdulMajedRaja2020], [@Levy2019] \index{R.A. Fisher}
@@ -147,7 +147,8 @@ $ bash code/count_species.sh
 특히 tidyverse 문법에 익숙하면 직관적으로 파이프를 연결하여 의식의
 흐름에 맞춰 직관적인 코드를 작성할 수 있다. 파이썬 `pandas`를 사용해도
 동일한 결과를 얻을 수 있다. 이유는 초기 pandas가 R 데이터프레임을
-참고하여 개발이 되었기 때문에 구문을 비롯하여 공통점이 다수 존재한다.\
+참고하여 개발이 되었기 때문에 구문을 비롯하여 공통점이 다수 존재한다.
+
 따라서, 동일한 개념을 R 혹은 파이썬 구문을 달리하여 표현하는 것에
 불과하기 때문에, R 혹은 파이썬으로 동작하는 코드를 빠르게 작성하고
 동작여부를 확인한 후에 챗GPT에 유닉스 쉘 코드 변환 지시명령어를 전달하면
@@ -225,11 +226,7 @@ R 혹은 파이썬을 설치하고, 2) 연관된 패키지를 설치하고, 3)
 도구를 설치한다. \index{csvkit}
 
 R이나 파이썬이 (비)정형 데이터를 자유로이 처리하는 배경에는 다양한
-패키지의 도움이 필수적이다. 어떤 문제를 풀기 위해 도서관에서 책을
-대여하여 책상에 펼쳐놓고 수차례 시도와 교정작업을 통해 최종 문서를
-완성하는 것처럼 R에서는 도서관에 새로운 도서를 비치하는 작업이
-`install.packages()`이고 모든 도서가 작업에 필요한 것은 아니고 특정
-업무에 필요한 도서를 가져오는 작업이 `library()`라고 할 수 있다.
+패키지의 도움이 필수적이다. 어떤 문제를 풀기 위해 도서관에서 책을 대여하여 책상에 펼쳐놓고 수차례 시도와 교정작업을 통해 최종 문서를 완성하는 것처럼 R에서는 도서관에 새로운 도서를 비치하는 작업이 `install.packages()`이고, 특정 업무에 필요한 도서를 가져오는 작업이 `library()`라고 할 수 있다.
 파이썬도 동일한 개념을 `pip`를 통해 패키지를 설치하고 `import` 명령어로
 패키지를 불러와서 작업을 수행한다. 유닉스 쉘에서 `.csv` 파일을
 처리하는데 필요한 패키지(`csvkit`)를 `pip` 명령어로 설치한다.
@@ -283,8 +280,8 @@ $ cat data/penguins.csv | head -n 5
 "4","Adelie","Torgersen",NA,NA,NA,NA,NA,2007
 ```
 
-`csvkit` 패키지를 설치해서 `csvlook` 명령어로 좀더 가시성을 높혀 확인도
-가능하다. 파일 마지막 부분을 확인하고자 한다면 `tail -n 5`와 같이
+`csvkit` 패키지를 설치해서 `csvlook` 명령어로 좀더 가시성을 높여서 확인도 가능하다.
+파일 마지막 부분을 확인하고자 한다면 `tail -n 5`와 같이
 살펴보면 된다.\index{csvkit!csvlook}
 
 ``` bash
@@ -581,12 +578,12 @@ drwxr-xr-x     5 root       admin         170  1 15  2016 ..
 디렉토리에 저장한 경우 환경변수에 경로를 등록하여 윈도우 쉘에서
 `sqlite3.exe`를 실행하게 되면 어디서든 불러 사용할 수 있도록 준비한다.
 
-![SQlite 실행과 종료](images/sqlite3_install.png){fig-align="center"
+![SQLite 실행과 종료](images/sqlite3_install.png){fig-align="center"
 width="360" height="300"}
 
 #### 맥 설치
 
-맥에서 Sqlite를 설치하는 방법은 매우 단순하다. [DB Browser for
+맥에서 SQLite를 설치하는 방법은 매우 단순하다. [DB Browser for
 SQLite](https://sqlitebrowser.org/dl/) 웹사이트에서 맥버전(Intel or
 Apple Silicon) 버전을 다운로드 받아 설치하면 된다.
 
@@ -626,8 +623,8 @@ downloaded 6144 bytes
 
 ### SQL 쿼리
 
-`SQlite`가 설치되고 데이터베이스가 있다면 SQL 쿼리문을 작성하여 원하는
-결과를 얻을 수 있다. `sqlite` 콘솔에서 `.table`을 명령어를 `survey.db`에
+`SQLite`가 설치되고 데이터베이스가 있다면 SQL 쿼리문을 작성하여 원하는
+결과를 얻을 수 있다. `SQLite` 콘솔에서 `.table`을 명령어를 `survey.db`에
 포함된 테이블을 확인한다. 이후 `survey.db` 데이터베이스 중 `Person`
 테이블에 담긴 정보를 `SELECT` 명령어로 확인한다.
 
@@ -648,9 +645,7 @@ sqlite> .quit
 
 동일한 사항을 `DB Browser for SQLite` 쿼리도구를 사용하면 직관적으로
 다양한 SQL 문을 데이터베이스에 전달하여 원하는 결과를 얻을 수 있다. 
-데이터베이스 전용 SQL 쿼리도구는 데이터베이스를 구성하는 테이블과 연결 정보를 
-별도 패널로 구성하여 제공하고 있으며, 핵심이 되는 쿼리문을 작성하고 이를 
-단축키를 통해 결과도 즉시 확인할 수 있는 전용 패널도 제공하고 있어 데이터베이스
-작업에 필요한 전체 기능을 한눈에 파악할 수 있어 편리하다.
+데이터베이스 전용 SQL 쿼리도구는 데이터베이스를 구성하는 테이블과 연결 정보를 별도 패널로 구성하여 제공하고 있으며, 핵심이 되는 쿼리문을 작성하고 이를 단축키를 통해 결과도 즉시 확인할 수 있는 전용 패널도 제공한다. 데이터베이스 작업에 필요한 전체 기능을 한눈에 파악
+할 수 있어 편리하다.
 
-![](images/sqlite_query_tool.png){fig-align="center" width="560"}
+![SQL 쿼리도구 실사용 화면캡쳐](images/sqlite_query_tool.png){fig-align="center" width="560"}

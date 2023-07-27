@@ -8,6 +8,7 @@ editor:
 리눅스는 분명히 유닉스 유산에 빚을 지고 있지만 그 코드는 아니다. 우리는 그런 주장을 하지 않았고 앞으로도 하지 않을 것이다. (Obviously Linux owes its heritage to UNIX, but not its code. We would not, nor will not, make such a claim.)
 \end{shadequote}
 
+# 테그스
 
 # 파일, 텍스트, 폴더 찾기 {#shell-find}
 
@@ -270,7 +271,7 @@ $ bash count-species.sh bear .
 :::
 :::
 
-::: {exr-little-women}
+::: {#exr-little-women}
 ### 작은 아낙네
 
 Louisa May Alcott가 지은 *작은 아낙네(Little Women)*를 친구과 함께 읽고 논쟁중이다.
@@ -283,7 +284,7 @@ Louisa May Alcott가 지은 *작은 아낙네(Little Women)*를 친구과 함께
 힌트: 한가지 해결책은 `grep`, `wc`, `|` 명령어를 동원하는 것이지만, 다른 해결책으로 `grep` 옵션을 활용하는 것도 있다.
 
 프로그래밍 문제를 푸는 방식은 한가지 이상 존재한다.
-따라서, 올바른 결과를 도출해야 하고, 우아하고(elegance), 가독성이 좋고(readability), 속도를 다 함께 고려하여 선택한다.
+따라서, 올바른 결과를 도출해야 하고, 우아하고(elegance), 가독성이 좋고(readability), 속도(speed)를 다 함께 고려하여 선택한다.
 
 ::: callout-tip
 ### 해답과 설명
@@ -308,13 +309,15 @@ done
 
 이 해답이 다소 뒤떨어지는 이유는 `grep -c`는 매칭되는 행 숫자만 출력하기 때문이다.
 행마다 매칭되는 것이 하나 이상 되는 경우, 이 방법으로 매칭되는 전체 갯수는 낮아질 수 있기 때문이다.
+
 :::
+
 :::
 
 `grep`이 파일의 행을 찾는 반면에, `find`\index{find} 명령어는 파일 자체를 검색한다.
 다시, `find` 명령어는 정말 옵션이 많다; 가장 간단한 것이 어떻게 동작하는지 시연하기 위해, 다음과 같은 디렉토리 구조를 사용할 것이다.
 
-![`Find` 찾기 예제 파일 구조](images/find-file-tree.svg){fig-align="center" width="77%"}
+![`find` 찾기 예제 파일 구조](images/find-file-tree.svg){fig-align="center" width="77%"}
 
 Nelle의 `writing` 디렉토리는 `haiku.txt`로 불리는 파일 하나와, 하위 디렉토리 4개를 포함한다.
 `thesis` 디렉토리는 슬프게고 아무것도 담겨있지 않는 빈 파일 `empty-draft.md`만 있고, `data` 디렉토리는 `LittleWomen.txt`, `one.txt`과 `two.txt` 총 파일 3개를 포함하고, `tools` 디렉토리는 `format`과 `stats` 프로그램을 포함하고, `oldtool` 파일을 담고 있는 `old` 하위 디렉토리로 구성되어 있다.
@@ -405,7 +408,7 @@ $ find . -name '*.txt'
 ```
 
 ::: {.callout-caution}
-### 목록(Listing) vs. 찾기(Finding)
+### 목록화(Listing) vs. 찾기(Finding)
 
 올바른 옵션이 주어진 상태에서, `ls`와 `find` 명령어를 사용해서 비슷한 작업을 수행하도록 만들 수 있다.
 하지만, 정상 상태에서 `ls`는 가능한 모든 것을 목록으로 출력하는 반면에, `find`는 어떤 특성을 가진 것을 검색하고 보여준다는 점에서 차이가 난다.
@@ -501,7 +504,8 @@ $ grep "FE" $(find .. -name '*.pdb')
 그래픽 사용자 인터페이스(GUI)가 처음에는 더 좋을 수 있지만, 여전히 쉘이 최강이다.
 
 
-화이트헤드(Alfred North Whitehead) 박사가 1911년 썼듯이 "문명은 생각없이 수행할 수 있는 중요한 작업의 수를 확장함으써 발전한다. (Civilization advances by extending the number of important operations which we can perform without thinking about them.)"
+화이트헤드(Alfred North Whitehead) 박사가 1911년 썼듯이 "문명은 생각없이 수행할 수
+있는 중요한 작업의 수를 확장함으로써 발전한다. (Civilization advances by extending the number of important operations which we can perform without thinking about them.)"
 
 
 
@@ -626,7 +630,7 @@ This command changes the current directory to "shell-lesson-data/exercise-data",
 
 `shell-lesson-data/exercise-data/alkanes` 디렉토리에 담긴 파일 확장자는 `*.pdb`로 단백질 데이터 정보가 디지털로 담겨있다. 이 중 `methane` 텍스트가 존재하는 파일과 해당 줄을 출력한다.
 
-> 프롬프트: shell-lesson-data/exercise-data/alkanes 디렉토리로 이동한 후 단백질 데이터 파일 (.pdb)에서 대소문자 구분하지 말고 methane 단어가 포함된 파일과 해당 행을 출력해주세요
+> 프롬프트: shell-lesson-data/exercise-data/alkanes 디렉토리로 이동한 후 단백질 데이터 파일 (.pdb)에서 대소문자 구분하지 말고 methane 단어가 포함된 파일과 해당 행을 출력해주세요.
 
 ``` bash
 $ sgpt -s "shell-lesson-data/exercise-data/alkanes 디렉토리로 이동한 후 단백질 데이터 파일 (.pdb)에서 대소문자 구분하지 말고 methane 단어가 포함된 파일과 해당 행을 출력해주세요"

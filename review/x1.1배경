@@ -1,0 +1,86 @@
+1장
+
+인용)
+
+문명은 생각하지 않고, 수행할 수 있는 중요한 작업의 수를 늘리면서 발전한
+다.(Civilization advances by extending the number of important operations which
+we can perform without thinking about them.)
+
+--> [발전한다. 뒤에 띄어쓰기 추가]
+
+문명은 생각하지 않고, 수행할 수 있는 중요한 작업의 수를 늘리면서 발전한다. (Civilization advances by extending the number of important operations which we can perform without thinking about them.)
+
+--> 저자 관련 포함하여 최종 제안은 아래와 같습니다
+
+문명은 생각하지 않고, 수행할 수 있는 중요한 작업의 수를 늘리면서 발전한다.(Civilization advances by extending the number of important operations which we can perform without thinking about them.) - 화이트헤드(Alfred North Whitehead)
+
+#########################################
+
+윤색)
+
+“챗GPT와 유닉스 쉘(Unix Shell)”은 전세계적으로 수천번의 워크샵과 국내에서도 수년
+동안 소프트웨어 카펜트리 워크샵 경험을 정식 교재를 통해서 한글화하여 출판을 준비
+하면서 최근에 큰 반향을 일으키고 있는 챗GPT 관련 내용도 담아내어 한번 학습하여 평
+생토록 활용할 수 있는 것에 방점을 두고 있다.
+
+-->
+
+서문으로 옮기면 좋겠습니다. 본문은 시작이후는 내용만 설명하는 담백함이 있어야 합니다.
+
+점검) 이 문단의 끝에 있는 각주번호 [7]은 관련 내용이 어디 있는지 찾지 못하고 있습니다.
+
+==> [7]은 참고문헌
+
+###############
+# 1.1
+###############
+
+오타 점검)
+
+바라모면 --> 바라보면
+
+윤문) 문장/단락 합치기 [한문장짜리 단락은 좋아 보이지 않음]
+
+여전히 전통적인 화면, 마우스, 터치패드, 키보드를 사용하고 있지만, 터치 인터페이스와
+음성 인터페이스도 점차 보편화되고 있다. 지금 대부분의 사람들이 사용하는 그래픽 사용자 인터페이스(GUI, graphical user
+interface)과 구별하기 위해서 이런 종류의 인터페이스를 명령-라인 인터페이스
+(CLI, command-line interface)라고 한다. CLI 의 핵심은 읽기-평가-출력 (REPL,
+read-evaluate-print loop) 루프이다: 사용자가 명령어를 타이핑하고 엔터(enter)/반환
+(return)키를 입력하면, 컴퓨터가 읽고, 실행하고, 결과를 출력한다. 즉, 사용자가 다른 명
+령을 타이핑하면 컴퓨터는 읽고 평가하고 출력하는 작업을 사용자가 로그 오프하고 시
+스템을 빠져 나갈때까지 무한 반복한다. R/파이썬 프로그래밍 언어를 스크립트 방식이
+아닌 콘솔에서 단순한 프로그램 제작 작업한 경험이 있다면 REPL 개념을 이미 숙지 하
+고 있는 것이다.
+
+#############
+
+윤문)
+CLI 의 핵심은 읽기-평가-출력 (REPL,
+read-evaluate-print loop) 루프이다
+
+--> CLI 의 핵심은 읽기-평가-출력 루프(REPL,
+read-evaluate-print loop)이다
+
+#############
+
+오타수정)
+
+GUI는 WIMP(Window 윈도우, Icon 아이콘, Mouse 마우스, Pointer 포인터)를 사용한다.로
+구성되는데 배우기 쉽고, 단순 작업에 대해서는 환상적이다. 
+
+-->
+
+GUI는 WIMP(Window 윈도우, Icon 아이콘, Mouse 마우스, Pointer 포인터)로
+구성되는데 배우기 쉽고, 단순 작업에 대해서는 환상적이다. 
+
+###############
+
+오타수정) 푸 --> 프
+
+또
+다른 명령어를 입력할 때까지 대기하는 루푸를 반복하게 된다.
+
+-->
+
+또
+다른 명령어를 입력할 때까지 대기하는 루프를 반복하게 된다.
