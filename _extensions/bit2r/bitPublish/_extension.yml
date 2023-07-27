@@ -32,6 +32,7 @@ contributes:
       include-in-header:
         - text: |
             \usepackage{fancyhdr}
+            \usepackage[document]{ragged2e}
             \pagestyle{fancy}
 
             %% 폰트 사이즈 정의

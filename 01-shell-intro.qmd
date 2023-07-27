@@ -3,7 +3,7 @@
 문명은 생각하지 않고, 수행할 수 있는 중요한 작업의 수를 늘리면서 발전한다.(Civilization advances by extending the number of important operations which we can perform without thinking about them.)
 \end{shadequote}
 
-## 배경
+## 유닉스 쉘
 
 사람과 컴퓨터는 일반적으로 키보드와 마우스, 터치스크린 인터페이스, 음성 인식 시스템 등 다양한 방식으로 의사소통한다. 개인용 컴퓨터와 상호 작용하는 가장 널리 사용되는 방법이 그래픽 사용자 인터페이스(GUI)다. GUI를 통해 메뉴를 고르고 마우스를 클릭해서 컴퓨터에 수행할 작업을 지시한다. GUI는 시각을 통해 직관적으로 학습할 수 있지만, 이와 같은 방식으로 컴퓨터에 명령을 전달하는 하는 경우 확장성이 매우 떨어진다. GUI는 시각을 통해 직관적으로 학습할 수 있지만, 이와 같은 방식으로 컴퓨터에 명령을 전달하는 하는 경우 확장성이 매우 떨어진다. \index{GUI} \index{그래픽 사용자 인터페이스}
 

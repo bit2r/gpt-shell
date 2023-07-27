@@ -27,7 +27,7 @@ book:
         - 04-shell-pipefilter.qmd # GPT done
         - 05-shell-loop.qmd       # GPT done
         - 06-shell-script.qmd     # GPT done
-        - 07-shell-find.qmd
+        - 07-shell-find.qmd       # GPT done
     - part: "GPT 데이터 과학"
       chapters:
         - 10_setup.qmd

@@ -15,7 +15,7 @@
 기존 R, 파이썬, SQL, 엑셀 등 데이터 과학 구문을 머리속에 암기하고 있거나 구글이나 
 네이버를 통해 중요 키워드를 통해 문제를 해결해야 했었다. 하지만, 이제 챗GPT가 자연어를 이해하기 때문에 데이터 전처리, 통계 작업, 데이터 분석, 시각화, 모형개발 등 
 데이터 과학 전반에 변화는 필연적이다.\index{User Inferface!CLI}\index{User Inferface!GUI}\index{User Inferface!WUI}\index{User Inferface!MUI}
-\index{User Inferface!LUI}\index{사용자 인터페이스}
+\index{User Inferface!LUI}\index{사용자 인터페이스} [@wickham2023r] [@wickham2019welcome] [@gozalo2023chatgpt]
 
 ```{mermaid}
 %%| label: fig-ui-evolution

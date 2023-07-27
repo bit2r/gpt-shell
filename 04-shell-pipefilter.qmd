@@ -17,7 +17,7 @@ source(here::here("_extensions", "bit2r", "bitPublish", "init_environments.R"))
 
 몇가지 기초 유닉스 명령어를 배웠기 때문에, 마침내 쉘의 가장 강력한 기능을 살펴볼 수 있게 되었다: 새로운 방식으로 기존에 존재하던 프로그램을 쉽게 조합해 낼 수 있게 한다.
 간단한 유기 분자를 설명하는 6개의 파일이 들어 있는 `shell-lesson-data/exercise-data/alkanes` 디렉토리에서 시작한다.
-`.pdb` 파일 확장자는 단백질 데이터 은행 (Protein Data Bank) 형식으로, 분자의 각 원자 형식과 위치를 표시하는 간단한 텍스트 형식으로 되어 있다.
+`.pdb` 파일 확장자는 단백질 데이터 은행 (Protein Data Bank) 형식으로, 분자의 각 원자 형식과 위치를 표시하는 간단한 텍스트 형식으로 되어 있다. [@garlan1993introduction] [@bass2003software]
 
 ``` bash
 $ ls

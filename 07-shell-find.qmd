@@ -8,17 +8,17 @@ editor:
 리눅스는 분명히 유닉스 유산에 빚을 지고 있지만 그 코드는 아니다. 우리는 그런 주장을 하지 않았고 앞으로도 하지 않을 것이다. (Obviously Linux owes its heritage to UNIX, but not its code. We would not, nor will not, make such a claim.)
 \end{shadequote}
 
-# 테그스
 
 # 파일, 텍스트, 폴더 찾기 {#shell-find}
 
 "구글(Google)"을 "검색"을 의미하는 동사로 많은 분들이 사용하는 것처럼 유닉스 프로그래머는 "grep"을 동일하게 사용한다.
 `grep`은 "global/regular expression/print(전역/정규표현식/출력)"의 축약어로 초기 유닉스 편집기에서 일반적인 일련의 연산작업을 뜻한다.
-매우 유용한 명령-라인 프로그램 이름이기도 하다.
+매우 유용한 명령-라인 프로그램 이름이기도 하다. \index{grep}
+
+## `grep` 명령어
 
 `grep`은 패턴과 매칭되는 파일의 행을 찾아 화면에 뿌려준다.
-예제 파일로, *Salon* 잡지 1988년 경쟁부문에서 하이쿠(haiku, 일본의 전통 단시) 3개를 담고 있는 파일을 사용례로 활용할 것이다.
-이 예제 파일을 갖는 "writing" 하위 디렉토리에서 작업을 할 것이다:
+예제 파일로, *Salon* 잡지 1988년 경쟁부문에서 하이쿠(haiku, 일본의 전통 단시) 3개를 담고 있는 파일을 사용례로 활용할 것이다. 이 예제 파일을 갖는 "writing" 하위 디렉토리에서 작업을 할 것이다:
 
 ``` bash
 $ cd
@@ -42,10 +42,10 @@ Software is like that.
 ### 영원히 혹은 5년
 
 원본 하이쿠에 링크를 걸지 않았는데 이유는 Salon 사이트에 더 이상 보이는 것 같지 않아서다.
-[Jeff Rothenberg가 말했듯이](http://www.clir.org/pubs/archives/ensuring.pdf), "디지털 정보는 어느 것이 먼저 오든 영원한 영속성을 가지거나 혹은 5년이다." 운이 좋은 경우 인기 콘텐트는 종종 [백업된다](http://wiki.c2.com/?ComputerErrorHaiku).
+[Jeff Rothenberg가 말했듯이](http://www.clir.org/pubs/archives/ensuring.pdf), "디지털 정보는 어느 것이 먼저 오든 영원한 영속성을 가지거나 혹은 5년이다." 운이 좋은 경우 인기 콘텐트는 종종 [백업된다](http://wiki.c2.com/?ComputerErrorHaiku). [@marwick2018packaging] [@boettiger2015introduction]
 :::
 
-단어 "not"을 포함하는 행을 찾아 봅시다:
+단어 "not"을 포함하는 행을 찾아 봅시다.\index{grep!not}
 
 ``` bash
 $ grep not haiku.txt
@@ -76,7 +76,7 @@ The Tao that is seen
 
 `grep`명령어에 `-w` 옵션을 주면, 단어 경계로 매칭을 제한해서, "day" 단어만을 가진 행만이 화면에 출력된다.
 
-매칭을 "The" 단어 자체만 포함하는 행만 매칭시키려면, `grep`명령어에 `-w` 옵션을 주게 되면, 단어 경계로 매칭을 제한시킨다.
+매칭을 "The" 단어 자체만 포함하는 행만 매칭시키려면, `grep`명령어에 `-w` 옵션을 주게 되면, 단어 경계로 매칭을 제한시킨다.\index{grep!-w}
 
 ``` bash
 $ grep -w The haiku.txt
@@ -100,7 +100,7 @@ Today it is not working
 이렇게 하면, 검색어(term) 혹은 검색 문구(phrase)와 검색 대상이 되는 파일 사이를 더 쉽게 구별하는데 도움을 준다.
 나머지 예제에서는 인용부호를 사용한다.
 
-또다른 유용한 옵션은 `-n`으로, 매칭되는 행에 번호를 붙여 출력한다:
+또다른 유용한 옵션은 `-n`으로, 매칭되는 행에 번호를 붙여 출력한다. \index{grep!-n}
 
 ``` bash
 $ grep -n "it" haiku.txt
@@ -110,7 +110,7 @@ $ grep -n "it" haiku.txt
 10:Today it is not working
 ```
 
-상기에서 5, 9, 10번째 행이 문자 "it"를 포함함을 확인할 수 있다.
+상기에서 5, 9, 10번째 행이 문자 'it'를 포함함을 확인할 수 있다.
 
 다른 유닉스 명령어와 마찬자기로 옵션(즉, 플래그)을 조합할 수 있다.
 단어 "the"를 포함하는 행을 찾아보자.
@@ -123,7 +123,7 @@ $ grep -n -w "the" haiku.txt
 6:and the presence of absence:
 ```
 
-이제 `-i` 옵션을 사용해서 대소분자 구분없이 매칭한다:
+이제 `-i` 옵션을 사용해서 대소분자 구분없이 매칭한다. \index{grep!-i}
 
 ``` bash
 $ grep -n -w -i "the" haiku.txt
@@ -134,7 +134,7 @@ $ grep -n -w -i "the" haiku.txt
 ```
 
 이제, `-v` 옵션을 사용해서 뒤집어서 역으로 매칭을 한다.
-즉, 단어 "the"를 포함하지 않는 행을 출력결과로 한다.
+즉, 단어 "the"를 포함하지 않는 행을 출력결과로 한다.\index{grep!-v}
 
 ``` bash
 $ grep -n -w -v "the" haiku.txt
@@ -151,7 +151,7 @@ $ grep -n -w -v "the" haiku.txt
 ```
 
 `grep` 명령어는 옵션이 많다.
-`grep` 명령어에 대한 도움을 찾으려면, 다음 명령어를 타이핑한다:
+`grep` 명령어에 대한 도움을 찾으려면, 다음 명령어를 타이핑한다. \index{grep!--help}
 
 ``` bash
 $ grep --help
@@ -180,7 +180,7 @@ Miscellaneous:
 ::: {#exr-grep-find}
 ### `grep` 사용
 
-다음 중 어떤 명령어가 다음 결과를 만들어낼까요?
+다음 중 어떤 명령어가 다음 결과를 만들어낼까요? \index{grep}
 
 ``` bash
 and the presence of absence:
@@ -314,10 +314,14 @@ done
 
 :::
 
-`grep`이 파일의 행을 찾는 반면에, `find`\index{find} 명령어는 파일 자체를 검색한다.
-다시, `find` 명령어는 정말 옵션이 많다; 가장 간단한 것이 어떻게 동작하는지 시연하기 위해, 다음과 같은 디렉토리 구조를 사용할 것이다.
 
-![`find` 찾기 예제 파일 구조](images/find-file-tree.svg){fig-align="center" width="77%"}
+## `find` 명령어
+
+
+`grep`이 파일의 행을 찾는 반면에, `find`\index{find} 명령어는 파일 자체를 검색한다.
+다시, `find` 명령어는 정말 옵션이 많다; 가장 간단한 것이 어떻게 동작하는지 시연하기 위해, 다음과 같은 디렉토리 구조를 사용할 것이다.\index{find}
+
+![`find` 찾기 예제 파일 구조](images/find-file-tree.svg){fig-align="center" width="350"}
 
 Nelle의 `writing` 디렉토리는 `haiku.txt`로 불리는 파일 하나와, 하위 디렉토리 4개를 포함한다.
 `thesis` 디렉토리는 슬프게고 아무것도 담겨있지 않는 빈 파일 `empty-draft.md`만 있고, `data` 디렉토리는 `LittleWomen.txt`, `one.txt`과 `two.txt` 총 파일 3개를 포함하고, `tools` 디렉토리는 `format`과 `stats` 프로그램을 포함하고, `oldtool` 파일을 담고 있는 `old` 하위 디렉토리로 구성되어 있다.
@@ -348,7 +352,7 @@ $ find .
 이번 학습에서는 그중 일부만 다뤄볼 것이다.
 
 첫번째 선택옵션은 `-type d`로 "디렉토리인 것들"을 의미한다.
-아니나 다를까, `find`의 출력에는 (`.`을 포함해서) 디렉토리 5개가 나온다.
+아니나 다를까, `find`의 출력에는 (`.`을 포함해서) 디렉토리 5개가 나온다.\index{find!-type d}
 
 ``` bash
 $ find . -type d
@@ -361,7 +365,7 @@ $ find . -type d
 ```
 
 `find` 명령어가 찾는 객체가 특별한 순서를 갖고 출력되는 것이 아님에 주목한다.
-`-type d`에서 `-type f`로 옵션을 변경하면, 대신에 모든 파일 목록이 나온다:
+`-type d`에서 `-type f`로 옵션을 변경하면, 대신에 모든 파일 목록이 나온다. \index{find!-type f}
 
 ``` bash
 $ find . -type f
@@ -385,8 +389,8 @@ $ find . -name *.txt
 ```
 
 모든 텍스트 파일을 찾기를 기대하지만, 단지 `./haiku.txt`만을 화면에 출력한다.
-문제는 명령문을 실행하기 *전에*, `*`같은 와일드카드 문자를 쉘이 전개하는 것이다.
-현재 디렉토리에서 `*.txt`을 전개하면 `haiku.txt`이 되기 때문에, 실제 실행하는 명령어는 다음과 같다:
+문제는 명령문을 실행하기 *전에*, `*`같은 와일드카드 문자를 쉘이 전개하는 것이다.\index{find!-name}
+현재 디렉토리에서 `*.txt`을 전개하면 `haiku.txt`이 되기 때문에, 실제 실행하는 명령어는 다음과 같다. 
 
 ``` bash
 $ find . -name haiku.txt
@@ -414,12 +418,14 @@ $ find . -name '*.txt'
 하지만, 정상 상태에서 `ls`는 가능한 모든 것을 목록으로 출력하는 반면에, `find`는 어떤 특성을 가진 것을 검색하고 보여준다는 점에서 차이가 난다.
 :::
 
+## 조합의 힘
+
 앞에서 언급했듯이, 명령-라인(command-line)의 힘은 도구를 조합하는데 있다.
 파이프로 어떻게 조합하는지를 살펴봤으니, 또 다른 기술을 찾아보자.
 방금 보았듯이, `find . -name '*.txt'` 명령어는 현재 디렉토리 및 하위 디렉토리에 있는 모든 텍스트 파일 목록을 보여준다.
 어떻게 하면 `wc -l`\index{wc} 명령어와 조합해서 모든 파일의 행을 개수할 수 있을까?
 
-가장 간단한 방법은 `$()` 내부에 `find` 명령어를 위치시키는 것이다:
+가장 간단한 방법은 `$()` 내부에 `find` 명령어를 위치시키는 것이다.
 
 ``` bash
 $ wc -l $(find . -name '*.txt')
