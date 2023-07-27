@@ -1,7 +1,7 @@
 
 
-\begin{shadequote}[r]{유닉스 철학}
-작은 것이 아름답다! (Small is beautiful) 
+\begin{shadequote}[r]{켄 톰슨(Ken Thompson)}
+새로운 것은 유닉스와 같은 종류의 혁명과 함께 와야 한다. IBM을 무력화시키는 무언가가 나타나기 전까지 그 어떤 것도 IBM을 무너뜨릴 수 없었다. 물론 메인프레임 시장을 굳건히 지키고 있겠지만, 그건 무의미할 뿐이다. Microsoft도 마찬가지다. Microsoft를 무의미하게 만드는 무언가가 나타나기 전까지는 진입 장벽이 너무 높아서 대체되지 않을 것이다.
 \end{shadequote}
 
 
