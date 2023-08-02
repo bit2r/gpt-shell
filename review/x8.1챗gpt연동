@@ -1,0 +1,31 @@
+
+8.1.4 openai 설치 부분입니다.
+
+왕보초를 위한 친절한 설명 점검 차원에서
+
+윈도우즈 노트북 하나를 사서 책의 흐름을 점검하고 있어요.
+
+jhshin@LGgram17i7:/mnt/c/users/sens5$ pip install openai
+Command 'pip' not found, but can be installed with:
+sudo apt install python3-pip
+
+점검)
+
+$ pip install openai를 위해서는 sudo apt install python3-pip를 먼저해야해요.
+
+
+# 8.1.6 OpenAI 모형
+
+처음으로 library()함수가 등장합니다.
+
+다른말로 하면, install.packages()가 지금껏 소개되지 않다가,
+
+나중에 9.3 R/파이썬 코드에서 한줄로 설명되는 것이 전부입니다.
+
+8.1.6의 첫부분에 
+
+R 프롬트프에서 install.packages(c("reticulate", "tidyverse"))를 추가하는 법을
+
+간략히 설명해주세요. 아니면 9.3에서 조금 길게 설명을 추가하고, 앞의 8.1.6에 각주로 
+
+9.3을 참조하라는 설명을 넣는것도 좋겠습니다.

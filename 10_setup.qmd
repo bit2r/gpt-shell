@@ -140,6 +140,24 @@ sk-hDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 $ pip install openai
 ```
 
+:::{.callout-note}
+### Command 'pip' not found
+
+`$ pip install openai`를 위해서는 `pip` 파이썬 패키지 관리 프로그램이 설치되어야한다.
+`Command 'pip' not found` 오류가 발생된 경우 당황하지 말고 안내에 따라
+`python3-pip` 패키지를 먼저 설치한다.
+
+```bash
+$ pip install openai
+Command 'pip' not found, but can be installed with:
+sudo apt install python3-pip
+
+$ sudo apt install python3-pip
+```
+
+:::
+
+
 
 ### 헬로월드
 
@@ -186,9 +204,14 @@ print(gpt_models['data'][0])
 ### OpenAI 모형
 
 OpenAI에서 제공하는 다양한 모델을 확인할 수 있다.
-`system`이 소유한 GPT 모형을 살펴보자.
+`system`이 소유한 GPT 모형을 살펴보자. 파이썬이 `openai` 패키지를 통해
+OpenAI 거대언어모형(LLM)을 비롯한 이미지(Dall·e 2), 오디오(Whisper) 등 다양한 AI 모형을 제공하고 있지만 출판수준 고품질 표를 제작하는데는 R 언어 및 패키지가 유용하다.
+먼저 파이썬과 R을 연결하는데 `reticulate` 패키지를 `install.packages()` 함수로 설치하고 R `tidyverse` 패키지도 설치한다. `tidyverse` `dplyr` 패키지로 파이썬에서 넘어온 AI 모형
+데이터를 전처리하고 표문법 `gt` 및 `gtExtras` 패키지로 깔끔한 표를 제작한다.
 
 ```{r}
+# install.packages(c("reticulate", "tidyverse"))
+
 library(reticulate)
 library(tidyverse)
 
@@ -200,11 +223,6 @@ gpt_models_tbl <- tibble(created = map_chr(py_gpt_models, "created"),
                          owned_by = map_chr(py_gpt_models, "owned_by")) %>% 
   mutate(created = anytime::anydate(as.integer(created))) %>% 
   arrange(desc(created)) 
-
-gpt_models_tbl %>% 
-  filter(owned_by == "system") %>% 
-  gt::gt() %>% 
-  gtExtras::gt_theme_nytimes()
 ```
 
 프로그램 코드(`code`) 관련된 GPT 모형도 확인할 수 있다.
@@ -218,8 +236,7 @@ gpt_models_tbl %>%
 
 ## 윈도우 쉘 환경
 
-
-윈도우 운영체제에서 유닉스 쉘(Shell)을 사용하는 방법은 여러 가지다. 윈도우 운영체제에 내장된 명령 프롬프트(`cmd.exe`)는 OS/2, 윈도우 임베디드, 윈도우 NT 5.0 이상 기반 시스템의 명령어 인터프리터로 잘 알려져 있다. 최근에는 마이크로소프트가 개발한 파워쉘(PowerShell)이라는, 확장 가능한 명령 줄 인터페이스 셸 및 스크립트 언어를 특징으로 하는 명령어 인터프리터도 주목받고 있다. 하지만, 이런 `cmd`\index{cmd}, `PowerShell`\index{PowerShell}은 윈도우 운영체제에서만 작동한다는 한계가 있다. 맥과 리눅스, 특히 클라우드를 지배하고 있는 유닉스 쉘을 윈도우에서도 무리없이 사용할 수 있다면, 모든 운영체제에서 공통 작업을 수행하는 데 큰 도움이 될 것이다. 이를 위해 WSL(Windows SubSystem for Linux)를 통해 다양한 리눅스 운영체제를 설치할 수 있으며, Git Bash\footnote{https://git-scm.com/downloads}를 설치하여 윈도우에서도 유닉스 쉘을 활용할 수 있다.
+윈도우 운영체제에서 유닉스 쉘(Shell)을 사용하는 방법은 여러 가지다. 윈도우 운영체제에 내장된 명령 프롬프트(`cmd.exe`)는 OS/2, 윈도우 임베디드, 윈도우 NT 5.0 이상 기반 시스템의 명령어 인터프리터로 잘 알려져 있다. 최근에는 마이크로소프트가 개발한 파워쉘(PowerShell)이라는, 확장 가능한 명령 줄 인터페이스 쉘 및 스크립트 언어를 특징으로 하는 명령어 인터프리터도 주목받고 있다. 하지만, 이런 `cmd`\index{cmd}, `PowerShell`\index{PowerShell}은 윈도우 운영체제에서만 작동한다는 한계가 있다. 맥과 리눅스, 특히 클라우드를 지배하고 있는 유닉스 쉘을 윈도우에서도 무리없이 사용할 수 있다면, 모든 운영체제에서 공통 작업을 수행하는 데 큰 도움이 될 것이다. 이를 위해 WSL(Windows SubSystem for Linux)를 통해 다양한 리눅스 운영체제를 설치할 수 있으며, Git Bash\footnote{https://git-scm.com/downloads}를 설치하여 윈도우에서도 유닉스 쉘을 활용할 수 있다.
 
 
 ### WSL
