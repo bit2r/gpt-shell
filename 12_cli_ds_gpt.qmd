@@ -36,7 +36,32 @@ classDef A font-size:16px;
 
 ## `tidyverse`
 
-통계학은 데이터에서 정보를 압축하거나 최대한 많은 정보를 추출하는 노력에서 크게 발전해 왔다. 최근에는 기계학습과 딥러닝, 데이터 사이언스가 실무에 폭넓게 활용되면서 난제가 발생했다. R언가 파이썬보다 맞이한 문제는 만개가 넘는 패키지가 개발되었지만, 각 패키지가 개별적인 설계 원칙에 따라 개발되고 여러 개발자에 의해 유지보수되어 초기 설계 원칙이 흔들리는 문제가 발생했다. 이런 문제점을 인지한 데이터 과학자 중 해들리 위컴(Hadley Wickham)이 특히 돋보였다. 그는 R 언어를 활용해 데이터를 처리하는 과정에서 쌓인 지식을 패키지 형태로 공개하였고, 이런 패키지들의 모임을 통칭해서 `hadlyverse`, 나중에 `tidyverse`라고 부르게 되었다.
+통계학은 데이터에서 정보를 압축하거나 최대한 많은 정보를 추출하는 노력에서 크게 발전해 왔다. 최근에는 기계학습과 딥러닝, 데이터 사이언스가 실무에 폭넓게 활용되면서 난제가 발생했다. R언어가 파이썬보다 먼저 맞이한 문제는 만개가 넘는 패키지가 개발되었지만, 각 패키지가 개별적인 설계 원칙에 따라 개발되고 여러 개발자에 의해 유지보수되어 초기 설계 원칙이 흔들리는 문제가 발생했다는 점이다. 이런 문제점을 인지한 데이터 과학자 중 해들리 위컴(Hadley Wickham)의 기여가 특히 돋보였다. 그는 R 언어를 활용해 정제되지 않은 데이터를 처리하는 과정에서 축적한 지식을 패키지 형태로 제작하여 공개하였고, 이런 패키지들의 모임을 통칭해서 `hadlyverse`, 나중에 `tidyverse`라고 부르게 되었다. 
+
+`tidyverse`는 `install.packages()` 명령어로 쉽게 설치한 후 `library(tidyverse)` 명령어로 
+작업에 바로 사용할 수 있다. `tidyverse` 패키지는 하나의 독립된 패키지로 구성되지 않고 각 역할을 독립적으로 수행하는 수많은 작은 패키지로 구성된 하나의 생태계를 구성하고 있다. 가장 최근에 날짜와 시간 데이터를 담당하는 `lubridate` 패키지가 추가되어 `library(lubridate)` 명령을 실행하지 않더라고 다양한 날짜 및 시간 관련 함수를 `tidyverse`에서 즉시 사용할 수 있게 되었다.
+
+```{r}
+#| eval: false
+install.packages('tidyverse')
+
+library(tidyverse)
+── Attaching core tidyverse packages ────────────────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.1     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ──────────────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package to force all conflicts to become errors
+Warning messages:
+1: 패키지 ‘ggplot2’는 R 버전 4.2.3에서 작성되었습니다 
+2: 패키지 ‘tibble’는 R 버전 4.2.3에서 작성되었습니다 
+3: 패키지 ‘dplyr’는 R 버전 4.2.3에서 작성되었습니다 
+```
+
 
 `tidyverse`는 깔끔한 데이터 과학 세상을 구현하기 위한 철학이다. 공교롭게도 `tidyverse`는 유닉스 철학, 즉 모듈 방식과 재사용성 개념을 적극 도입한 소프트웨어 개발 철학을 기반으로 한다. `tidyverse`는 깔끔한(tidy) API에 기반하며, 기존 자료구조를 재사용하고, 파이프 연산자를 통해 간단한 함수를 조합하며, 함수형 프로그래밍을 적극 사용하고, 기계가 아닌 인간을 위한 설계를 추구하는 원칙을 제시했을 뿐만 아니라 엉망진창(messy) 데이터에 대한 새로운 지평을 열었다.
 

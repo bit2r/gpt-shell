@@ -18,6 +18,7 @@ book:
   date: last-modified
   date-format: "YYYY년 MM월 DD일"
   chapters:
+    - acknowledgments.qmd
     - index.qmd
     - part: "쉘 프로그래밍"
       chapters:
