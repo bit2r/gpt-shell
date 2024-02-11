@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko-KR" xml:lang="ko-KR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>챗GPT 유닉스 쉘 – 6&nbsp; 쉘 스크립트</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07-shell-find.html" rel="next">
+<link href="./05-shell-loop.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-shell-intro.html">쉘 프로그래밍</a></li><li class="breadcrumb-item"><a href="./06-shell-script.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">쉘 스크립트</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">챗GPT 유닉스 쉘</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">감사의 글</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">쉘 프로그래밍</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-shell-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">유닉스 쉘</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-shell-filedir.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">파일과 폴더 넘나들기</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-shell-create.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">파일과 디렉토리 작업</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-shell-pipefilter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">파이프와 필터</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-shell-loop.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">루프(Loops)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-shell-script.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">쉘 스크립트</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-shell-find.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">파일, 텍스트, 폴더 찾기</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">GPT 데이터 과학</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">환경설정</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_cli_ds.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CLI 데이터 과학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_cli_ds_gpt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">챗GPT 데이터 과학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_cli_bigdata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">대용량 데이터</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">참고문헌</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#쉘-스크립트-편집" id="toc-쉘-스크립트-편집" class="nav-link active" data-scroll-target="#쉘-스크립트-편집"><span class="header-section-number">6.1</span> 쉘 스크립트 편집</a></li>
+  <li><a href="#변수와-주석" id="toc-변수와-주석" class="nav-link" data-scroll-target="#변수와-주석"><span class="header-section-number">6.2</span> 변수와 주석</a></li>
+  <li><a href="#재사용" id="toc-재사용" class="nav-link" data-scroll-target="#재사용"><span class="header-section-number">6.3</span> 재사용</a></li>
+  <li><a href="#nelle-script" id="toc-nelle-script" class="nav-link" data-scroll-target="#nelle-script"><span class="header-section-number">6.4</span> 사례: 스크립트 생성하기</a>
+  <ul class="collapse">
+  <li><a href="#pdb-모든-파일에서-11-15행-추출" id="toc-pdb-모든-파일에서-11-15행-추출" class="nav-link" data-scroll-target="#pdb-모든-파일에서-11-15행-추출"><code>*.pdb</code> 모든 파일에서 11-15행 추출</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-shell-intro.html">쉘 프로그래밍</a></li><li class="breadcrumb-item"><a href="./06-shell-script.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">쉘 스크립트</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="shell-script" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">쉘 스크립트</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>마침내 쉘을 그토록 강력한 프로그래밍 환경으로 탈바꾼할 준비가 되었다. 자주 반복적으로 사용되는 명령어들을 파일에 저장시키고 나서, 단 하나의 명령어를 타이핑함으써 나중에 이 모든 연산 작업작업을 다시 재실행할 수 있다. 역사적 이유로 파일에 저장된 명령어 꾸러미를 통상 <strong>쉘 스크립트(shell script)</strong>라고 부르지만, 실수로 그렇게 부르는 것은 아니다. 실제로 작은 프로그램이다. </p>
+<p>쉘 스크립트를 작성하면 작업 속도가 빨라질 뿐만 아니라 같은 명령을 반복해서 다시 입력할 필요가 없다. 또한 더 정확하고(오타가 발생할 가능성이 적고) 재현성이 높아진다. 나중에 다시 작업할 때(또는 다른 사람이 내 작업을 기반으로 작업하려는 경우) 모든 명령어를 기억하거나 다시 재입력할 필요 없이 스크립트를 실행하는 것만으로도 동일한 결과를 재현할 수 있다.</p>
+<section id="쉘-스크립트-편집" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="쉘-스크립트-편집"><span class="header-section-number">6.1</span> 쉘 스크립트 편집</h2>
+<p><code>alkanes/</code> 디렉토리로 돌아가서 <code>middle.sh</code> 파일에 다음 행을 추가하게 되면 쉘스크립트가 된다:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd alkanes</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nano middle.sh</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>nano middle.sh</code> 명령어는 <code>middle.sh</code> 파일을 텍스트 편집기 “nano”로 열게 한다. (편집기 프로그램은 쉘 내부에서 실행된다.) <code>middle.sh</code> 파일이 존재하지 않는 경우, <code>middle.sh</code> 파일을 생성시킨다. 텍스트 편집기를 사용해서 직접 파일을 편집한다 – 단순히 다음 행을 삽입시킨다:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 15 octane.pdb <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 5</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>앞서 작성한 파이프를 일부 변경한 것이다: <code>octane.pdb</code> 파일에서 11-15 행을 선택한다. 기억할 것은 명령어로서 실행하지 <em>않고</em>, 명령어를 파일에 적어 넣는다는 것이다.</p>
+<p>그리고 나서 <code>nano</code> 편집기에서 <code>Ctrl-O</code>를 눌러 파일을 저장하고, <code>nano</code> 편집기에서 <code>Ctrl-X</code>를 눌러 텍스트 편집기를 빠져나온다. <code>alkanes</code> 디렉토리에 <code>middle.sh</code> 파일이 포함되어 있는지 확인한다.</p>
+<p>파일을 저장하면, 쉘로 하여금 파일에 담긴 명령어를 실행하도록 한다. 지금 쉘은 <code>bash</code>라서, 다음과 같이 다음 명령어를 실행시킨다:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash middle.sh</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      9  H           1      <span class="at">-4.502</span>   0.681   0.785  1.00  0.00</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     10  H           1      <span class="at">-5.254</span>  <span class="at">-0.243</span>  <span class="at">-0.537</span>  1.00  0.00</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     11  H           1      <span class="at">-4.357</span>   1.252  <span class="at">-0.895</span>  1.00  0.00</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     12  H           1      <span class="at">-3.009</span>  <span class="at">-0.741</span>  <span class="at">-1.467</span>  1.00  0.00</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     13  H           1      <span class="at">-3.172</span>  <span class="at">-1.337</span>   0.206  1.00  0.00</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>아니나 다를까, 스크립트의 출력은 정확하게 파이프라인을 직접적으로 실행한 것과 동일하다.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+텍스트 vs.&nbsp;텍스트가 아닌 것 아무거나
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>종종 마이크로소프트 워드 혹은 리브레오피스 <code>Writer</code> 프로그램을 “텍스트 편집기”라고 부른다. 하지만, 프로그래밍을 할때 조금더 주의를 기울일 필요가 있다. 기본 디폴트로, 마이크로소프트 워드는 <code>.docx</code> 파일을 사용해서 텍스트를 저장할 뿐만 아니라, 글꼴, 제목, 등등의 서식 정보도 함께 저장한다.</p>
+<p>이런 추가 정보는 문자로 저장되지 않아서, <code>head</code> 같은 도구에게는 무의미하다: <code>head</code> 같은 도구는 입력 파일에 문자, 숫자, 표준 컴퓨터 키보드 특수문자만이 포함되어 있는 것을 가정한다. 따라서, 프로그램을 편집할 때, 일반 텍스트 편집기를 사용하거나, 혹은 일반 텍스트로 파일을 저장하도록 주의한다.</p>
+</div>
+</div>
+</section>
+<section id="변수와-주석" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="변수와-주석"><span class="header-section-number">6.2</span> 변수와 주석</h2>
+<p>만약 임의 파일의 행을 선택하고자 한다면 어떻게 할까? 파일명을 바꾸기 위해서 매번 <code>middle.sh</code>을 편집할 수 있지만, 단순히 명령어를 다시 타이핑하는 것보다 아마 시간이 더 걸릴 것이다. 대신에 <code>middle.sh</code>을 편집해서 좀더 다양한 기능을 제공하도록 만들어보자:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nano middle.sh</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>nano</code> 편집기로 <code>octane.pdb</code>을 <code>$1</code>으로 불리는 특수 변수로 변경하자:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 15 <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 5</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>쉘 스크립트 내부에서, <code>$1</code>은 “명령라인의 첫 파일 이름(혹은 다른 인자)”을 의미한다. 이제 스크립트를 다음과 같이 바꿔 실행해 보자:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash middle.sh octane.pdb</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      9  H           1      <span class="at">-4.502</span>   0.681   0.785  1.00  0.00</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     10  H           1      <span class="at">-5.254</span>  <span class="at">-0.243</span>  <span class="at">-0.537</span>  1.00  0.00</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     11  H           1      <span class="at">-4.357</span>   1.252  <span class="at">-0.895</span>  1.00  0.00</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     12  H           1      <span class="at">-3.009</span>  <span class="at">-0.741</span>  <span class="at">-1.467</span>  1.00  0.00</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     13  H           1      <span class="at">-3.172</span>  <span class="at">-1.337</span>   0.206  1.00  0.00</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>혹은 다음과 같이 다른 파일에 대해 스크립트 프로그램을 실행해 보자:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash middle.sh pentane.pdb</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      9  H           1       1.324   0.350  <span class="at">-1.332</span>  1.00  0.00</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     10  H           1       1.271   1.378   0.122  1.00  0.00</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     11  H           1      <span class="at">-0.074</span>  <span class="at">-0.384</span>   1.288  1.00  0.00</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     12  H           1      <span class="at">-0.048</span>  <span class="at">-1.362</span>  <span class="at">-0.205</span>  1.00  0.00</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     13  H           1      <span class="at">-1.183</span>   0.500  <span class="at">-1.412</span>  1.00  0.00</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+인자 주위를 이중 인용부호로 감싸기
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>파일명에 공백이 포함된 경우 루프 변수 내부에 이중 인용부호로 감싼 것과 동일한 사유로, 파일명에 공백이 포함된 경우 이중 인용부호로 <code>$1</code>을 감싼다.</p>
+</div>
+</div>
+<p>하지만, 매번 줄 범위를 조정할 때마다 여전히 <code>middle.sh</code> 파일을 편집할 필요가 있다.</p>
+<p>대신 명령 인자(argument)를 3개 사용하도록 스크립트를 구성하여 이 문제를 해결해본다. 첫 번째 명령줄 인자(<code>$1</code>) 이후 제공되는 각 추가 인자는 각각 첫 번째, 두 번째, 세 번째 명령 인자를 지칭하는 특수 변수명 <code>$1</code>, <code>$2</code>, <code>$3</code> 으로 접근할 수 있다. </p>
+<p>특수 변수 <code>$2</code> 와 <code>$3</code> 을 사용해서 고쳐보자: <code>head</code>, <code>tail</code> 명령어에 해당 줄수를 출력하도록 인자로 넘긴다.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nano middle.sh</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> <span class="st">"</span><span class="va">$2</span><span class="st">"</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> <span class="st">"</span><span class="va">$3</span><span class="st">"</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>이제 다음을 실행시킨다:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash middle.sh pentane.pdb 15 5</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      9  H           1       1.324   0.350  <span class="at">-1.332</span>  1.00  0.00</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     10  H           1       1.271   1.378   0.122  1.00  0.00</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     11  H           1      <span class="at">-0.074</span>  <span class="at">-0.384</span>   1.288  1.00  0.00</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     12  H           1      <span class="at">-0.048</span>  <span class="at">-1.362</span>  <span class="at">-0.205</span>  1.00  0.00</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     13  H           1      <span class="at">-1.183</span>   0.500  <span class="at">-1.412</span>  1.00  0.00</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>명령문의 인자를 변경함으로써 스크립트 동작을 바꿀 수 있게 된다:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash middle.sh pentane.pdb 20 5</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     14  H           1      <span class="at">-1.259</span>   1.420   0.112  1.00  0.00</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     15  H           1      <span class="at">-2.608</span>  <span class="at">-0.407</span>   1.130  1.00  0.00</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     16  H           1      <span class="at">-2.540</span>  <span class="at">-1.303</span>  <span class="at">-0.404</span>  1.00  0.00</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     17  H           1      <span class="at">-3.393</span>   0.254  <span class="at">-0.321</span>  1.00  0.00</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">TER</span>      18              1</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>제대로 동작하지만, <code>middle.sh</code> 쉘스크립트를 읽는 다른 사람은 잠시 시간을 들여, 스크립트가 어떤 작업을 수행하는지 해독해야 한다. 스크립트를 상단에 <strong>주석(comments)</strong>을 추가해서 이런 문제를 개선할 수 있다:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nano middle.sh</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 파일 중간에서 행(라인)을 추출합니다.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 사용법: bash middle.sh 파일명 마지막줄 라인수</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> <span class="st">"</span><span class="va">$2</span><span class="st">"</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> <span class="st">"</span><span class="va">$3</span><span class="st">"</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>주석은 <code>#</code>문자로 시작하고 해당 행 끝까지 주석으로 처리된다. 컴퓨터는 주석을 무시하지만, 사람들이(미래의 본인 자신도 포함) 스크립트를 이해하고 사용하는데 정말 귀중한 존재다. 유일한 단점은 스크립트를 변경할 때마다, 주석이 여전히 유효한지 확인해야 된다는 점이다: 잘못된 방향으로 독자를 이끌어가는 설명은 아무것도 없는 것보다 더 나쁘다. </p>
+<p>만약 많은 파일을 단 하나 파이프라인으로 처리하고자 한다면 어떨까? 예를 들어, <code>.pdb</code> 파일을 길이 순으로 정렬하려면, 다음과 같이 타이핑한다:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wc <span class="at">-l</span> <span class="pp">*</span>.pdb <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>wc -l</code>은 파일에 행갯수를 출력하고(wc는 ’word count’로 -l 플래그를 추가하면 ’count lines’의미가 됨을 상기한다), <code>sort -n</code>은 숫자순으로 파일의 행갯수를 정렬한다. 파일에 담을 수 있지만, 현재 디렉토리에 <code>.pdb</code> 파일만을 정렬한다.</p>
+<p>다른 유형의 파일에 대해서 정렬된 값을 얻으려면, 모든 이름을 스크립트로 가져올 방법이 필요하다. <code>$1</code>, <code>$2</code> 등등은 사용할 수 없는데, 이유는 얼마나 많은 파일이 있는지를 예단할 수 없기 때문이다. 대신에, 특수 변수 <code>$@</code>을 사용한다. <code>$@</code>은 “쉘 스크립트 모든 명령-라인 인자”를 의미한다. 공백을 포함한 매개변수를 처리하려면 이중 인용부호로 “$@”을 감싸줘야 한다. (<code>$@</code>은 <code>$1</code> <code>$2</code> … 와 동치다). 다음에 예제가 있다:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nano sorted.sh</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 길이로 파일명을 정렬</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage: bash sorted.sh 파일명_1개_이상</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> <span class="st">"</span><span class="va">$@</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>실행방법과 실행결과는 다음과 같다.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash sorted.sh <span class="pp">*</span>.pdb ../creatures/<span class="pp">*</span>.dat</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">9</span> methane.pdb</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="ex">12</span> ethane.pdb</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="ex">15</span> propane.pdb</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="ex">20</span> cubane.pdb</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="ex">21</span> pentane.pdb</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="ex">30</span> octane.pdb</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="ex">163</span> ../creatures/basilisk.dat</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="ex">163</span> ../creatures/minotaur.dat</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="ex">163</span> ../creatures/unicorn.dat</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="ex">596</span> total</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+왜 쉘 스크립트가 어떤 작업도 수행하지 않을까?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>스크립트가 아주 많은 파일을 처리하고 했지만, 어떠한 파일 이름도 부여하지 않는다면 무슨 일이 발생할까? 예를 들어, 만약 다음과 같이 타이핑한다면 어떻게 될까요?:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash sorted.sh</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>하지만 <code>*.dat</code> (혹은 다른 어떤 것)를 타이핑하지 않는다면 어떨까요? 이 경우 <code>$@</code>은 아무 것도 전개하지 않아서, 스크립트 내부의 파이프라인은 사실상 다음과 같다:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wc <span class="at">-l</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>어떠한 파일이름도 주지 않아서, <code>wc</code>은 표준 입력을 처리하려 한다고 가정한다. 그래서, 쉘은 사용자가 인터랙티브하게 어떤 데이터를 전달해주길 대기하고만 있게 된다. 하지만, 밖에서 보면 사용자에게 보이는 것은 스크립트가 정지한 것처럼 보인다: 스크립트가 아무 일도 수행하지 않는 것처럼 보인다.</p>
+</div>
+</div>
+<div id="exr-shell-uniq" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 6.1 (유일무이한 고유종 출력)</strong></span> 정훈이는 데이터 파일 수백개를 갖고 있는데, 각각은 다음과 같은 형식을 가지고 있다:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">2013-11-05,deer,5</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">2013-11-05,rabbit,22</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2013-11-05,raccoon,7</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">2013-11-06,rabbit,19</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="ex">2013-11-06,deer,2</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="ex">2013-11-06,fox,1</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="ex">2013-11-07,rabbit,18</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="ex">2013-11-07,bear,1</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>실습 파일로 <code>shell-lesson-data/exercise-data/animal-counts/animals.csv</code> 을 사용한다.</p>
+<p><code>cut -d , -f 2 animals.csv | sort | uniq</code> 명령을 사용하여 <code>animals.csv</code>에 있는 고유 종을 출력한다. 명령을 매번 입력하지 않기 위해, 과학자는 대신 쉘 스크립트를 작성한다.</p>
+<p>파일이름명을 명령 인자로 갖는 <code>species.sh</code> 이름의 쉘 스크립트를 작성하라.</p>
+<p>명령줄 인자로 파일명을 원하는 수만큼 사용하고, 앞에서 사용된 명령어 변형을 사용하여 각 파일에 담긴 고유종을 개별적으로 인쇄하는 <code>species.sh</code>라는 쉘 스크립트를 작성한다.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># csv 파일에 유일무이한 고유종을 찾는 스크립트로 고유종은 \</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 두번째 데이터 필드가 된다.</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 스크립트는 명령라인 인자로 모든 파일명을 인자로 받는다.</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 모든 파일에 대해 루프를 돌려 반복한다.</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="va">$@</span> </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$file</span><span class="st"> 파일 고유종:"</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 개체명을 추출한다.</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 2 <span class="va">$file</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="재사용" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="재사용"><span class="header-section-number">6.3</span> 재사용</h2>
+<p>유용한 무언가를 수행하는 일련의 명령어를 방금 실행했다고 가정하자 — 예를 들어, 논문에 사용될 그래프를 스크립트가 생성. 필요하면 나중에 그래프를 다시 생성할 필요가 있어서, 명령어를 파일에 저장하고자 한다. 명령문을 다시 타이핑(그리고 잠재적으로 잘못 타이핑할 수도 있다)하는 대신에, 다음과 같이 할 수도 있다:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> history <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 5 <span class="op">&gt;</span> redo-figure-3.sh</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>redo-figure-3.sh</code> 파일은 이제 다음을 담고 있다:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">297</span> bash goostats NENE01729B.txt stats-NENE01729B.txt</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">298</span> bash goodiff stats-NENE01729B.txt /data/validated/01729.txt <span class="op">&gt;</span> 01729-differences.txt</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ex">299</span> cut <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 2-3 01729-differences.txt <span class="op">&gt;</span> 01729-time-series.txt</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="ex">300</span> ygraph <span class="at">--format</span> scatter <span class="at">--color</span> bw <span class="at">--borders</span> none 01729-time-series.txt figure-3.png</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="ex">301</span> history <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 5 <span class="op">&gt;</span> redo-figure-3.sh</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>명령어의 일련 번호를 제거하고, <code>history</code> 명령어를 포함한 마지막 행을 지우는 작업을 편집기에서 한동안 작업한 후에, 그림을 어떻게 생성시켰는지에 관한 정말 정확한 기록을 갖게 되었다. </p>
+<div id="exr-script-history" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 6.2 (왜 명령어를 실행하기 전에 <code>history</code>에 명령어를 기록할까?)</strong></span> 다음 명령어를 실행시키게 되면:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> history <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 5 <span class="op">&gt;</span> recent.sh</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>파일에 마지막 명령어는 <code>history</code> 명령 그 자체다. 즉 쉘이 실제로 명령어를 실행하기 전에 명령 로그에 먼저 <code>history</code>를 추가했다. 실제로 <em>항상</em> 쉘은 명령어를 실행시키기 전에 로그에 명령어를 기록한다. 왜 이런 동작을 쉘이 한다고 생각하는가?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>만약 명령어가 죽던가 멈추게 되면, 어떤 명령어에서 문제가 발생했는지 파악하는 것이 유용할 수 있다. 명령어가 실행된 후에 기록하게 되면, 크래쉬(crash)가 발생된 마지막 명령어에 대한 기록이 없게 된다.</p>
+</div>
+</div>
+</div>
+<p>실무에서, 대부분의 사람들은 쉘 프롬프트에서 몇번 명령어를 실행해서 올바르게 수행되는지를 확인한 다음, 재사용을 위해 파일에 저장하는 방식으로 작업한다.</p>
+<p>이런 유형의 작업은 데이터와 작업흐름(workflow)에서 발견한 것을 <code>history</code>를 호출해서 재사용하는 전형적인 형태다. 마지막으로, 깔끔한 마무리를 위해 약간의 편집작업을 추가하고 나서, 쉘 스크립트 파일에 저장하는 흐름을 탄다.</p>
+<div id="exr-shell-script" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 6.3 (쉘 스크립트의 변수)</strong></span> <code>alkanes</code> 디렉토리에서, 다음 명령어를 포함하는 <code>script.sh</code>라는 쉘스크립트가 있다고 가정한다:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> <span class="va">$2</span> <span class="va">$1</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> <span class="va">$3</span> <span class="va">$1</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>alkanes</code> 디렉토리에서 다음 명령어를 타이핑한다:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> script.sh <span class="st">'*.pdb'</span> 1 1</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>다음 출력물 결과 중 어떤 결과가 나올 것으로 예상하나요?</p>
+<ol type="1">
+<li><code>alkanes</code> 디렉토리에 있는 <code>*.pdb</code> 확장자를 갖는 각 파일의 첫번줄과 마지막줄 사이 모든 줄을 출력.</li>
+<li><code>alkanes</code> 디렉토리에 있는 <code>*.pdb</code> 확장자를 갖는 각 파일의 첫번줄과 마지막 줄을 출력.</li>
+<li><code>alkanes</code> 디렉토리에 있는 각 파일의 첫번째와 마지막 줄을 출력.</li>
+<li><code>*.pdb</code> 를 감싸는 인용부호로 오류가 발생.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>정답은 2.</p>
+<p>특수 변수 $1, $2, $3은 스크립트에 명령라인 인수를 나타낸다. 따라서 실행되는 명령어는 다음과 같다:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> head <span class="at">-n</span> 1 cubane.pdb ethane.pdb octane.pdb pentane.pdb propane.pdb</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> tail <span class="at">-n</span> 1 cubane.pdb ethane.pdb octane.pdb pentane.pdb propane.pdb</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>인용부호로 감싸져서 쉘이 <code>'*.pdb'</code>을 명령라인에서 확장하지 않는다. 이를 테면, 스크립트의 첫번째 인자는 <code>'*.pdb'</code>으로 전달되어 스크립트 내부에서 확장되어 <code>head</code>와 <code>tail</code> 명령어를 실행시키게 된다.</p>
+</div>
+</div>
+</div>
+<div id="exr-script-long" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 6.4 (주어진 확장자 내에서 가장 긴 파일을 찾아낸다)</strong></span> 인자로 디렉토리 이름과 파일이름 확장자를 갖는 <code>longest.sh</code>이름의 쉘 스크립트를 작성해서, 그 디렉토리에서 해당 확장자를 가지는 파일 중에 가장 긴 줄을 가진 파일이름을 화면에 출력하세요. 예를 들어, 다음은</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash longest.sh shell-lesson-data/exercise-data/alkanes pdb</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>shell-lesson-data/exercise-data/alkanes</code> 디렉토리에 <code>.pdb</code> 확장자를 가진 파일 중에 가장 긴 줄을 가진 파일이름을 화면에 출력한다.</p>
+<p>다른 디렉토리에서 스크립트를 자유롭게 시도해보자.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash longest.sh shell-lesson-data/exercise-data/writing txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 해설
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 쉘 스크립트는 다음 두 인자를 갖는다: </span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#    1. 디렉토리명</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#    2. 파일 확장자</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 해당 디렉토리에서 파일 확장자와 매칭되는 가장 길이가 긴 파일명을 출력한다.</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> <span class="va">$1</span>/<span class="pp">*</span>.<span class="va">$2</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 2 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>파이프라인 첫 번째 부분 <code>wc -l $1/*.$2 | sort -n</code>은 각 파일의 줄 수를 세어 숫자순으로 정렬합니다 (가장 큰 줄이 마지막). 파일이 두 개 이상인 경우, <code>wc</code>는 최종 요약도 출력하여 모든 파일에 대한 총 행수를 출력한다. <code>tail -n 2 | head -n 1</code> 명령어를 사용하여 마지막 줄을 삭제한다.</p>
+<p><code>wc -l $1/*.$2 | sort -n | tail -n 1</code>을 사용하면 최종 요약 줄도 표시된다. 파이프라인을 조각으로 쪼개보고, 출력을 통해 확실히 이해를 높일 수 있다.</p>
+</div>
+</div>
+</div>
+<div id="exr-script-reading" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 6.5 (스크립트 독해 능력)</strong></span> 이번 문제에 대해, 다시 한번 <code>shell-lesson-data/exercise-data/alkanes</code> 디렉토리에 있다고 가정한다. 지금까지 생성한 파일에 추가해서 디렉토리에는 <code>.pdb</code> 파일이 많다. 만약 다음 내용을 담고 있는 스크립트를 <code>bash script1.sh *.pdb</code>, <code>bash script2.sh *.pdb</code>, <code>bash script3.sh *.pdb</code> 명령어로 실행할 때, 다음 스크립트 3개가 무슨 작업을 수행하는지 설명하세요:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 스크립트 1</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="pp">*</span>.<span class="pp">*</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 스크립트 2</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> filename <span class="kw">in</span> <span class="va">$1</span> <span class="va">$2</span> <span class="va">$3</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span> <span class="va">$filename</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 스크립트 3</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$@</span>.pdb</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>각각의 경우, 쉘은 실행할 파일명 목록을 스크립트에 인수로 전달하기 전에 <code>*.pdb</code> 확장자 와일드카드를 확장한다.</p>
+<p>스크립트 1은 파일명에 구두점(<code>.</code>)이 포함된 모든 파일을 출력한다. 스크립트에 전달된 인자는 실제 스크립트의 어느 곳에서도 사용되지 않는다.</p>
+<p>스크립트 2는 파일 확장자가 <code>.pdb</code>인 처음 3개의 파일 내용을 출력한다. <code>$1</code>, <code>$2</code>, <code>$3</code>은 각각 첫 번째, 두 번째, 세 번째 인자를 표기한다.</p>
+<p>스크립트 3은 <code>.pdb</code>로 끝나는 스크립트의 모든 인자(즉, 모든 <code>.pdb</code> 파일)를 화면에 출력시킨다. <code>$@</code>은 쉘 스크립트에 주어진 모든 인자를 표기한다.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cubane.pdb</span> ethane.pdb methane.pdb octane.pdb pentane.pdb propane.pdb.pdb</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<div id="exr-script-debugging" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 6.6 (스크립트 디버깅)</strong></span> 넬(Nelle) 박사 컴퓨터 <code>north-pacific-gyre</code> 디렉토리의 <code>do-errors.sh</code> 파일에 다음과 같은 스크립트가 저장되었다고 가정하자.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 데이터 파일별로 통계량 계산</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> datafile <span class="kw">in</span> <span class="st">"</span><span class="va">$@</span><span class="st">"</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$datfile</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bash</span> goostats <span class="va">$datafile</span> stats-<span class="va">$datafile</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>north-pacific-gyre</code> 디렉토리에서 다음을 실행하게 되면:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash do-errors.sh NENE<span class="pp">*</span>A.txt NENE<span class="pp">*</span>B.txt <span class="co"># $ bash do-errors.sh NENE*[AB].txt</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>출력결과는 아무 것도 없다. 원인을 파악하고자 <code>-x</code> 선택옵션을 사용해서 스크립트를 재실행시킨다:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash <span class="at">-x</span> do-errors.sh NENE<span class="pp">*</span>A.txt NENE<span class="pp">*</span>B.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>보여지는 출력결과는 무엇인가? 몇번째 행에서 오류가 발생했는가?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>-x</code> 플래그를 사용하면 디버그 모드에서 <code>bash</code>를 실행시키게 된다. 각 명령어를 행단위로 실행시키고 출력결과를 보여주는데, 오류를 특정하는데 도움이 된다. 이번 예제에서 <code>echo</code> 명령어는 아무 것도 출력하지 않는 것을 볼 수 있다. 루프 변수명의 철자가 잘못 타이핑 되어 있다. <code>datfile</code> 변수가 존재하지 않아서 빈 문자열이 반환되었다.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="nelle-script" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="nelle-script"><span class="header-section-number">6.4</span> 사례: 스크립트 생성하기</h2>
+<p>넬(Nelle) 박사의 지도교수는 모든 분석결과가 재현가능해야 된다는 고집을 갖고 있다. 모든 분석 단계를 담아내는 가장 쉬운 방법은 스크립트에 있다.</p>
+<p>먼저, 넬 박사 프로젝트 디렉토리로 이동한다:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ../../north-pacific-gyre/</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>nano</code>를 사용해서 파일을 생성한다.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nano do-stats.sh</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>편집기를 열어서 다음과 같이 작성한다:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 데이터 파일별로 통계량 계산.</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> datafile <span class="kw">in</span> <span class="st">"</span><span class="va">$@</span><span class="st">"</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$datafile</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bash</span> goostats.sh <span class="va">$datafile</span> stats-<span class="va">$datafile</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>do-stats.sh</code> 이름으로 파일에 저장해서, 다음과 같이 타이핑해서 첫번째 단계 분석을 다시 실행할 수 있게 되었다:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash do-stats.sh NENE<span class="pp">*[</span><span class="ss">AB</span><span class="pp">]</span>.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>또한 다음과 같이도 할 수 있다:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash do-stats.sh NENE<span class="pp">*[</span><span class="ss">AB</span><span class="pp">]</span>.txt <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>그렇게 해서 출력은 처리된 파일 이름이 아니라 처리된 파일의 숫자만 출력된다.</p>
+<p>넬 박사 스크립트에서 주목할 한가지는 스크립트를 실행하는 사람이 무슨 파일을 처리할지를 결정하게 한다는 점이다. 스크립트를 다음과 같이 작성할 수 있다:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Site A, Site B 데이터 파일에 대한 통계량 계산</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> datafile <span class="kw">in</span> NENE<span class="pp">*[</span><span class="ss">AB</span><span class="pp">]</span>.txt</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$datafile</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bash</span> goostats <span class="va">$datafile</span> stats-<span class="va">$datafile</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>장점은 이 스크립트는 항상 올바른 파일만을 선택한다: ‘Z’파일을 제거했는지 기억할 필요가 없다. 단점은 <em>항상</em> 이 파일만을 선택한다는 것이다 — 모든 파일(’Z’를 포함하는 파일), 혹은 남극 동료가 생성한 ’G’, ‘H’ 파일에 대해서 스크립트를 편집하지 않고는 실행할 수 없다. 좀더 모험적이라면, 스크립트를 변경해서 명령-라인 매개변수를 검증해서 만약 어떠한 매개변수도 제공되지 않았다면 <code>NENE*A.txt</code>, <code>NENE*B.txt</code>을 줄여서 <code>NENE*[AB].txt</code> 사용하도록 바꿀 수도 있다. 물론, 이런 접근법은 유연성과 복잡성 사이에 서로 대립되는 요소 사이의 균형, 즉 트레이드오프(trade-off)를 야기한다.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co"># middle.sh: 파일의 특정 범위의 줄들을 출력하는 스크립트</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 사용방법: bash middle.sh filename end_line num_lines</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co"># $1은 첫 번째 인자 (파일 이름)</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co"># $2는 두 번째 인자 (끝 줄 번호)</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="co"># $3는 세 번째 인자 (출력할 줄의 수)</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> <span class="st">"</span><span class="va">$2</span><span class="st">"</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> <span class="st">"</span><span class="va">$3</span><span class="st">"</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="pdb-모든-파일에서-11-15행-추출" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="pdb-모든-파일에서-11-15행-추출"><code>*.pdb</code> 모든 파일에서 11-15행 추출</h3>
+<p><code>shell-lesson-data/exercise-data/alkanes</code> 다양한 단백질 정보가 담긴 <code>.pdb</code> 모든 파일에서 11-15행을 추출하는 쉘스크립트를 작성한다. 수차례 시도를 통해서 다음과 같이 프롬프트를 작성하게 되면 디렉토리 이동, 쉘 스크립트 작성, <code>middle.sh</code> 저장, 쉘스크립트 실행권한 부여, 쉘 스크립트 실행까지 일사천리로 진행된다.</p>
+<blockquote class="blockquote">
+<p>프롬프트: shell-lesson-data/exercise-data/alkanes 디렉토리로 이동한 후 echo 명령어로 확장자가 for 문을 이용하여 확장자가 .pdb인 모든 파일에서 head와 tail 명령어를 조합하여 11-15 행만 출력하는 쉘스크립트를 작성하고 middle.sh 파일명으로 쉘 스크립트 코드를 저장한다. 그리고 나서 middle.sh 쉘스크립트를 실행한다.</p>
+</blockquote>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sgpt <span class="at">-s</span> <span class="st">"shell-lesson-data/exercise-data/alkanes 디렉토리로 이동한 후 echo 명령어로 확장자가 for 문을 이용하여 확장자가 .pdb인 모든 파일에서 head와 tail 명령어를 조합하여 11-15 행만 출력하는 쉘스크립트를 작성하고 middle.sh 파일명으로 쉘 스크립트 코드를 저장한다. 그리고 나서 middle.sh 쉘스크립트를 실행한다."</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> shell-lesson-data/exercise-data/alkanes <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">'for file in *.pdb; do head -n 15 $file | tail -n 5; done'</span> <span class="op">&gt;</span> middle.sh <span class="kw">&amp;&amp;</span> <span class="fu">chmod</span> +x middle.sh <span class="kw">&amp;&amp;</span> <span class="ex">./middle.sh</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: D</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="ex">This</span> command changes the directory to <span class="st">"shell-lesson-data/exercise-data/alkanes"</span>, creates a shell script file called <span class="st">"middle.sh"</span> that prints the middle 5 lines of each <span class="st">".pdb"</span> file in the directory, makes the script executable, and then executes the script.</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: E</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      9  H           1       1.410  <span class="at">-1.631</span>   0.942  1.00  0.00</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     10  H           1      <span class="at">-0.262</span>  <span class="at">-2.112</span>  <span class="at">-1.024</span>  1.00  0.00</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     11  H           1      <span class="at">-2.224</span>  <span class="at">-0.925</span>   0.328  1.00  0.00</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     12  H           1      <span class="at">-0.468</span>  <span class="at">-0.501</span>   2.315  1.00  0.00</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     13  H           1       2.224   0.892  <span class="at">-0.134</span>  1.00  0.00</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      6  H           1       1.158  <span class="at">-0.991</span>  <span class="at">-0.070</span>  1.00  0.00</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      7  H           1       0.924   0.249   1.188  1.00  0.00</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      8  H           1       1.240   0.737  <span class="at">-0.496</span>  1.00  0.00</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="ex">TER</span>       9              1</span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="ex">END</span></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      3  H           1       0.771  <span class="at">-0.727</span>   0.890  1.00  0.00</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      4  H           1       0.771  <span class="at">-0.727</span>  <span class="at">-0.890</span>  1.00  0.00</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      5  H           1      <span class="at">-0.771</span>  <span class="at">-0.727</span>   0.000  1.00  0.00</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a><span class="ex">TER</span>       6              1</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a><span class="ex">END</span></span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      9  H           1      <span class="at">-4.502</span>   0.681   0.785  1.00  0.00</span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     10  H           1      <span class="at">-5.254</span>  <span class="at">-0.243</span>  <span class="at">-0.537</span>  1.00  0.00</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     11  H           1      <span class="at">-4.357</span>   1.252  <span class="at">-0.895</span>  1.00  0.00</span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     12  H           1      <span class="at">-3.009</span>  <span class="at">-0.741</span>  <span class="at">-1.467</span>  1.00  0.00</span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     13  H           1      <span class="at">-3.172</span>  <span class="at">-1.337</span>   0.206  1.00  0.00</span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      9  H           1       1.324   0.350  <span class="at">-1.332</span>  1.00  0.00</span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     10  H           1       1.271   1.378   0.122  1.00  0.00</span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     11  H           1      <span class="at">-0.074</span>  <span class="at">-0.384</span>   1.288  1.00  0.00</span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     12  H           1      <span class="at">-0.048</span>  <span class="at">-1.362</span>  <span class="at">-0.205</span>  1.00  0.00</span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     13  H           1      <span class="at">-1.183</span>   0.500  <span class="at">-1.412</span>  1.00  0.00</span>
+<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>      9  H           1      <span class="at">-0.914</span>   0.551  <span class="at">-1.359</span>  1.00  0.00</span>
+<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     10  H           1      <span class="at">-1.396</span>   1.211   0.219  1.00  0.00</span>
+<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a><span class="ex">ATOM</span>     11  H           1      <span class="at">-2.058</span>  <span class="at">-0.345</span>  <span class="at">-0.332</span>  1.00  0.00</span>
+<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a><span class="ex">TER</span>      12              1</span>
+<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a><span class="ex">END</span></span>
+<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat shell-lesson-data/exercise-data/alkanes/middle.sh</span>
+<span id="cb45-37"><a href="#cb45-37" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> <span class="pp">*</span>.pdb<span class="kw">;</span> <span class="cf">do</span> <span class="fu">head</span> <span class="at">-n</span> 15 <span class="va">$file</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 5<span class="kw">;</span> <span class="cf">done</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>챗GPT가 프롬프트로 작성한 유닉스 쉘 명령어를 해석하면 다음과 같다.</p>
+<blockquote class="blockquote">
+<p>디렉터리를 “shell-lesson-data/exercise-data/alkanes”로 변경하고, 디렉터리에 있는 각 “.pdb” 파일의 중간 5줄을 인쇄하는 “middle.sh”라는 쉘 스크립트 파일을 생성하고, 스크립트를 실행 가능한 상태로 만든 다음, 스크립트를 실행한다.</p>
+</blockquote>
+<p>실행결과와 함께 <code>cat</code> 명령어로 챗GPT가 작성한 <code>middle.sh</code> 쉘 스크립트 코드도 확인된다. 줄바꿈 대신 <code>;</code>을 사용하여 코드를 한줄로 작성한 것이 인상적이다.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./05-shell-loop.html" class="pagination-link" aria-label="루프(Loops)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">루프(Loops)</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07-shell-find.html" class="pagination-link" aria-label="파일, 텍스트, 폴더 찾기">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">파일, 텍스트, 폴더 찾기</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

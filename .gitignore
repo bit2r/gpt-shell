@@ -56,7 +56,8 @@ shell-novice
 /.luarc.json
 
 # PDF 파일
-docs/
+# docs/
+pdfs/
 
 # 교보 전자출판
 data/epubple
@@ -67,4 +68,6 @@ draft/
 
 publishing/2023*
 
-
+# DuckDB original data from kaggle
+data/original_cleaned_nyc_taxi_data_2018.csv
+publishing/

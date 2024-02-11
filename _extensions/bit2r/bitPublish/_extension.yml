@@ -10,12 +10,50 @@ contributes:
     pdf:
       documentclass: book
       geometry:                            # 4x6 배판 도서를 위한 설정
+        # # 이하 재단선이 없는 조판 ----------------------------------------------
+        # # - paper=b5paper
+        # - paperheight=257mm
+        # - paperwidth=188mm
+        # - top=25mm
+        # - headsep=10mm
+        # - bottom=30mm
+        # - footskip=15mm
+        # - left=25mm
+        # - right=25mm
+        # - centering
+        # 이하 재단선을 넣는 조판 ----------------------------------------------
+        # - paper=a4paper
+        # - layoutwidth=190mm
+        # - layoutheight=260mm
+        # - layouthoffset=10mm
+        # - layoutvoffset=18.5mm
+        # - showcrop
+        # - top=20mm
+        # - headsep=10mm
+        # - bottom=30mm
+        # - footskip=15mm
+        # - left=25mm
+        # - right=25mm
+        # - centering
+        # 교보조판(크기맞춤) ----------------------------------------------
+        # - paper=a4paper
+        # - paperwidth=211.5mm   # 188 + 6mm (3mm X 2) # 크기 맞춤
+        # - paperheight=277.5mm  # 254 + 6mm (3mm X 2) # 크기 맞춤
+        # - showcrop
+        # - top=30mm
+        # - bottom=30mm
+        # - left=30mm
+        # - right=30mm
+        # - centering
+        # 교보조판 (crop) ----------------------------------------------
         - paper=a4paper
-        - layoutwidth=190mm
-        - layoutheight=260mm
-        - layouthoffset=10mm
-        - layoutvoffset=18.5mm
+        - paperwidth=211.5mm   # PDF 크기 맞춤
+        - paperheight=277.5mm  # PDF 크기 맞춤
+        - layoutwidth=188mm   # 188 + 6mm (3mm X 2) # 크기 맞춤
+        - layoutheight=254mm  # 254 + 6mm (3mm X 2) # 크기 맞춤
         - showcrop
+        - layouthoffset=12mm
+        - layoutvoffset=12mm
         - top=20mm
         - headsep=10mm
         - bottom=30mm
@@ -23,6 +61,7 @@ contributes:
         - left=25mm
         - right=25mm
         - centering
+
       fig-cap-location: bottom
       tbl-cap-location: bottom
       toc-title: "목차"

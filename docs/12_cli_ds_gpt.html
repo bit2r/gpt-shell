@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko-KR" xml:lang="ko-KR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>챗GPT 유닉스 쉘 – 9&nbsp; 챗GPT 데이터 과학</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./13_cli_bigdata.html" rel="next">
+<link href="./11_cli_ds.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_cli_ds.html">GPT 데이터 과학</a></li><li class="breadcrumb-item"><a href="./12_cli_ds_gpt.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">챗GPT 데이터 과학</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">챗GPT 유닉스 쉘</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">감사의 글</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">쉘 프로그래밍</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-shell-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">유닉스 쉘</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-shell-filedir.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">파일과 폴더 넘나들기</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-shell-create.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">파일과 디렉토리 작업</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-shell-pipefilter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">파이프와 필터</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-shell-loop.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">루프(Loops)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-shell-script.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">쉘 스크립트</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-shell-find.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">파일, 텍스트, 폴더 찾기</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">GPT 데이터 과학</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_cli_ds.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">CLI 데이터 과학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_cli_ds_gpt.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">챗GPT 데이터 과학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_cli_bigdata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">대용량 데이터</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">참고문헌</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#tidyverse" id="toc-tidyverse" class="nav-link active" data-scroll-target="#tidyverse"><span class="header-section-number">9.1</span> <code>tidyverse</code></a></li>
+  <li><a href="#실습-데이터" id="toc-실습-데이터" class="nav-link" data-scroll-target="#실습-데이터"><span class="header-section-number">9.2</span> 실습 데이터</a></li>
+  <li><a href="#펭귄종별-개체수" id="toc-펭귄종별-개체수" class="nav-link" data-scroll-target="#펭귄종별-개체수"><span class="header-section-number">9.3</span> 펭귄종별 개체수</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_cli_ds.html">GPT 데이터 과학</a></li><li class="breadcrumb-item"><a href="./12_cli_ds_gpt.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">챗GPT 데이터 과학</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="cli-ds-gpt" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">챗GPT 데이터 과학</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>1950년대부터 본격적으로 컴퓨터가 도입되면서 CLI를 필두로 다양한 사용자 인터페이스(User Interface)가 적용되었다. 스티브 잡스의 애플사는 매킨토시 GUI에 이어 아이폰 모바일 인터페이스를 일반화시켰다면, 최근 챗GPT는 언어 사용자 인터페이스(LUI)를 통해 각 분야에 혁신을 예고하고 있다. 챗GPT 데이터 과학도 사용자 관점에서 보자. 기존 R, 파이썬, SQL, 엑셀 등 데이터 과학 구문을 머리속에 암기하고 있거나 구글이나 네이버를 통해 중요 키워드를 통해 문제를 해결해야 했었다. 하지만, 이제 챗GPT가 자연어를 이해하기 때문에 데이터 전처리, 통계 작업, 데이터 분석, 시각화, 모형개발 등 데이터 과학 전반에 변화는 필연적이다. <span class="citation" data-cites="wickham2023r">[@wickham2023r]</span> <span class="citation" data-cites="wickham2019welcome">[@wickham2019welcome]</span> <span class="citation" data-cites="gozalo2023chatgpt">[@gozalo2023chatgpt]</span></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-ui-evolution" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ui-evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-ui-evolution">flowchart TB
+    
+    subgraph A["사용자 인터페이스"]
+    direction LR
+        CLI["CLI 1950~&lt;br&gt;Command Line Interface&lt;br&gt; GUI 1970~&lt;br&gt; Graphic User Inferface"]     --&gt; WIMI
+        WIMI["Web Interface &lt;br&gt; 1994~ &lt;br&gt; Mobile Interface &lt;br&gt; 2007~"] --&gt; NUI["LUI 2023~&lt;br&gt; Language &lt;br&gt; User Interface"]
+    end
+
+classDef default fill:#f9f7f7,stroke:#333,stroke-width:2px;
+classDef A font-size:16px;
+
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ui-evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;9.1: 사용자 인터페이스 진화
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="tidyverse" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="tidyverse"><span class="header-section-number">9.1</span> <code>tidyverse</code></h2>
+<p>통계학은 데이터에서 정보를 압축하거나 최대한 많은 정보를 추출하는 노력에서 크게 발전해 왔다. 최근에는 기계학습과 딥러닝, 데이터 사이언스가 실무에 폭넓게 활용되면서 난제가 발생했다. R언어가 파이썬보다 먼저 맞이한 문제는 만개가 넘는 패키지가 개발되었지만, 각 패키지가 개별적인 설계 원칙에 따라 개발되고 여러 개발자에 의해 유지보수되어 초기 설계 원칙이 흔들리는 문제가 발생했다는 점이다. 이런 문제점을 인지한 데이터 과학자 중 해들리 위컴(Hadley Wickham)의 기여가 특히 돋보였다. 그는 R 언어를 활용해 정제되지 않은 데이터를 처리하는 과정에서 축적한 지식을 패키지 형태로 제작하여 공개하였고, 이런 패키지들의 모임을 통칭해서 <code>hadlyverse</code>, 나중에 <code>tidyverse</code>라고 부르게 되었다.</p>
+<p><code>tidyverse</code>는 <code>install.packages()</code> 명령어로 쉽게 설치한 후 <code>library(tidyverse)</code> 명령어로 작업에 바로 사용할 수 있다. <code>tidyverse</code> 패키지는 하나의 독립된 패키지로 구성되지 않고 각 역할을 독립적으로 수행하는 수많은 작은 패키지로 구성된 하나의 생태계를 구성하고 있다. 가장 최근에 날짜와 시간 데이터를 담당하는 <code>lubridate</code> 패키지가 추가되어 <code>library(lubridate)</code> 명령을 실행하지 않더라고 다양한 날짜 및 시간 관련 함수를 <code>tidyverse</code>에서 즉시 사용할 수 있게 되었다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'tidyverse'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>── Attaching core tidyverse packages ────────────────────────────────── tidyverse <span class="dv">2</span>.<span class="fl">0.0</span> ──</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>✔ dplyr     <span class="dv">1</span>.<span class="fl">1.1</span>     ✔ readr     <span class="dv">2</span>.<span class="fl">1.4</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>✔ forcats   <span class="dv">1</span>.<span class="fl">0.0</span>     ✔ stringr   <span class="dv">1</span>.<span class="fl">5.0</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>✔ ggplot2   <span class="dv">3</span>.<span class="fl">4.2</span>     ✔ tibble    <span class="dv">3</span>.<span class="fl">2.1</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>✔ lubridate <span class="dv">1</span>.<span class="fl">9.2</span>     ✔ tidyr     <span class="dv">1</span>.<span class="fl">3.0</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>✔ purrr     <span class="dv">1</span>.<span class="fl">0.1</span>     </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>── Conflicts ──────────────────────────────────────────────────── <span class="fu">tidyverse_conflicts</span>() ──</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>✖ dplyr<span class="sc">::</span><span class="fu">filter</span>() masks stats<span class="sc">::</span><span class="fu">filter</span>()</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>✖ dplyr<span class="sc">::</span><span class="fu">lag</span>()    masks stats<span class="sc">::</span><span class="fu">lag</span>()</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>ℹ Use the conflicted package to force all conflicts to become errors</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Warning messages<span class="sc">:</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span> 패키지 ‘ggplot2’는 R 버전 <span class="dv">4</span>.<span class="fl">2.3</span>에서 작성되었습니다 </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">:</span> 패키지 ‘tibble’는 R 버전 <span class="dv">4</span>.<span class="fl">2.3</span>에서 작성되었습니다 </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span><span class="sc">:</span> 패키지 ‘dplyr’는 R 버전 <span class="dv">4</span>.<span class="fl">2.3</span>에서 작성되었습니다 </span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>tidyverse</code>는 깔끔한 데이터 과학 세상을 구현하기 위한 철학이다. 공교롭게도 <code>tidyverse</code>는 유닉스 철학, 즉 모듈 방식과 재사용성 개념을 적극 도입한 소프트웨어 개발 철학을 기반으로 한다. <code>tidyverse</code>는 깔끔한(tidy) API에 기반하며, 기존 자료구조를 재사용하고, 파이프 연산자를 통해 간단한 함수를 조합하며, 함수형 프로그래밍을 적극 사용하고, 기계가 아닌 인간을 위한 설계를 추구하는 원칙을 제시했을 뿐만 아니라 엉망진창(messy) 데이터에 대한 새로운 지평을 열었다.</p>
+<p><code>tidyverse</code> 핵심은 다양한 형태의 데이터를 가져와 사람과 기계가 소통할 수 있는 형태로 변환하는 과정을 추상화한 것이다. 이는 시각화와 모델링을 통해 통찰력을 향상시키고, 동시에 자동화와 확장성을 반영하는 체계적인 작업 흐름을 제공한다. 이러한 작업 흐름을 관통하는 핵심 개념은 ‘파이프’로, 이는 유닉스 파이프 연산자에서 검증된 개념이다. 이를 통해 tidyverse는 데이터 과학 작업을 효율적으로 진행할 수 있는 도구를 제공하며, 그 내재된 철학을 통해 데이터를 ’깔끔하게’ 처리하는 작업흐름(workflow)를 <a href="#fig-tidyverse" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-tidyverse</span></a> 에서 제시하고 있다.</p>
+<div id="fig-tidyverse" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tidyverse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/tidyverse.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tidyverse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;9.2: tidyverse 데이터 과학 작업흐름
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="실습-데이터" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="실습-데이터"><span class="header-section-number">9.2</span> 실습 데이터</h2>
+<p><code>palmerpenguins</code> 패키지에 있는 <code>penguins</code> 데이터셋이 붓꽃(<code>iris</code>) 데이터셋을 대체하며 데이터 과학에서 많이 사용되고 있다. 챗GPT 데이터 과학 접근법을 보여주기 위해 먼저 <code>palmerpenguins</code> 패키지에 <code>penguins</code> 데이터셋을 펭귄 종별로 명칭을 달리하여 <code>.csv</code> 파일로 저장한다. 챗GPT 초창기 한국어를 영어로 번역해야 성능이 좋아졌으나 최근에는 한국어로 프롬프트를 작성해도 좋은 결과를 제시하고 있다.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+파일 저장 프롬프트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“palmerpenguins 패키지 penguins 데이터셋을 각 종별로 나눠<br>
+.csv 파일로 저장하는 R 코드를 작성해 주세요. purrr 패키지 walk 함수를 사용해서<br>
+작성해주세요.”</p>
+</div>
+</div>
+<p>GPT-4 모형엔진을 사용하면 다음에 저자가 직접 작성한 코드와 유사한 R 코드를 작성해준다. <code>data/</code> 디렉토리 아래 <code>penguin_adelie.csv</code>, <code>penguin_chinstrap.csv</code>, <code>data/penguin_gentoo.csv</code> 파일 세개로 나눠진 것을 <code>fs</code> 패키지 <code>dir_ls()</code> 함수를 통해 확인된다. </p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># *. 패키지 --------------------------------------------------------------</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># *. 데이터 나누기 --------------------------------------------------------------</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>species <span class="ot">&lt;-</span> palmerpenguins<span class="sc">::</span>penguins <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.character</span>(.)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>save_species <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">species_name =</span> <span class="st">"Adelie"</span>) {</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  palmerpenguins<span class="sc">::</span>penguins <span class="sc">%&gt;%</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(species, species_name)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">write_csv</span>(glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"data/penguin_{str_to_lower(species_name)}.csv"</span>))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">walk</span>(species, save_species)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>fs<span class="sc">::</span><span class="fu">dir_ls</span>(<span class="at">path =</span> <span class="st">"data/"</span>, <span class="at">glob=</span><span class="st">"data/penguin_*.csv"</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data/penguin_adelie.csv    data/penguin_chinstrap.csv </span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data/penguin_gentoo.csv</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="펭귄종별-개체수" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="펭귄종별-개체수"><span class="header-section-number">9.3</span> 펭귄종별 개체수</h2>
+<p>펭귄 종별로 <code>.csv</code> 파일을 나눈 이유는 실제 현장에서 다양하게 쪼개진 데이터를 하나로 묶어 분석을 수행하는 경우가 많은 일일이 데이터를 열어 분석가가 직접 분석하는 것은 손이 많이 가고 경우에 따라서는 실수로 오류가 발생하기 때문에 이를 방지할 필요가 있다.</p>
+<p>펭귄 종별 개체수 빈도수를 계산하는 유닉스 쉘 프로그램을 작성해보자.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+첫번째 분석 프롬프트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다.<br>
+각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로<br>
+종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요.”</p>
+</div>
+</div>
+<p>첫번째 분석 프롬프트를 작성하고 ShellGPT에 실행하면 다음과 같은 결과가 나온다. <code>sgpt</code>에서 제시한 유닉스 쉘 명령어를 해석하면 “이 쉘 명령은 세 개의 서로 다른 CSV 파일에서 펭귄 데이터를 읽고, 종 열을 추출하고, 고유 값을 정렬 및 계산한 후 결과를 출력합니다.”라는 취지로 작성된 것을 확인하고 이를 <code>[E]xecute</code>로 실행하면 기대했던 결과를 얻을 수 없음이 확인된다.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sgpt <span class="at">-s</span> <span class="st">"펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다. </span><span class="dt">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; 각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로 </span><span class="dt">\</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; 종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요."</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> data/penguin_adelie.csv <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> +2 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> data/penguin_chinstrap.csv <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> +2 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> data/penguin_gentoo.csv <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> +2 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: D</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">This</span> shell command reads penguin data from three different CSV files, extracts the species column, sorts and counts the unique values, and outputs the results.</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: E</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>     <span class="ex">44</span> Biscoe</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>     <span class="ex">56</span> Dream</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>     <span class="ex">52</span> Torgersen</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>     <span class="ex">68</span> Dream</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">124</span> Biscoe</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>두번째 분석 프롬프트에서는 명확하게 펭귄종(<code>species</code>)이 위치한 칼럼을 특정하고 쉘 명령어를 작성하도록 지시하고 이를 바로 실행해보자.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+두번째 분석 프롬프트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다.<br>
+각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로<br>
+종은 species 첫번째 칼럼에 위치하고, 종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요.”</p>
+</div>
+</div>
+<p>원하는 결과가 나오기는 하지만 <code>species</code>도 각 1 빈도수로 출력되는데 이유는 <code>.csv</code> 파일에 칼럼명도 펭귄 개체로 인식해서 함께 빈도수를 계산했기 때문이다. 이에 대한 문제도 제기하고 프롬프트를 수정해보자.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sgpt <span class="at">-s</span> <span class="st">"펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다. </span><span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; 각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로 </span><span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; 종은 species 첫번째 칼럼에 위치하고, 종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요."</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> data/penguin_adelie.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> data/penguin_chinstrap.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> data/penguin_gentoo.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: E</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">152</span> Adelie</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="ex">1</span> species</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>     <span class="ex">68</span> Chinstrap</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="ex">1</span> species</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">124</span> Gentoo</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      <span class="ex">1</span> species</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>첫번째 행이 칼럼명임을 명시해서 세번째 프롬프트를 작성한다. 하지만 제시된 프롬프트만으로 깔끔한 결과를 제시하지 못하고 있다.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+세번째 분석 프롬프트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다.<br>
+각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로<br>
+종은 species 첫번째 칼럼에 위치하고, 첫번째 행은 칼럼명이고, 종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요.”</p>
+</div>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sgpt <span class="at">-s</span> <span class="st">"펭귄 종별로 구분된 palmer penguins csv 파일이 세개 data/ 폴더안에 있습니다. </span><span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; 각각의 파일명은 penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv 으로 </span><span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; 종은 species 첫번째 칼럼에 위치하고, 첫번째 행은 칼럼명이고, 종별 펭귄 개체수 빈도수를 계산하는 코드를 작성하세요."</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span><span class="st">","</span> <span class="st">'NR&gt;1{a[$1]++} END{for(i in a) print i,a[i]}'</span> data/penguin_adelie.csv data/penguin_chinstrap.csv data/penguin_gentoo.csv</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: D</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Count</span> the number of occurrences of the first column in three CSV files and print the results.</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: E</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Gentoo</span> 124</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Chinstrap</span> 68</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Adelie</span> 152</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">species</span> 2</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>맥락을 유지하여 원하는 결과를 얻을 수 있는 챗GPT 채팅 인터페이스를 사용하여 결과를 도출할 수 있도록 작업해보자. 먼저 <code>sgpt</code>가 제시한 유닉스 쉘 스크립트를 챗GPT를 통해 의미를 파악해보자.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+코드해석 프롬프트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>다음 유닉스 쉘 코드를 해석해주세요. awk -F’,’ ‘NR&gt;1{a[$1]++} END{for(i in a) print i,a[i]}’ data/penguin_adelie.csv data/penguin_chinstrap.csv data/penguin_gentoo.csv</p>
+</blockquote>
+<p>주어진 awk 명령은 3개의 CSV 파일(penguin_adelie.csv, penguin_chinstrap.csv, penguin_gentoo.csv)에 대해 동작하는데, 이 파일들의 각 줄을 처리합니다. -F’,’는 각 라인이 쉼표(,)로 구분된 필드로 구성된 CSV 형식임을 의미합니다.</p>
+<ul>
+<li><p>awk 스크립트의 각 부분을 분석하면 다음과 같습니다:</p></li>
+<li><p>NR&gt;1 {a[$1]++}: NR은 현재까지 읽은 라인 수를 나타내는 변수입니다. NR&gt;1이라는 조건은 첫 번째 행(즉, 헤더 행)을 건너뛰도록 합니다. 그 다음에 오는 {a[$1]++}는 첫 번째 필드($1)의 값을 key로 사용하여 배열 a의 해당 요소의 값을 1 증가시킵니다. 다시 말해, 이 명령은 각 파일에서 첫 번째 필드의 값이 나타나는 횟수를 계산합니다.</p></li>
+<li><p>END {for(i in a) print i,a[i]}: 이 부분은 모든 입력을 처리한 후 실행되는 명령입니다. END 부분에서는 for 반복문을 사용하여 배열 a의 모든 요소를 반복하고, 각 key(i)와 그에 대응하는 값(a[i])을 출력합니다.</p></li>
+</ul>
+<p>결국, 이 awk 명령은 3개의 CSV 파일에서 첫 번째 필드의 각 값이 나타나는 횟수를 출력합니다. 첫 번째 행(헤더)은 건너뜁니다. 이 코드는 첫 필드가 범주형 변수(예: 특정 분류)인 경우 해당 변수의 각 값의 출현 빈도를 확인하는 데 유용할 수 있습니다.</p>
+</div>
+</div>
+<p><code>species 2</code>를 제거하는 유닉스 쉘 코드를 작성하는 것이 목표라서 이를 달성할 수 있도록 프롬프트에 직설적으로 작성한다.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<code>species 2</code> 제거 프롬프트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>쉘 코드를 실행하면 다음과 같은 결과가 나옵니다. species 2 를 제외시키도록 코드를 다시 작성해주세요.</p>
+<p>Gentoo 124 Chinstrap 68 Adelie 152 species 2</p>
+</blockquote>
+<p>주어진 출력에서 ’species’라는 키 값이 있습니다. 이 값은 아마도 csv 파일의 헤더에서 오는 값일 것입니다. 그렇다면, awk 명령을 수정하여 ’species’를 무시하도록 할 수 있습니다. 다음은 수정된 코드입니다:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span><span class="st">","</span> <span class="st">'NR&gt;1 &amp;&amp; $1 != "species" {a[$1]++} END{for(i in a) print i,a[i]}'</span> data/penguin_adelie.csv data/penguin_chinstrap.csv data/penguin_gentoo.csv</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>이 코드는 원래의 코드에서 추가된 &amp;&amp; $1 != “species” 조건을 통해, 첫 번째 필드의 값이 “species”인 행은 건너뛰게 됩니다. 이렇게 하면 ’species’라는 키 값이 결과에서 제외되게 됩니다.</p>
+</div>
+</div>
+<p>챗GPT를 통해 얻은 명령어를 복사하여 쉘 프롬프트에 붙여넣고 실행시키면 원하는 결과를 얻은 것이 확인된다.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> awk <span class="at">-F</span><span class="st">","</span> <span class="st">'NR&gt;1 &amp;&amp; $1 != "species" {a[$1]++} END{for(i in a) print i,a[i]}'</span> data/penguin_adelie.csv data/penguin_chinstrap.csv data/penguin_gentoo.csv</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Gentoo</span> 124</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Chinstrap</span> 68</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Adelie</span> 152</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>R 코드를 통해 세개로 쪼개진 <code>.csv</code> 파일이 목표를 달성했는지 검사해보자. 펭귄 종 순서는 다르지만 정확하게 펭귄종별 관측 빈도수가 일치함을 확인할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>palmerpenguins<span class="sc">::</span>penguins <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(species)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 2</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   species       n</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt;     &lt;int&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Adelie      152</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Chinstrap    68</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Gentoo      124</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./11_cli_ds.html" class="pagination-link" aria-label="CLI 데이터 과학">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">CLI 데이터 과학</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./13_cli_bigdata.html" class="pagination-link" aria-label="대용량 데이터">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">대용량 데이터</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

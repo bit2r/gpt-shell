@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko-KR" xml:lang="ko-KR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>챗GPT 유닉스 쉘 – 3&nbsp; 파일과 디렉토리 작업</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./04-shell-pipefilter.html" rel="next">
+<link href="./02-shell-filedir.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-shell-intro.html">쉘 프로그래밍</a></li><li class="breadcrumb-item"><a href="./03-shell-create.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">파일과 디렉토리 작업</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">챗GPT 유닉스 쉘</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">감사의 글</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">쉘 프로그래밍</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-shell-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">유닉스 쉘</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-shell-filedir.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">파일과 폴더 넘나들기</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-shell-create.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">파일과 디렉토리 작업</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-shell-pipefilter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">파이프와 필터</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-shell-loop.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">루프(Loops)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-shell-script.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">쉘 스크립트</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-shell-find.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">파일, 텍스트, 폴더 찾기</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">GPT 데이터 과학</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">환경설정</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_cli_ds.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">CLI 데이터 과학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_cli_ds_gpt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">챗GPT 데이터 과학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_cli_bigdata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">대용량 데이터</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">참고문헌</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#디렉토리-생성" id="toc-디렉토리-생성" class="nav-link active" data-scroll-target="#디렉토리-생성"><span class="header-section-number">3.1</span> 디렉토리 생성</a></li>
+  <li><a href="#텍스트-파일-생성" id="toc-텍스트-파일-생성" class="nav-link" data-scroll-target="#텍스트-파일-생성"><span class="header-section-number">3.2</span> 텍스트 파일 생성</a></li>
+  <li><a href="#shell-move-file" id="toc-shell-move-file" class="nav-link" data-scroll-target="#shell-move-file"><span class="header-section-number">3.3</span> 파일과 디렉토리 이동</a></li>
+  <li><a href="#파일-및-디렉토리-복사" id="toc-파일-및-디렉토리-복사" class="nav-link" data-scroll-target="#파일-및-디렉토리-복사"><span class="header-section-number">3.4</span> 파일 및 디렉토리 복사</a></li>
+  <li><a href="#파일-및-디렉토리-제거" id="toc-파일-및-디렉토리-제거" class="nav-link" data-scroll-target="#파일-및-디렉토리-제거"><span class="header-section-number">3.5</span> 파일 및 디렉토리 제거</a></li>
+  <li><a href="#shell-moving-multiple" id="toc-shell-moving-multiple" class="nav-link" data-scroll-target="#shell-moving-multiple"><span class="header-section-number">3.6</span> 다수 파일과 폴더 작업</a></li>
+  <li><a href="#와일드카드-한번-사용으로-여러-파일에-접근" id="toc-와일드카드-한번-사용으로-여러-파일에-접근" class="nav-link" data-scroll-target="#와일드카드-한번-사용으로-여러-파일에-접근"><span class="header-section-number">3.7</span> 와일드카드 한번 사용으로 여러 파일에 접근</a>
+  <ul class="collapse">
+  <li><a href="#파일명-변경" id="toc-파일명-변경" class="nav-link" data-scroll-target="#파일명-변경">파일명 변경</a></li>
+  <li><a href="#데이터-사이언스-프로젝트-백업" id="toc-데이터-사이언스-프로젝트-백업" class="nav-link" data-scroll-target="#데이터-사이언스-프로젝트-백업">데이터 사이언스 프로젝트 백업</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-shell-intro.html">쉘 프로그래밍</a></li><li class="breadcrumb-item"><a href="./03-shell-create.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">파일과 디렉토리 작업</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="shell-create" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">파일과 디렉토리 작업</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>이제는 어떻게 파일과 디렉토리를 살펴보는지 알게 되었지만, 우선, 어떻게 파일과 디렉토리를 생성할 수 있을까요? 바탕화면(Desktop) <code>shell-lesson-data</code> 디렉토리로 돌아가서 <code>pwd</code> 명령어로 현재 디렉토리 위치를 확인한다.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/nelle/Desktop/shell-lesson-data</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>ls -F</code> 명령어를 사용하여 무엇을 담고 있는지 살펴본다. 다음으로 <code>exercise-data/writing</code> 디렉토리로 이동하여 그 안에 무엇이 들어 있는지 살펴본다:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd exercise-data/writing/</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-F</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">haiku.txt</span>  LittleWomen.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="디렉토리-생성" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="디렉토리-생성"><span class="header-section-number">3.1</span> 디렉토리 생성</h2>
+<p>명령어 <code>mkdir thesis</code>을 사용하여 새 디렉토리 <code>thesis</code>를 생성한다 (출력되는 것은 아무것도 없다.):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir thesis</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>이름에서 유추를 할 수도, 하지 못할 수도 있지만, <code>mkdir</code>은 “make directory(디렉토리 생성하기)”를 의미한다. <code>thesis</code>는 상대 경로여서(즉, 앞에 슬래쉬가 없음), 새로운 디렉토리는 현재 작업 디렉토리 아래 만들어진다:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-F</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">haiku.txt</span>  LittleWomen.txt  thesis/</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>방금 <code>thesis</code> 디렉토리를 만들었으므로 아직 아무것도 없다:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-F</span> thesis</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>mkdir</code> 명령어는 한번에 하나의 디렉토리를 만드는 것으로 국한되지 않는다. <code>-p</code> 옵션을 사용하면 <code>mkdir</code> 한번의 작업으로 중첩된 하위 디렉토리가 있는 디렉토리를 만들 수 있습니다:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir <span class="at">-p</span> ../project/data ../project/results</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>ls</code> 명령어 <code>-R</code> 옵션을 추가하면 디렉토리 내에 중첩된 모든 하위 디렉토리가 나열됩니다. <code>ls -FR</code>을 사용하여 <code>project</code> 디렉토리에서 방금 만든 디렉토리 계층 구조를 재귀적으로 나열해 보겠습니다:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-FR</span> ../project</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">../project/:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">data/</span>  results/</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">../project/data:</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ex">../project/results:</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+주의
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>동일한 작업을 수행하는 두가지 방법</strong></p>
+<p>쉘을 사용해서 디렉토리를 생성하는 것이나 (윈도우) 파일 탐색기를 사용하는 것과 별반 차이가 없다. 운영체제 그래픽 파일 탐색기를 사용해서 현재 디렉토리를 열게 되면, <code>thesis</code> 디렉토리가 마찬가지로 나타난다. 파일과 상호작용하는 두가지 다른 방식이 존재하지만, 파일과 디렉토리는 동일하다.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+파일과 디렉토리를 위한 좋은 명칭
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>명령라인으로 작업할 때, 복잡하고 어려운 파일과 디렉토리는 삶의 질을 현격히 저하시킨다. 다음에 파일 명칭에 대한 유용한 팁이 몇 개 있다.</p>
+<ol type="1">
+<li><p>공백(whitespaces)을 사용하지 않는다. 공백은 이름을 의미있게 할 수도 있지만, 공백이 명령라인 인터페이스에서 인자를 구별하는데 사용되기에, 파일과 디렉토리 명에서는 피하는 것이 상책이다. 공백 대신에 <code>-</code> 혹은 <code>_</code> 문자를 사용한 다. (예를 들어, <code>north pacific gyre/</code> 대신 <code>north-pacific-gyre/</code>을 사용))</p></li>
+<li><p>대쉬(<code>-</code>)로 명칭을 시작하지 않는다. 명령어가 <code>-</code>으로 시작되는 명칭을 선택옵션으로 처리하기 때문이다.</p></li>
+<li><p>명칭에 문자, 숫자, <code>.</code> (마침표), <code>-</code> (대쉬), 그리고 <code>_</code> (밑줄)을 고수한다.</p></li>
+</ol>
+<p>명령라인 인터페이스에서 그외 다른 많은 문자는 특별한 의미를 갖는다. 일부 특수 문자가 잘못 사용되면 명령어가 기대했던 대로 동작하지 못하게 하거나, 심한 경우 데이터 유실을 야기할 수도 있다.</p>
+<p>공백을 포함하거나 알파벳이 아닌 문자를 갖는 파일명이나 디렉토리명을 굳이 지정할 필요가 있다면, 인용부호(<code>""</code>)로 파일명이나 디렉토리명을 감싸야 한다.</p>
+</div>
+</div>
+</section>
+<section id="텍스트-파일-생성" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="텍스트-파일-생성"><span class="header-section-number">3.2</span> 텍스트 파일 생성</h2>
+<p><code>cd</code> 명령어를 사용하여 <code>thesis</code>로 작업 디렉토리를 변경하자. Nano 텍스트 편집기를 실행해서 <code>draft.txt</code> 파일을 생성하자:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd thesis</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nano draft.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+주의
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>어떤 편집기가 좋을까요?</strong></p>
+<p>“<code>nano</code>가 텍스트 편집기다”라고 말할 때, 정말 “텍스트”만 의미한다. 즉, 일반 문자 데이터만 작업할 수 있고, 표, 이미지, 혹은 다른 형태의 인간 친화적 미디어는 작업할 수 없다. <code>nano</code>를 사용하는 이유는 거의 누구나 훈련없이 사용할 수 있기 때문이다. 하지만, 실제 작업에는 좀더 강력한 편집기 사용을 추천한다. 유닉스 시스템 계열(맥 OS X, 리눅스)에서 많은 프로그래머는 <a href="http://www.gnu.org/software/emacs/">Emacs</a> 혹은 <a href="http://www.vim.org/">Vim</a>을 사용하거나, (둘다 완전히 비직관적이만, 심지어 유닉스 표준이기도 하다) 혹은 그래픽 편집기로 <a href="http://projects.gnome.org/gedit/">Gedit</a>, <a href="https://code.visualstudio.com/">VScode</a>를 사용한다. 윈도우에서는 <a href="http://notepad-plus-plus.org/">Notepad++</a>를 사용하는 것도 좋다. 윈도우에는 <code>메모장(notepad)</code>이라고 불리는 자체 내장 편집기도 있는데 <code>nano</code> 편집기와 마찬가지로 명령라인에서 바로 불러 실행될 수 있다. </p>
+<p>어떤 편집기를 사용하든, 파일을 검색하고 저장하는 것을 알 필요가 있다. 쉘에서 편집기를 시작하면, (아마도) 현재 작업 디렉토리가 디폴트 시작 위치가 된다. 컴퓨터 시작 메뉴에서 시작한다면, 대신에 바탕화면(Desktop) 혹은 문서(Document) 디렉토리에 파일을 저장하고 할 수 있다. 필요한 경우, “다른 이름으로 저장하기(Save As <code>...</code>)” 명령어로 다른 디렉토리로 이동하여 작업 디렉토리를 변경한 후 파일을 저장한다.</p>
+</div>
+</div>
+<p><a href="#fig-nano" class="quarto-xref">그림&nbsp;<span class="quarto-unresolved-ref">fig-nano</span></a> 처럼 텍스트 몇 줄을 타이핑하자.</p>
+<div id="fig-nano" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/nano-screenshot.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+그림&nbsp;3.1: nano 편집기 실제 사용화면
+</figcaption>
+</figure>
+</div>
+<p>타이핑한 텍스트가 만족스럽다면, <code>컨트롤+O</code> (<code>Control-O</code>, <code>Ctrl</code> 혹은 콘트롤 키보드를 누르면서 <code>O</code> 를 누름)를 눌러서 데이터를 디스크에 쓰면 저장된다. 저장하고자 하는 파일명을 입력하도록 독촉받게 되면 <code>draft.txt</code> 기본디폴트로 설정된 것을 받아들이고 엔터키를 친다.</p>
+<p>파일이 저장되면, 컨트롤+X (<code>Ctrl-X</code>, Control-X)를 사용하여 편집기를 끝내고 쉘로 돌아간다.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+주의
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Control, Ctrl, ^ Key</strong></p>
+<p>컨트롤 키를 줄여서 “Ctrl” 키라고도 부른다. 컨트롤 키를 기술하는 몇가지 방식이 있다. 예를 들어, “컨트롤 키를 누른다”, “컨트롤 키를 누르면서 X 키를 친다”라는 표현은 다음 중 하나로 기술된다:</p>
+<ul>
+<li><code>Control-X</code></li>
+<li><code>Control+X</code></li>
+<li><code>Ctrl-X</code></li>
+<li><code>Ctrl+X</code></li>
+<li><code>^X</code></li>
+<li><code>C-x</code></li>
+</ul>
+<p><code>nano</code> 편집기에서 화면 하단에 <code>^G Get Help ^O WriteOut</code>을 볼 수 있다. <code>Control-G</code>를 눌러 도움말을 얻고, <code>Control-O</code>를 눌러 파일을 저장한다는 의미를 갖는다.</p>
+</div>
+</div>
+<p><code>nano</code>는 화면에 어떤 출력도 뿌려주지 않고 끝내지만, <code>ls</code> 명령어를 사용하여 <code>draft.txt</code> 파일이 생성된 것을 확인할 수 있다:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">draft.txt</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="exr-create-another" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 3.1 (다른 방법으로 파일 생성)</strong></span> <code>nano</code> 편집기를 사용해서 텍스트 파일을 생성하는 방법을 살펴봤다. 홈 디렉토리에서 다음 쉘 명령어를 실행해 보자:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd                  <span class="co"># 홈 디렉토리로 이동하기</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> touch my_file.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="1">
+<li><code>touch</code> 명령어는 어떤 작업을 수행하는가? GUI 파일 탐색기를 사용해서 본인 홈 디렉토리를 살펴보게 되면, 파일이 생성된 것이 보이는가?</li>
+<li><code>ls -l</code> 명령어를 사용해서 파일을 살펴보자. <code>my_file.txt</code> 파일크기는 얼마나 되는가?</li>
+<li>이런 방식으로 파일을 언제 생성하면 좋을까?</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+정답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p><code>touch</code> 명령어가 홈 디렉토리에 ‘my_file.txt’ 파일을 새로 생성시킨다. 터미널로 현재 홈 디렉토리에 있는 경우, <code>ls</code> 를 타이핑하게 되면 새로 생성된 파일을 확인할 수 있다. GUI 파일 탐색기로도 ‘my_file.txt’ 파일을 볼 수 있다.</p></li>
+<li><p>‘ls -l’ 명령어로 파일을 조사하게 되면, ‘my_file.txt’ 파일크기가 0kb 임에 주목한다. 다른 말로 표현하면, 데이터가 아무 것도 없다는 의미가 된다. 텍스트 편집기로 ‘my_file.txt’ 파일을 열게 되면, 텅 비어 있다.</p></li>
+<li><p>일부 프로그램은 그 자체로 출력 파일을 생성하지 않지만, 빈 파일이 이미 생성되어 있는 것을 요구조건으로 하는 경우가 있다. 프로그램이 실행되면, 출력결과를 채울 수 있는 파일이 존재하는지 검색한다. 이런 프로그램에게 <code>touch</code> 명령어는 빈 텍스트 파일을 효율적으로 생성할 수 있는 메커니즘을 제공한다는 점에서 유용하다.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<p>나중에 혼동을 피하려면 진도를 더 나가기 전에 방금 만든 파일을 제거하는 것이 좋다. 그렇지 않으면 향후 실행결과와 다를 수 있다. 이를 위해서 다음 명령을 실행한다:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm my_file.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+주의
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>파일명이 뭐가 중요해?</strong></p>
+<p>넬 박사 파일 이름이 “무엇.무엇”으로 된 것을 알아챘을 것이다. 이번 학습에서, 항상 <code>.txt</code> 확장자를 사용했다. 이것은 단지 관례다: 파일 이름을 <code>mythesis</code> 혹은 원하는 무엇이든지 작명할 수 있다. 하지만, 대부분의 사람들은 두 부분으로 구분된 이름을 사용하여 사람이나 프로그램이 다른 유형의 파일임을 구분하도록 돕는다. 이름에 나온 두번째 부분을 <strong>파일 확장자(filename extension)</strong>라고 부르고, 파일에 어떤 유형의 데이터가 담고 있는지 나타낸다. <code>.txt</code> 확장자는 텍스트 파일임을, <code>.pdf</code>는 PDF 문서임을, <code>.cfg</code> 확장자는 어떤 프로그램에 대한 구성정보를 담고 있는 형상관리 파일임을 내고, <code>.png</code> 확장자는 PNG 이미지 등등을 나타낸다.</p>
+<p>단지 관습이기는 하지만 중요하다. 파일에는 바이트(byte) 정보만 담겨져 있다: PDF 문서, 이미지, 등에 대해서 규칙에 따라 바이트를 해석하는 것은 사람과 우리가 작성한 프로그램에 맡겨졌다.</p>
+<p><code>whale.mp3</code>처럼 고래 PNG 이미지 이름을 갖는 파일을 고래 노래의 음성파일로 변환하는 마술은 없다. 설사 누군가 두번 클릭할 때, 운영체제가 음악 재생기로 열어 실행할 수는 있지만 동작은 되지 않을 것이다.</p>
+</div>
+</div>
+</section>
+<section id="shell-move-file" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="shell-move-file"><span class="header-section-number">3.3</span> 파일과 디렉토리 이동</h2>
+<p>다음 명령어로 <code>shell-lesson-data/exercise-data/writing</code> 디렉토리로 돌아간다.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd ~/Desktop/shell-lesson-data/exercise-data/writing</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>draft.txt</code>가 특별한 정보를 제공하는 이름이 아니어서 <code>mv</code>를 사용하여 파일 이름을 변경하자. <code>mv</code>는 “move”의 줄임말이다: </p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mv thesis/draft.txt thesis/quotes.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>첫번째 매개변수는 <code>mv</code> 명령어에게 이동하려는 대상을, 두번째 매개변수는 어디로 이동되는지를 나타낸다. 이번 경우에는 <code>thesis/draft.txt</code> 파일을 <code>thesis/quotes.txt</code>으로 이동한다. 이렇게 파일을 이동하는 것이 파일 이름을 바꾸는 것과 동일한 효과를 가진다. 아니나 다를까, <code>ls</code> 명령어를 사용하여 확인하면 <code>thesis</code> 디렉토리에는 이제 <code>quotes.txt</code> 파일만 있음을 확인할 수 있다:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls thesis</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quotes.txt</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>목표 파일명을 명세할 때 주의를 기울일 필요가 있다. 왜냐하면, <code>mv</code> 명령어는 동일 명칭을 갖는 어떤 기존 파일도 아주 조용히 덮어 써버리는 재주가 있어 데이터 유실에 이르게 된다. 부가적인 옵션 플래그, <code>mv -i</code> (즉 <code>mv --interactive</code>)를 사용해서 덮어쓰기 전에 사용자가 확인하도록 <code>mv</code> 명령어를 활용할 수도 있다.</p>
+<p>일관성을 갖고 있어서, <code>mv</code>는 디렉토리에도 동작한다. 별도 <code>mvdir</code> 명령어는 없다.</p>
+<p><code>quotes.txt</code> 파일을 현재 작업 디렉토리로 이동하자. <code>mv</code>를 다시 사용한다. 하지만 이번에는 두번째 매개변수로 디렉토리 이름을 사용해서 파일이름을 바꾸지 않고, 새로운 장소에 놓는다. 이번 경우에 사용되는 디렉토리 이름은 앞에서 언급한 특수 디렉토리 이름 <code>.</code> 이다.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mv thesis/quotes.txt .</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>과거에 있던 디렉토리에서 파일을 현재 작업 디렉토리로 옮긴 효과가 나타난다. <code>ls</code> 명령어가 <code>thesis</code> 디렉토리가 비였음을 보여준다:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls thesis</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>더 나아가, <code>ls</code> 명령어를 인자로 파일 이름 혹은 디렉토리 이름과 함께 사용하면, 그 해당 파일 혹은 디렉토리만 화면에 보여준다. 이렇게 사용하면, <code>quotes.txt</code> 파일이 현재 작업 디렉토리에 있음을 볼 수 있다:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls quotes.txt</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quotes.txt</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="exr-move-folder" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 3.2 (현재 폴더로 이동하기)</strong></span> 다음 명령어를 실행한 후에, 정훈이는 <code>sucrose.dat</code>, <code>maltose.dat</code> 파일을 잘못된 폴더에 넣은 것을 인지하게 되었다:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-F</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">analyzed/</span> raw/</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-F</span> analyzed</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="ex">fructose.dat</span> glucose.dat maltose.dat sucrose.dat</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd raw/</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>해당 파일을 현재 디렉토리(즉, 현재 사용자가 위치한 폴더)로 이동시키도록 아래 빈칸을 채우시오:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mv sucrose.dat maltose.dat ____/____</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mv sucrose.dat maltose.dat ../raw</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>..</code> 디렉토리는 부모 디렉토리(즉, 현재 디렉토리에서 상위 디렉토리를 지칭) <code>.</code> 디렉토리는 현재 디렉토리를 지칭함을 상기한다.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="파일-및-디렉토리-복사" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="파일-및-디렉토리-복사"><span class="header-section-number">3.4</span> 파일 및 디렉토리 복사</h2>
+<p><code>cp</code> 명령어는 <code>mv</code> 명령어와 거의 동일하게 동작한다. 차이점은 이동하는 대신에 복사한다는 점이다. 인자로 경로를 두개 갖는 <code>ls</code> 명령어로 제대로 작업을 했는지 확인할 수 있다. 대부분의 유닉스 명령어와 마찬가지로, <code>ls</code> 명령어로 한번에 경로 다수를 전달할 수도 있다.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp quotes.txt thesis/quotations.txt</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls quotes.txt thesis/quotations.txt</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ex">quotes.txt</span>   thesis/quotations.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>복사를 제대로 수행했는지 증명하기 위해서, 현재 작업 디렉토리에 있는 <code>quotes.txt</code> 파일을 삭제하고 나서, 다시 동일한 <code>ls</code> 명령어를 실행한다.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm quotes.txt</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls quotes.txt thesis/quotations.txt</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="ex">ls:</span> cannot access quotes.txt: No such file or directory</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="ex">thesis/quotations.txt</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>이번에는 현재 디렉토리에서 <code>quotes.txt</code> 파일은 찾을 수 없지만, 삭제하지 않은 <code>thesis</code> 폴더의 복사본은 찾아서 보여준다.</p>
+<p>재귀 옵션 <code>-r</code>을 사용하여 디렉토리 및 디렉토리 내부 모든 콘텐츠를 복사할 수도 있다(예를 들어, 디렉토리를 백업하는 경우): </p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp <span class="at">-r</span> thesis thesis_backup</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>thesis</code>와 <code>thesis_backup</code> 디렉토리 내부 결과를 <code>ls</code> 명령어로 확인할 수 있다:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls thesis thesis_backup</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">thesis:</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="ex">quotations.txt</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="ex">thesis_backup:</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="ex">quotations.txt</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>-r</code> 플래그를 포함하는 것이 중요하다. 디렉토리를 복사하려는 경우 이 옵션을 생략하면 <code>-r not specified</code> 때문에 디렉토리가 생략되었다는 메시지가 표시된다.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp thesis thesis_backup</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cp:</span> <span class="at">-r</span> not specified<span class="kw">;</span> <span class="ex">omitting</span> directory <span class="st">'thesis'</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="exr-rename" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 3.3 (파일 이름 바꾸기)</strong></span> 데이터를 분석하는데 필요한 통계 검정 목록을 담고 있는 <code>.txt</code> 파일을 현재 디렉토리에 생성했다고 가정하자. 파일명은 <code>statstics.txt</code>. 파일을 생성하고 저장한 후에 곰곰히 생각해 보니 파일명 철자가 틀린 것을 알게 되었다! 틀린 철자를 바로잡고자 하는데, 다음 중 어떤 명령어를 사용해야 하는가?</p>
+<ol type="1">
+<li><code>cp statstics.txt statistics.txt</code></li>
+<li><code>mv statstics.txt statistics.txt</code></li>
+<li><code>mv statstics.txt .</code></li>
+<li><code>cp statstics.txt .</code></li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>No.&nbsp;철자오류가 수정된 파일이 생성되지만, 철자가 틀린 파일도 디렉토리에 여전히 존재하기 때문에 삭제작업이 필요하다.</li>
+<li>Yes, 이 명령어를 통해서 파일명을 고칠 수 있다.</li>
+<li>No, 마침표(.)는 파일을 이동할 디렉토리를 나타내지 새로운 파일명을 제시하고 있지는 않고 있다. 동일한 파일명은 생성될 수 없다.</li>
+<li>No, 마침표(.)는 파일을 복사할 디렉토리를 나타내지 새로운 파일명을 제시하고 있지는 않고 있다. 동일한 파일명은 생성될 수 없다.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="exr-move-copy" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 3.4 (이동과 복사)</strong></span> 아래 보여진 일련의 명령문에 뒤에 <code>ls</code>명령어의 출력값은 무엇일까요?</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pwd</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/jamie/data</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">proteins.dat</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir recombine</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mv proteins.dat recombine/</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp recombine/proteins.dat ../proteins-saved.dat</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="1">
+<li><code>proteins-saved.dat recombine</code></li>
+<li><code>recombine</code></li>
+<li><code>proteins.dat recombine</code></li>
+<li><code>proteins-saved.dat</code></li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>/Users/jamie/data</code> 디렉토리에서 출발해서, <code>recombine</code> 이름의 디렉토리를 새로 생성한다. 두번째 행은 <code>proteins.dat</code> 파일을 새로 만든 폴더 <code>recombine</code>으로 이동(<code>mv</code>) 시킨다. 세번째 행은 방금전에 이동한 파일에 대한 사본을 생성시킨다. 여기서 조금 까다로운 점은 파일이 복사되는 디렉토리다. <code>..</code> 이 의미하는 바가 “한단계 위로 이동”하라는 의미라서, 복사되는 파일은 이제 <code>/Users/jamie</code> 디렉토리에 위치하게 됨을 상기한다. <code>..</code> 이 의미하는 바는 복사되는 파일 위치에 대한 것이 <strong>아니라</strong> 현재 작업 디렉토리에 대한 것으로 해석됨에 유의한다. 그래서, 그래서, <code>ls</code> 명령어를 사용해서 보여지게 되는 것은 (<code>/Users/jamie/data</code>에 있기 때문에) <code>recombine</code> 폴더가 된다.</p>
+<ol type="1">
+<li>No, 상기 해설을 참조한다. <code>proteins-saved.dat</code> 데이터는 <code>/Users/jamie</code> 폴더에 위치한다.</li>
+<li>Yes</li>
+<li>No, 상기 해설을 참조한다. <code>proteins.dat</code> 데이터는 <code>/Users/jamie/data/recombine</code> 폴더에 위치한다.</li>
+<li>No, 상기 해설을 참조한다. <code>proteins-saved.dat</code> 데이터는 <code>/Users/jamie</code> 폴더에 위치한다.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="파일-및-디렉토리-제거" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="파일-및-디렉토리-제거"><span class="header-section-number">3.5</span> 파일 및 디렉토리 제거</h2>
+<p><code>shell-lesson-data/exercise-data/writing</code> 디렉토리로 돌아가서, 생성한 초안을 제거해서 <code>thesis</code> 디렉토리를 깔끔하게 정리하자. 이를 위해 사용할 유닉스 명령은 <code>rm</code>(’remove’의 줄임말)이다.:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd thesis</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm draft.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>상기 명령어는 파일을 제거한다(<code>rm</code>은 “remove”를 줄인 것이다.) <code>ls</code> 명령어를 다시 실행하게 되면, 출력결과는 아무 것도 없게 되는데 파일이 사라진 것을 확인시켜준다:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> quotes.txt</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ls:</span> cannot access <span class="st">'quotes.txt'</span>: No such file or directory</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+삭제는 영원하다
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>유닉스에는 삭제된 파일을 복구할 수 있는 휴지통이 없다. (하지만, 유닉스에 기반한 대부분의 그래픽 인터페이스는 휴지통 기능이 있다) 파일을 삭제하면 파일시스템의 관리대상에서 빠져서 디스트 저장공간이 다시 재사용되게 한다. 삭제된 파일을 찾아 되살리는 도구가 존재하지만, 어느 상황에서나 동작한다는 보장은 없다. 왜냐하면 파일이 저장되었던 공간을 컴퓨터가 바로 재사용할지 모르기 때문이다.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<code>rm</code> 안전하게 사용하기
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>rm -i thesis/quotations.txt</code> 타이핑하면 무슨 일이 일어날까? <code>rm</code> 명령어를 사용할 때 왜 이러한 보호장치가 필요할까?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+힌트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>$ rm: remove regular file 'thesis/quotations.txt'?</code></pre>
+<p><code>-i</code> 선택옵션은 삭제하기 전에 삭제를 확인하게 해준다. <code>Y</code>를 사용하여 삭제를 확인하거나 <code>N</code>을 사용하여 파일을 유지한다. 유닉스 쉘에는 휴지통이 없어서, 삭제되는 모든 파일은 영원히 사라진다. <code>-i</code> 플래그를 사용하게 되면, 삭제를 원하는 파일만 삭제되는지 점검할 수 있는 기회를 갖게된다.</p>
+</div>
+</div>
+</div>
+</div>
+<p><code>rm thesis</code>을 사용하여 전체 <code>thesis</code> 디렉토리를 제거하려고 하면 오류 메시지가 생긴다:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm thesis</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> cannot remove <span class="kw">`</span><span class="ex">thesis</span><span class="st">': Is a directory</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>rm</code> 명령어는 파일에만 동작하고 디렉토리에는 동작하지 않기 때문에 오류가 발생한다. <code>thesis</code> 디렉토리를 제거하려면, <code>draft.txt</code> 파일도 삭제해야 한다. <code>rm</code> 명령어에 <a href="https://en.wikipedia.org/wiki/Recursion">재귀(recursive)</a> 선택옵션을 사용해서 삭제 작업을 수행할 수 있다:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm <span class="at">-r</span> thesis</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>쉘을 사용하여 삭제한 파일을 복원할 수 있는 방법이 없으므로 <code>rm -r</code>은 매우 주의해서 사용해야 한다 (대화형 옵션인 <code>rm -r -i</code>를 추가하는 것도 고려해 볼 수 있다).</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+큰 힘에는 큰 책임이 따른다
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>디렉토리를 삭제하려고 할 때, 먼저 파일을 제거하고 그리고 나서 디렉토리를 제거하는 방식은 지루하고 시간이 많이 걸린다. 대신에 <code>-r</code> 옵션을 가진 <code>rm</code> 명령어를 사용할 수 있다. <code>-r</code> 플래그 옵션은 “recursive(재귀적)”을 나타낸다.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm <span class="at">-r</span> thesis</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>디렉토리에 모든 것을 삭제하고 나서 디렉토리 자체도 삭제한다. 만약 디렉토리가 하위 디렉토리를 가지고 있다면, <code>rm -r</code>은 하위 디렉토리에도 같은 작업을 반복한다. 매우 편리하지만, 부주위하게 사용되면 피해가 엄청날 수 있다.</p>
+<p>디렉토리와 파일을 재귀적으로 제거하는 것은 매우 위험할 수 있다. 삭제되는 것에 염려가 된다면, <code>rm</code> 명령어에 <code>-i</code> 인터랙티브 플래그를 추가해서 삭제단계마다 확인을 하고 삭제하는 것도 가능하다.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm <span class="at">-r</span> <span class="at">-i</span> thesis</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> descend into directory ‘thesis’<span class="pp">?</span> y</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> remove regular file ‘thesis/draft.txt’<span class="pp">?</span> y</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> remove directory ‘thesis’<span class="pp">?</span> y</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>상기 명령어는 <code>thesis</code> 디렉토리 내부 모든 것을 삭제하고 나서 <code>thesis</code> 디렉토리도 삭제하는데 삭제단계별로 확인 절차를 거친다.</p>
+</div>
+</div>
+</section>
+<section id="shell-moving-multiple" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="shell-moving-multiple"><span class="header-section-number">3.6</span> 다수 파일과 폴더 작업</h2>
+<p>한번에 여러 파일을 복사하거나 이동해야 하는 경우가 종종 있다. 파일명을 목록으로 제공하거나 와일드카드를 사용하여 패턴을 지정하면 된다. <strong>와일드카드(Wildcards)</strong>는 Unix 파일 시스템을 탐색할 때 특정한 패턴이나 일련의 문자를 대체하거나 대표하는 데 사용되는 특수 문자로 <code>*</code>, <code>?</code>, <code>%</code> 등이 대표적이다.</p>
+<div id="exr-copy-multiple" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 3.5 (다수 파일을 복사하기)</strong></span> 이번 연습문제에서는 <code>data-shell/data</code> 디렉토리에서 명령어를 테스트한다. 아래 예제에서, 파일명 다수와 디렉토리명이 주어졌을 떄 <code>cp</code> 명령어는 어떤 작업을 수행하는가?</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir backup</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp amino-acids.txt animals.txt backup/</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>아래 예제에서, 3개 혹은 그 이상의 파일명이 주어졌을 때 <code>cp</code> 명령어는 어떤 작업을 수행하는가?</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-F</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="ex">amino-acids.txt</span>  animals.txt  backup/  elements/  morse.txt  pdb/  planets.txt  salmon.txt  sunspot.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp amino-acids.txt animals.txt morse.txt </span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>하나 이상의 파일명 다음에 디렉토리명이 주어지게 되면, 다시말해 목적지 디렉토리는 마 지막 인자에 위치해야 하는데, <code>cp</code> 명령어는 파일을 해당 디렉토리에 복사한다.</p>
+<p>연달아 파일명이 세게 주어지면, <code>cp</code> 명령어는 오류를 던지는데 이유는 마지막 인자로 디렉토리를 기대했기 때문이다.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cp:</span> target ‘morse.txt’ is not a directory</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="와일드카드-한번-사용으로-여러-파일에-접근" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="와일드카드-한번-사용으로-여러-파일에-접근"><span class="header-section-number">3.7</span> 와일드카드 한번 사용으로 여러 파일에 접근</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+와일드 카드(Wildcards)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>*</code>는 <strong>와일드카드(wildcard)</strong>다. 와일드카드는 0 혹은 그 이상의 문자와 매칭되서, <code>*.pdb</code>은 <code>ethane.pdb</code>, <code>propane.pdb</code> 등등에 매칭한다. 반면에, <code>p*.pdb</code>은 <code>propane.pdb</code>와 <code>pentane.pdb</code>만 매칭하는데, 맨 앞에 ’p’로 시작되는 파일명만 일치하기만 하면 되기 때문이다.</p>
+<p><code>?</code>도 또한 와일드카드지만 단지 단일 문자만 매칭한다. 이것이 의미하는 바는 <code>p?.pdb</code> 은 <code>pi.pdb</code> 혹은 <code>p5.pdb</code>을 매칭하지만 (<code>molecules</code> 디렉토리에 두 파일이 있다면), <code>propane.pdb</code>은 매칭하지 않는다. 한번에 원하는 수만큼 와일드카드를 사용할 수 있다.</p>
+<p>예를 들어, p<em>.p?</em>는 <code>p</code>로 시작하고 <code>.</code>과 <code>p</code>, 그리고 최소 한자 이상의 문자로 끝 나는 임의의 문자열을 매칭한다고 표현할 수 있는데 <code>?</code>이 한 문자를 매칭해야하고 마지막 은 끝에 임의의 문자숫자와 매칭할 수 있기 때문이다. 그래서 <code>p*.p?*</code>은 <code>preferred.practice</code>과 심지어 <code>p.pi</code>도 매칭한다(첫번째 은 어떤 문자도 매칭할 수가 없음). 하지만 <code>quality.practice</code>은 매칭할 수 없는데 이유는 ‘p’로 시작하지 않고, <code>preferred.p</code>도 매칭할 수 없는데 ’p’ 다음에 최소 하나의 문자가 필요한데 없기 때문이다.</p>
+<p>쉘이 와일드카드를 봤을 때, 요청된 명령문을 시작하기 <em>전에</em> 와일드카드를 확장하여 매칭할 파일 이름 목록을 생성한다. 예외로, 와일드카드 표현식이 어떤 파일과도 매칭되지 않게되면, 배수는 명령어에 인자로 표현식을 있는 그대로 전달한다. 예를 들어, <code>molecules</code> 디렉토리(<code>.pdb</code> 확장자로 끝나는 파일만 모여있다.)에 <code>ls *.pdf</code>을 타이핑하게 되면, <code>*.pdf</code>으로 불리는 파일이 없다고 오류 메시지를 출력한다. 하지만, 일반적으로 <code>wc</code>과 <code>ls</code> 명령어는 와일드카드 표현식과 매칭되는 파일명 목록을 보게 되고 와일드카드 자체가 아니다. 다른 프로그램은 아니지만, 쉘은 와일드카드를 확장한 것을 다룬다는 점에서 직교 설계(orthogonal design)의 또 다른 사례로 볼 수 있다.</p>
+</div>
+</div>
+<div id="exr-wildcards" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 3.6 (와일드카드 추가 문제)</strong></span> 정훈이는 미세조정(calibration), 원본 데이터(dataset), 데이터 설명 데이터를 디렉토리에 보관하고 있다:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-23-calibration.txt</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-23-dataset1.txt</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-23-dataset2.txt</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-23-dataset_overview.txt</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-26-calibration.txt</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-26-dataset1.txt</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-26-dataset2.txt</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-26-dataset_overview.txt</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-11-23-calibration.txt</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-11-23-dataset1.txt</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-11-23-dataset2.txt</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-11-23-dataset_overview.txt</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> backup</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── calibration</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── datasets</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> send_to_bob</span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> all_datasets_created_on_a_23rd</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> all_november_files</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>또 다른 견학여행을 떠나기 전에, 정훈이는 데이터를 백업하고 일부 데이터를 연구실 동료 기민에게 보내고자 한다. 정훈이는 백업과 전송 작업을 위해서 다음 명령어를 사용한다:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp <span class="pp">*</span>dataset<span class="pp">*</span> /backup/datasets</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp ____calibration____ /backup/calibration</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp 2015-____-____ ~/send_to_bob/all_november_files/</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cp ____ ~/send_to_bob/all_datasets_created_on_a_23rd/</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>정훈이가 빈칸을 채우도록 도움을 주세요. 작업결과 디렉토리 구조는 다음과 같아야 한다.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-23-calibration.txt</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-23-dataset1.txt</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-23-dataset2.txt</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-23-dataset_overview.txt</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-26-calibration.txt</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-26-dataset1.txt</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-26-dataset2.txt</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-10-26-dataset_overview.txt</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-11-23-calibration.txt</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-11-23-dataset1.txt</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-11-23-dataset2.txt</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2015-11-23-dataset_overview.txt</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> backup</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── calibration</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── 2015-10-23-calibration.txt</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   ├── 2015-10-26-calibration.txt</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   │   └── 2015-11-23-calibration.txt</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── datasets</span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       ├── 2015-10-23-dataset1.txt</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       ├── 2015-10-23-dataset2.txt</span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       ├── 2015-10-23-dataset_overview.txt</span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       ├── 2015-10-26-dataset1.txt</span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       ├── 2015-10-26-dataset2.txt</span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       ├── 2015-10-26-dataset_overview.txt</span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       ├── 2015-11-23-dataset1.txt</span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       ├── 2015-11-23-dataset2.txt</span>
+<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       └── 2015-11-23-dataset_overview.txt</span>
+<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> send_to_bob</span>
+<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> all_datasets_created_on_a_23rd</span>
+<span id="cb42-31"><a href="#cb42-31" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>   ├── 2015-10-23-dataset1.txt</span>
+<span id="cb42-32"><a href="#cb42-32" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>   ├── 2015-10-23-dataset2.txt</span>
+<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>   ├── 2015-10-23-dataset_overview.txt</span>
+<span id="cb42-34"><a href="#cb42-34" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>   ├── 2015-11-23-dataset1.txt</span>
+<span id="cb42-35"><a href="#cb42-35" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>   ├── 2015-11-23-dataset2.txt</span>
+<span id="cb42-36"><a href="#cb42-36" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>   └── 2015-11-23-dataset_overview.txt</span>
+<span id="cb42-37"><a href="#cb42-37" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> all_november_files</span>
+<span id="cb42-38"><a href="#cb42-38" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> 2015-11-23-calibration.txt</span>
+<span id="cb42-39"><a href="#cb42-39" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> 2015-11-23-dataset1.txt</span>
+<span id="cb42-40"><a href="#cb42-40" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> 2015-11-23-dataset2.txt</span>
+<span id="cb42-41"><a href="#cb42-41" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> 2015-11-23-dataset_overview.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>$ cp *calibration.txt /backup/calibration
+$ cp 2015-11-* ~/send_to_bob/all_november_files/
+$ cp *-23-dataset* ~send_to_bob/all_datasets_created_on_a_23rd/</code></pre>
+</div>
+</div>
+<div id="exr-file-directory" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 3.7 (디렉토리와 파일 조직화)</strong></span> 정훈이가 프로젝트 작업을 하고 있는데, 작업 파일이 그다지 잘 조직적으로 정리되어 있지 않음을 알게 되었다:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-F</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="ex">analyzed/</span>  fructose.dat    raw/   sucrose.dat</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>fructose.dat</code> 와 <code>sucrose.dat</code> 파일은 자료분석 결과 산출된 출력결과를 담고 있다. 이번 학습에서 배운 어떤 명령어를 사용해서 아래 명령어를 실행했을 때 다음에 보여지는 출력을 생성할까요?</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls <span class="at">-F</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="ex">analyzed/</span>   raw/</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls analyzed</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fructose.dat</span>    sucrose.dat</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>$ mv *.dat analyzed</code></pre>
+<p>정훈이는 <code>analyzed</code> 디렉토리에 <code>fructose.dat</code>, <code>sucrose.dat</code> 파일을 이동시킬 필요가 있다. 쉘에서 현재 디렉토리에서 <code>*.dat</code> 와일드카드가 <code>.dat</code> 확장자를 갖는 모든 파일을 매칭한다. <code>mv</code> 명령어가 <code>.dat</code> 확장자를 갖는 파일을 <code>analyzed</code> 디렉토리로 이동시킨다.</p>
+</div>
+</div>
+</div>
+<div id="exr-delete" class="theorem exercise">
+<p><span class="theorem-title"><strong>예제 3.8 (폴더 구조 재현)</strong></span> 새로운 실험을 시작해 보자. 데이터 파일 없이 이전 실험에게 만들었던 디렉토리 구조만 복제하자. 그렇게 하면 새로운 데이터를 쉽게 추가할 수 있게 된다. ‘2016-05-18-data’ 디렉토리에 <code>data</code> 폴더로 <code>raw</code>와 <code>processed</code>가 있는데, 각자 데이터 파일이 담겨있다.</p>
+<p>목적은 <code>2016-05-18-data</code> 폴더를 <code>2016-05-20-data</code> 폴더로 복사하는 것인데 복사된 폴더에는 모든 데이터 파일을 제거해야 된다. 다음 명령어 집합 중 어떤 명령어 집합이 상기 목적을 달성할까요? 다른 명령어 집합은 무슨 작업을 수행하는 것일까?</p>
+<p>이전 실험이 <code>2016-05-18</code>이라는 폴더에 있고, 이 폴더에는 데이터 폴더가 있으며, 이 폴더에는 차례로 데이터 파일이 들어 있는 <code>raw</code> 및 <code>processed</code>라는 이름의 폴더가 있다고 가정하자. 목표는 <code>2016-05-18</code> 폴더의 폴더 구조를 <code>2016-05-20</code>이라는 폴더에 복사하여 최종 디렉토리 구조가 다음과 같이 되도록 하는 것이다:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">2016-05-20/</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> data</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> processed</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>   <span class="ex">└──</span> raw</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>다음 중 이 목표를 달성할 수 있는 쉘 명령은 무엇인가요? 다른 쉘명령은 무슨 작업을 수행하나요?</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir 2016-05-20</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir 2016-05-20/data</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir 2016-05-20/data/processed</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir 2016-05-20/data/raw</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir 2016-05-20</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd 2016-05-20</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir data</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd data</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir raw processed</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir 2016-05-20/data/raw</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir 2016-05-20/data/processed</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir <span class="at">-p</span> 2016-05-20/data/raw</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir <span class="at">-p</span> 2016-05-20/data/processed</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir 2016-05-20</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cd 2016-05-20</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir data</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir raw processed</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+해답과 설명
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>처음 두 쉘 명령은 목적을 달성한다. 첫 번째 쉘명령은 상대 경로를 사용하여 하위 디렉토리 앞에 최상위 디렉토리를 만든다.</p>
+<p>세 번째 쉘명령은 <code>mkdir</code> 기본 동작이 존재하지 않는 디렉토리의 하위 디렉토리를 만들지 않는다. 따라서, 중간에 폴더를 먼저 만들어야 하기 때문에 오류를 발생된다.</p>
+<p>네 번째 쉘명령도 목적을 달성한다. 하나 이상의 디렉토리 경로 뒤에 <code>-p</code> 옵션을 사용하면 <code>mkdir</code> 필요에 따라 중간 하위 디렉토리를 만들게 된다는 점을 기억한다.</p>
+<p>마지막 쉘명령은 ‘data’ 디렉토리와 같은 수준에서 ‘raw’ 및 ‘processed’ 디렉토리를 생성한다.</p>
+</div>
+</div>
+</div>
+<section id="파일명-변경" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="파일명-변경">파일명 변경</h3>
+<p><code>thesis\</code> 디렉토리에 위치한 <code>draft.txt</code> 파일명을 <code>thesis.txt</code> 파일로 파일명을 변경해보자.</p>
+<blockquote class="blockquote">
+<p>프롬프트: shell-lesson-data/exercise-data/writing/thesis 디렉토리로 이동한 후 touch 명령어로 draft.txt 파일을 생성한 후 파일명을 thesis.txt 파일로 변경하세요.</p>
+</blockquote>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sgpt <span class="at">-s</span> <span class="st">"shell-lesson-data/exercise-data/writing/thesis 디렉토리로 이동한 후 touch 명령어로 draft.txt 파일을 생성한 후 파일명을 thesis.txt 파일로 변경하세요."</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> shell-lesson-data/exercise-data/writing/thesis <span class="kw">&amp;&amp;</span> <span class="fu">touch</span> draft.txt <span class="kw">&amp;&amp;</span> <span class="fu">mv</span> draft.txt thesis.txt</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: D</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="ex">This</span> command changes the current directory to <span class="st">"shell-lesson-data/exercise-data/writing/thesis"</span>,E creates a new file called <span class="st">"draft.txt"</span>, and then renames the file to <span class="st">"thesis.txt"</span>.</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: E</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls shell-lesson-data/exercise-data/writing/thesis</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="ex">thesis.txt</span></span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>챗GPT가 프롬프트로 작성한 유닉스 쉘 명령어를 해석하면 다음과 같다.</p>
+<blockquote class="blockquote">
+<p>디렉토리를 “shell-lesson-data/exercise-data/writing/thesis”로 변경하고, E는 “draft.txt”라는 새 파일을 생성한 다음 파일 이름을 “thesis.txt”로 변경한다.</p>
+</blockquote>
+<p><code>sgpt</code> 프롬프트를 실행하게 되면 <code>draft.txt</code> 파일이 <code>touch</code> 명령어로 생성되고 <code>mv</code> 명령어로 <code>thesis.txt</code> 파일로 파일명이 변경된다.</p>
+</section>
+<section id="데이터-사이언스-프로젝트-백업" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="데이터-사이언스-프로젝트-백업">데이터 사이언스 프로젝트 백업</h3>
+<p>데이터 과학 프로젝트는 데이터 가져오기, 정제, EDA, 보고서 작성 등 각 단계별로 세분화되어 있다. 그리고 프로젝트가 종료되면 백업하여 혹시 모른 사태에 대비하거나 후속 프로젝트에 활용할 수 있도록 관리를 한다.</p>
+<blockquote class="blockquote">
+<p>프롬프트: shell-lesson-data/exercise-data/writing/thesis 디렉토리로 이동한 후 touch 명령어로 data.sql, clean.py, EDA.R, report.qmd 파일을 생성한 후 thesis/ 디렉토리에 있는 모든 파일을 상 위 디렉토리에 backup/ 디렉토리를 생성하고 복사하여 백업하세요.</p>
+</blockquote>
+<div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> sgpt <span class="at">-s</span> <span class="st">"shell-lesson-data/exercise-data/writing/thesis 디렉토리로 이동한 후 touch 명령어로 data.sql, clean.py, EDA.R, report.qmd 파일을 생성한 후 thesis/ 디렉토리에 있는 모든 파일을 상</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="st">위 디렉토리에 backup/ 디렉토리를 생성하고 복사하여 백업하세요."</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> shell-lesson-data/exercise-data/writing/thesis <span class="kw">&amp;&amp;</span> <span class="fu">touch</span> data.sql clean.py EDA.R report.qmd <span class="kw">&amp;&amp;</span> <span class="fu">mkdir</span> ../backup <span class="kw">&amp;&amp;</span> <span class="fu">cp</span> <span class="pp">*</span> ../backup</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: D</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="ex">This</span> command changes the current directory to <span class="st">"shell-lesson-data/exercise-data/writing/thesis"</span>, creates four files named <span class="st">"data.sql"</span>, <span class="st">"clean.py"</span>, <span class="st">"EDA.R"</span>, and <span class="st">"report.qmd"</span> in that directory, creates a new directory named <span class="st">"backup"</span> in the parent directory, and copies all the files in the current directory to the <span class="st">"backup"</span> directory.</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[E]xecute,</span> <span class="pp">[</span><span class="ss">D</span><span class="pp">]</span>escribe, <span class="pp">[</span><span class="ss">A</span><span class="pp">]</span>bort: E</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="ex">statkclee@dl:/mnt/c/Users/statkclee/OneDrive/Desktop$</span> ls shell-lesson-data/exercise-data/writing/backup/</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="ex">clean.py</span>  data.sql  EDA.R  report.qmd  thesis.txt</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>챗GPT가 프롬프트로 작성한 유닉스 쉘 명령어를 해석하면 다음과 같다.</p>
+<blockquote class="blockquote">
+<p>디렉터리를 “shell-lesson-data/exercise-data/writing/thesis”로 변경하고, 해당 디렉토리에 “data.sql”, “clean.py”, “EDA.R” 및 “report.qmd”라는 4개의 파일을 생성하고, 상위 디렉토리에 “backup”이라는 새 디렉토리를 생성한 후 현재 디렉토리의 모든 파일을 “backup” 디렉토리로 복사한다.</p>
+</blockquote>
+<p>실행하게 되면 <code>backup</code> 디렉토리가 생성되고 데이터 사이언스 관련 모든 파일이 복사된 것이 확인된다.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./02-shell-filedir.html" class="pagination-link" aria-label="파일과 폴더 넘나들기">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">파일과 폴더 넘나들기</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./04-shell-pipefilter.html" class="pagination-link" aria-label="파이프와 필터">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">파이프와 필터</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
