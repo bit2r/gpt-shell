@@ -15,9 +15,9 @@
 
 📱 전자책: https://bit.ly/KzUdOU
 
-🌐 웹사이트: https://bit.ly/48gYn7d
+🌐 웹사이트: [https://bit.ly/48gYn7d](https://bit.ly/3V6Q4rV)
 
-💻 소스코드: https://bit.ly/3wrgeuP
+💻 소스코드: [https://bit.ly/3wrgeuP](https://bit.ly/49p0I1f)
 
 # 쿼토
 
