@@ -11,9 +11,9 @@
 
 - 챗GPT 유닉스 쉘 책 구매정보(교보문고)
 
-📚 종이책: https://bit.ly/434h5y9
+📘 교보 POD 종이책: https://bit.ly/434h5y9
 
-📱 전자책: [https://bit.ly/KzUdOU](https://bit.ly/3KzUdOU)
+📗 교보 전자책: [https://bit.ly/KzUdOU](https://bit.ly/3KzUdOU)
 
 🌐 웹사이트: https://bit.ly/3I4FpWS
 
