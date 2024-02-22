@@ -10,8 +10,14 @@
 마지막으로 GitHub 이슈 등을 통해 수정사항이나 피드백이 오면 반영하여 지속적으로 개선하고 있습니다. 
 
 - 챗GPT 유닉스 쉘 책 구매정보(교보문고)
-  - 📚 종이책: <https://product.kyobobook.co.kr/detail/S000208801484>
-  - 📱 전자책: <https://ebook-product.kyobobook.co.kr/dig/epd/ebook/E000005358063>
+
+📚 종이책: https://bit.ly/434h5y9
+
+📱 전자책: https://bit.ly/KzUdOU
+
+🌐 웹사이트: https://bit.ly/48gYn7d
+
+💻 소스코드: https://bit.ly/3wrgeuP
 
 # 쿼토
 
