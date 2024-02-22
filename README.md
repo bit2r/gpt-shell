@@ -13,7 +13,7 @@
 
 📚 종이책: https://bit.ly/434h5y9
 
-📱 전자책: https://bit.ly/KzUdOU
+📱 전자책: [https://bit.ly/KzUdOU](https://bit.ly/3KzUdOU)
 
 🌐 웹사이트: https://bit.ly/3I4FpWS
 
